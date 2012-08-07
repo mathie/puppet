@@ -1,0 +1,22 @@
+user nobody
+group nogroup
+
+persist-key
+persist-tun
+
+client
+
+dev tun
+
+proto tcp
+remote puppet.<%= domain %> 1194
+nobind
+
+resolv-retry infinite
+
+ca /var/lib/puppet/ssl/certs/ca.pem
+cert /var/lib/puppet/ssl/certs/<%= fqdn %>.pem
+key /var/lib/puppet/ssl/private_keys/<%= fqdn %>.pem
+
+comp-lzo
+verb 3
