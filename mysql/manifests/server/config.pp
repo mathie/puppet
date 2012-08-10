@@ -2,14 +2,14 @@ class mysql::server::config {
   group {
     'mysql':
       ensure    => present,
-      gid       => 117,
+      gid       => 10117,
       allowdupe => false;
   }
 
   user {
     'mysql':
       ensure    => present,
-      uid       => 110,
+      uid       => 10110,
       gid       => 117,
       comment   => 'MySQL Server',
       home      => '/nonexistant',
