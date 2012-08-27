@@ -1,0 +1,132 @@
+define rails::deployment::capistrano(
+  $git_repo,
+  $git_branch = 'master',
+  $rails_env = 'production',
+  $database = $name,
+  $db_host = 'localhost',
+  $db_username = $name,
+  $db_password = ''
+) {
+  include git
+  include rails::deployment::capistrano::base
+
+  $app_name = $name
+
+  File {
+    owner => $app_name,
+    group => $app_name,
+    mode  => '0664',
+  }
+
+  file {
+    "/u/apps/$app_name":
+      ensure => directory;
+
+    "/u/apps/$app_name/releases":
+      ensure => directory;
+
+    "/u/apps/$app_name/shared":
+      ensure => directory;
+
+    "/u/apps/${app_name}/shared/config":
+      ensure => directory;
+
+    "/u/apps/${app_name}/shared/config/database.yml":
+      ensure  => present,
+      content => template('rails/database.yml.erb');
+
+    "/u/apps/${app_name}/shared/log":
+      ensure => directory;
+
+    "/u/apps/${app_name}/shared/uploads":
+      ensure => directory;
+
+    "/u/apps/${app_name}/shared/assets":
+      ensure => directory;
+
+    "/u/apps/${app_name}/shared/pids":
+      ensure => directory;
+  }
+
+  vcsrepo {
+    "${app_name}-repo-cached-copy":
+      ensure   => latest,
+      revision => $git_branch,
+      path     => "/u/apps/${app_name}/shared/cached-copy",
+      source   => $git_repo,
+      provider => 'git',
+      user     => $app_name,
+      require  => [ File["/u/apps/${app_name}/shared"], File["${app_name}-ssh-private-key"], Class['git'] ];
+  }
+
+  exec {
+    "create-default-${app_name}-release":
+      command => "/bin/cp -R /u/apps/${app_name}/shared/cached-copy /u/apps/${app_name}/releases/default",
+      user    => $app_name,
+      creates => "/u/apps/${app_name}/releases/default",
+      require => [ Vcsrepo["${app_name}-repo-cached-copy"], File["/u/apps/${app_name}/releases"] ];
+  }
+
+  file {
+    "/u/apps/${app_name}/current":
+      ensure  => link,
+      target  => "/u/apps/${app_name}/releases/default",
+      replace => false,
+      require => Exec["create-default-${app_name}-release"];
+
+    "/u/apps/${app_name}/current/log":
+      ensure  => link,
+      force   => true,
+      target  => "/u/apps/${app_name}/shared/log",
+      require => File["/u/apps/${app_name}/current"];
+
+    "/u/apps/${app_name}/current/config/database.yml":
+      ensure  => link,
+      target  => "/u/apps/${app_name}/shared/config/database.yml",
+      require => File["/u/apps/${app_name}/current"];
+
+    "/u/apps/${app_name}/current/public/assets":
+      ensure => link,
+      force  => true,
+      target => "/u/apps/${app_name}/shared/assets",
+      require => File["/u/apps/${app_name}/current"];
+
+    "/u/apps/${app_name}/current/public/uploads":
+      ensure  => link,
+      force   => true,
+      target  => "/u/apps/${app_name}/shared/uploads",
+      require => File["/u/apps/${app_name}/current"];
+
+    "/u/apps/${app_name}/current/tmp":
+      ensure  => directory,
+      require => File["/u/apps/${app_name}/current"];
+
+    "/u/apps/${app_name}/current/tmp/pids":
+      ensure  => link,
+      force   => true,
+      target  => "/u/apps/${app_name}/shared/pids",
+      require => File["/u/apps/${app_name}/current/tmp"];
+  }
+
+  exec {
+    "generate-${app_name}-current-revision":
+      command => "/usr/bin/git rev-parse --revs-only ${git_branch} > /u/apps/${app_name}/current/REVISION",
+      user    => $app_name,
+      cwd     => "/u/apps/${app_name}/current",
+      creates => "/u/apps/${app_name}/current/REVISION",
+      require => [ File["/u/apps/${app_name}/current"], Package['git'] ];
+
+    "install-${app_name}-gem-bundle":
+      command => "/usr/bin/ruby1.9.1 -S bundle --deployment --quiet --without development,test --path /u/apps/${app_name}/shared/bundle",
+      user    => $app_name,
+      cwd     => "/u/apps/${app_name}/current",
+      require => [ File["/u/apps/${app_name}/current"], Package['bundler'] ];
+
+    "asset-precompile-${app_name}":
+      command => "/usr/bin/ruby1.9.1 -S bundle exec rake assets:precompile",
+      user    => $app_name,
+      creates => "/u/apps/${app_name}/current/public/assets/application.css",
+      cwd     => "/u/apps/${app_name}/current",
+      require => [ Exec["install-${app_name}-gem-bundle"], File["/u/apps/${app_name}/current/public/assets"] ];
+  }
+}

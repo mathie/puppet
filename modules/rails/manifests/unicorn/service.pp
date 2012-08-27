@@ -1,0 +1,3 @@
+class rails::unicorn::service {
+
+}

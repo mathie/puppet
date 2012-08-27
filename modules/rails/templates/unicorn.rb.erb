@@ -1,0 +1,13 @@
+worker_processes 4
+preload_app true
+
+listen '/u/apps/<%= @app_name %>/shared/unicorn.sock', :backlog => 2048
+pid '/u/apps/<%= @app_name %>/shared/pids/unicorn.pid'
+
+before_fork do |server, worker|
+    ActiveRecord::Base.clear_all_connections!
+end
+
+after_fork do |server, worker|
+    ActiveRecord::Base.establish_connection
+end
