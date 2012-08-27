@@ -1,0 +1,24 @@
+#cloud-config
+
+# Early package management to get the minimum viable packages installed to
+# allow puppet to bootstrap itself.
+apt_update: true
+apt_upgrade: true
+apt_sources:
+  - source: "ppa:brightbox/ruby-ng-experimental"
+  - filename: puppetlabs.list
+    keyid: 4BD6EC30
+    source: deb http://apt.puppetlabs.com/ precise main dependencies
+packages:
+  - puppet
+  - git
+
+# Make sure we've got the right locality nice and early.
+locale: en_GB.UTF-8
+timezone: Europe/London
+
+# Correctly set the hostname for the puppetmaster (one of the few places it
+# matters).
+hostname: puppet
+fqdn: puppet.rubaidh.net
+manage_etc_hosts: true

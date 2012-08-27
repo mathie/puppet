@@ -1,0 +1,35 @@
+#cloud-config
+
+# Early package management to get the minimum viable packages installed to
+# allow puppet to bootstrap itself.
+apt_update: true
+apt_upgrade: true
+apt_sources:
+  - source: "ppa:brightbox/ruby-ng-experimental"
+  - filename: puppetlabs.list
+    keyid: 4BD6EC30
+    source: deb http://apt.puppetlabs.com/ precise main dependencies
+packages:
+  - puppet
+
+# Make sure we've got the right locality nice and early.
+locale: en_GB.UTF-8
+timezone: Europe/London
+
+# FIXME: Figure out how to manage host roles through something other than the
+# host name. This doesn't feel like a scalable solution.
+hostname: @@NODE_NAME@@
+fqdn: @@NODE_NAME@@.rubaidh.net
+manage_etc_hosts: true
+
+# Refer to the puppet server's internal IP so we can get through the managed
+# ACLs.
+bootcmd:
+  - echo @@PUPPETMASTER_IP@@ puppet.rubaidh.net puppet >> /etc/cloud/templates/hosts.tmpl
+
+puppet:
+  conf:
+    main:
+      pluginsync: true
+    agent:
+      server: puppet.rubaidh.net
