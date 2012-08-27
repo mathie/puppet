@@ -13,7 +13,7 @@ namespace :modules do
       dir = "modules/#{dir}"
       if File.directory?(dir)
         sh "git merge --squash -s subtree #{remote_name}/master --no-commit"
-        sh "git commit -m 'Subtree update of #{dir} from #{remote}.'"
+        sh "git commit -m 'Subtree update of #{dir} from #{remote}.' || true"
       else
         sh "git read-tree --prefix=#{dir}/ #{remote_name}/master"
         sh "git commit -m 'Initial import of #{dir} from #{remote}.'"
