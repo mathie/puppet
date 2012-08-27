@@ -7,10 +7,8 @@ class apparmor::disable {
 
   service {
     'apparmor':
-      ensure     => stopped,
-      hasstatus  => true,
-      hasrestart => true,
-      enable     => false,
+      ensure => stopped,
+      enable => false;
   }
 
   Service['apparmor'] ~> Exec['apparmor-teardown']

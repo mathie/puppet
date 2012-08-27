@@ -1,9 +1,8 @@
 class openvpn::service {
   service {
     'openvpn':
-      ensure     => running,
-      hasrestart => true,
-      hasstatus  => false, # Just plain irritating, apparently.
-      enable     => true,
+      ensure    => running,
+      hasstatus => false, # Just plain irritating, apparently.
+      enable    => true;
   }
 }
