@@ -34,4 +34,9 @@ class mysql::server::config {
       source => 'puppet:///modules/mysql/server/my.cnf',
       mode   => '0644';
   }
+
+  firewall::allow {
+    'mysql':
+      port => '3306';
+  }
 }

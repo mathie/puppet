@@ -8,4 +8,13 @@ class openvpn::server::config {
       ensure => present,
       source => 'puppet:///modules/openvpn/dh1024.pem';
   }
+
+  firewall::allow {
+    'openvpn-tcp':
+      port => '1194';
+  }
+
+  include openvpn::firewall
+
+  Class['openvpn::firewall'] -> Class['openvpn::service']
 }
