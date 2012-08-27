@@ -1,0 +1,3 @@
+class ntp::server::config {
+
+}

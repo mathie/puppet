@@ -1,0 +1,29 @@
+user nobody
+group nogroup
+
+persist-key
+persist-tun
+
+dev tun
+
+ca /var/lib/puppet/ssl/certs/ca.pem
+cert /var/lib/puppet/ssl/certs/<%= fqdn %>.pem
+key /var/lib/puppet/ssl/private_keys/<%= fqdn %>.pem
+crl-verify /var/lib/puppet/ssl/crl.pem
+
+comp-lzo
+
+dh /etc/openvpn/dh1024.pem
+
+port 1194
+proto tcp
+
+server 172.16.28.0 255.255.255.0
+
+ifconfig-pool-persist ipp.txt
+
+client-to-client
+
+keepalive 10 120
+
+status openvpn-status.log
