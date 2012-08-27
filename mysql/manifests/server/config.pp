@@ -10,7 +10,7 @@ class mysql::server::config {
     'mysql':
       ensure    => present,
       uid       => 10110,
-      gid       => 117,
+      gid       => 10117,
       comment   => 'MySQL Server',
       home      => '/nonexistant',
       shell     => '/bin/false',
