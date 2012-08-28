@@ -3,6 +3,7 @@ define rails::deployment(
   $git_repo,
   $ssh_private_key,
   $ssh_authorized_keys,
+  $ruby_version      = '1.9',
   $rails_env         = 'production',
   $git_branch        = 'master',
   $comment           = "${name} app server",
@@ -27,6 +28,7 @@ define rails::deployment(
     $app_name:
       git_repo          => $git_repo,
       git_branch        => $git_branch,
+      ruby_version      => $ruby_version,
       rails_env         => $rails_env,
       db_type           => $db_type,
       database          => $database,

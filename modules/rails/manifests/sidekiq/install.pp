@@ -1,10 +1,18 @@
-class rails::sidekiq::install {
-  include ruby::ruby19
+class rails::sidekiq::install($ruby_version) {
+  if $ruby_version == '1.8' {
+    include ruby::ruby18
+    $gem_provider    = 'gem18'
+    $ruby_dependency = Class['ruby::ruby18']
+  } else {
+    include ruby::ruby19
+    $gem_provider    = 'gem19'
+    $ruby_dependency = Class['ruby::ruby19']
+  }
 
   package {
-    "sidekiq":
+    'sidekiq':
       ensure   => present,
-      provider => 'gem19',
-      require  => Class['ruby::ruby19'];
+      provider => $gem_provider,
+      require  => $ruby_dependency;
   }
 }

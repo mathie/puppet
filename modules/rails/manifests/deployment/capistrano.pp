@@ -2,6 +2,7 @@ define rails::deployment::capistrano(
   $git_repo,
   $git_branch        = 'master',
   $rails_env         = 'production',
+  $ruby_version      = '1.9',
   $db_type           = 'mysql2',
   $database          = $name,
   $db_host           = 'localhost',
@@ -10,7 +11,20 @@ define rails::deployment::capistrano(
   $precompile_assets = true
 ) {
   include git
-  include rails::deployment::capistrano::base
+
+  $ruby_command = $ruby_version ? {
+    '1.8' => '/usr/bin/ruby1.8',
+    '1.9' => '/usr/bin/ruby1.9.1',
+  }
+
+  $bundler_command = "${ruby_command} -S bundle"
+  $bundle_exec     = "${bundler_command} exec"
+  $rake            = "${bundle_exec} rake"
+
+  class {
+    'rails::deployment::capistrano::base':
+      ruby_version => $ruby_version;
+  }
 
   $app_name = $name
 
@@ -153,7 +167,7 @@ define rails::deployment::capistrano(
       require => [ File["/u/apps/${app_name}/current"], Package['git'] ];
 
     "install-${app_name}-gem-bundle":
-      command => "/usr/bin/ruby1.9.1 -S bundle --deployment --quiet --without development,test --path /u/apps/${app_name}/shared/bundle",
+      command => "${bundler_command} --deployment --quiet --without development,test --path /u/apps/${app_name}/shared/bundle",
       user    => $app_name,
       cwd     => "/u/apps/${app_name}/shared/cached-copy",
       require => [ Vcsrepo["${app_name}-repo-cached-copy"], Package['bundler'], Package[$db_build_dep] ];
@@ -169,7 +183,7 @@ define rails::deployment::capistrano(
 
     exec {
       "asset-precompile-${app_name}":
-        command => "/usr/bin/ruby1.9.1 -S bundle exec rake assets:precompile",
+        command => "${rake} assets:precompile",
         user    => $app_name,
         creates => "/u/apps/${app_name}/current/public/assets/application.css",
         cwd     => "/u/apps/${app_name}/current",

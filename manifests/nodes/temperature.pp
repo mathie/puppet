@@ -20,6 +20,7 @@ node 'temperature' {
 
   rails::deployment {
     'temperature':
+      ruby_version        => '1.9',
       uid                 => 20002,
       git_repo            => 'git@github.com:tayeco/temperature.git',
       ssh_private_key     => 'puppet:///modules/users/keys/temperature-deploy.keys',

@@ -1,7 +1,21 @@
 define rails::unicorn($rails_env = 'production') {
   $app_name = $name
 
-  include rails::unicorn::base, rails::unicorn::install
+  $ruby_command = $ruby_version ? {
+    '1.8' => '/usr/bin/ruby1.8',
+    '1.9' => '/usr/bin/ruby1.9.1',
+
+  }
+
+  $bundler_command = "${ruby_command} -S bundle"
+  $bundle_exec     = "${bundler_command} exec"
+
+  class {
+    'rails::unicorn::install':
+      ruby_version => $ruby_version;
+  }
+
+  include rails::unicorn::base
 
   File {
     owner   => root,
