@@ -1,4 +1,4 @@
-define rails::unicorn($rails_env = 'production') {
+define rails::unicorn($ruby_version, $rails_env = 'production') {
   $app_name = $name
 
   $ruby_command = $ruby_version ? {
