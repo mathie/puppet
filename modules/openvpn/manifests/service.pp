@@ -11,7 +11,7 @@ class openvpn::service {
       port => '1194';
 
     'openvpn-udp':
-      protocol => 'udp',
-      port     => '1194';
+      proto => 'udp',
+      port  => '1194';
   }
 }
