@@ -1,5 +1,4 @@
 class puppet::master::install {
-  include puppet::db::params
   include ruby::ruby18
 
   package {
@@ -7,7 +6,7 @@ class puppet::master::install {
       ensure => installed;
 
     'puppetdb-terminus':
-      ensure => $puppet::db::params::puppetdb_version;
+      ensure => present;
   }
 
   Class['puppet::repo'] -> Exec['apt-get-update'] -> Class['puppet::master::install']

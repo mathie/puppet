@@ -1,5 +1,4 @@
 class puppet::db {
-  include puppet::db::params
   include puppet::db::install, puppet::db::config, puppet::db::service
   Class['puppet::db::install'] -> Class['puppet::db::config'] ~> Class['puppet::db::service']
 
