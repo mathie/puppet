@@ -52,9 +52,7 @@ namespace :bootstrap do
     user_data ||= node_name
 
     sh "scp build/user-data/#{user_data} hyp-01.ovh.rubaidh.net:/home/mathie/#{user_data}"
-    sh "ssh hyp-01.ovh.rubaidh.net -t sudo lxc-create -n #{node_name} -t ubuntu-cloud -- --userdata /home/mathie/#{user_data}"
-    sh "ssh hyp-01.ovh.rubaidh.net -t sudo ln -snf /var/lib/lxc/#{node_name}/config /etc/lxc/auto/#{node_name}.conf"
-    sh "ssh hyp-01.ovh.rubaidh.net -t sudo lxc-start -n #{node_name} -d"
+    sh "ssh hyp-01.ovh.rubaidh.net -t 'sudo lxc-create -n #{node_name} -t ubuntu-cloud -- --userdata /home/mathie/#{user_data} && sudo ln -snf /var/lib/lxc/#{node_name}/config /etc/lxc/auto/#{node_name}.conf && sudo lxc-start -n #{node_name} -d'"
   end
 
   task :puppetmaster => 'user_data:puppetmaster' do
