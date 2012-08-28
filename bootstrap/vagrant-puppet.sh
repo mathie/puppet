@@ -35,7 +35,7 @@ fi
 
 # Of course, we have to do the puppet labs one manually...
 if [ ! -f /etc/apt/sources.list.d/puppetlabs.list ]; then
-  curl http://apt.puppetlabs.com/pubkey.gpg | apt-key  add -
+  curl -s http://apt.puppetlabs.com/pubkey.gpg | apt-key  add -
   cat > /etc/apt/sources.list.d/puppetlabs.list <<EOF
 deb http://apt.puppetlabs.com/ precise main dependencies
 deb-src http://apt.puppetlabs.com/ precise main dependencies
