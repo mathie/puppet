@@ -5,4 +5,13 @@ class openvpn::service {
       hasstatus => false, # Just plain irritating, apparently.
       enable    => true;
   }
+
+  firewall::allow {
+    'openvpn-tcp':
+      port => '1194';
+
+    'openvpn-udp':
+      protocol => 'udp',
+      port     => '1194';
+  }
 }

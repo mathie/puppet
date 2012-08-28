@@ -4,4 +4,9 @@ class ssh::server::service {
       ensure => running,
       enable => true;
   }
+
+  firewall::allow {
+    'ssh':
+      port => '22';
+  }
 }

@@ -85,14 +85,5 @@ class puppet::master::config($ssh_key, $git_repo) {
     }
   }
 
-  # Don't configure the firewall while bootstrapping, as we haven't
-  # enabled ssh (and the ssh firewall rule!) yet.
-  if !$::bootstrapping {
-    firewall::allow {
-      'puppetmaster':
-        port => 8140;
-    }
-  }
-
   Class['puppet::config'] ~> Class['puppet::master::service']
 }

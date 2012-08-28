@@ -15,13 +15,4 @@ class openvpn::server::config {
       ip           => $::ipaddress_internal,
       host_aliases => [ 'vpnmaster' ];
   }
-
-  firewall::allow {
-    'openvpn-tcp':
-      port => '1194';
-  }
-
-  include openvpn::firewall
-
-  Class['openvpn::firewall'] -> Class['openvpn::service']
 }

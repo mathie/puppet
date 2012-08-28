@@ -4,8 +4,4 @@ class openvpn::agent::config {
       ensure  => present,
       content => template('openvpn/agent.conf.erb'),
   }
-
-  include openvpn::firewall
-
-  Class['openvpn::firewall'] -> Class['openvpn::service']
 }

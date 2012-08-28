@@ -6,9 +6,4 @@ class rsyslog::server::config {
       group   => root,
       mode    => '0644';
   }
-
-  firewall::allow {
-    'rsyslog-ssl':
-      port => '10514';
-  }
 }
