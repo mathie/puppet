@@ -1,16 +1,28 @@
 define rails::deployment::capistrano(
   $git_repo,
-  $git_branch = 'master',
-  $rails_env = 'production',
-  $database = $name,
-  $db_host = 'localhost',
-  $db_username = $name,
-  $db_password = ''
+  $git_branch        = 'master',
+  $rails_env         = 'production',
+  $db_type           = 'mysql2',
+  $database          = $name,
+  $db_host           = 'localhost',
+  $db_username       = $name,
+  $db_password       = '',
+  $precompile_assets = true
 ) {
   include git
   include rails::deployment::capistrano::base
 
   $app_name = $name
+
+  $db_build_dep = $db_type ? {
+    /mysql2?/    => 'libmysqlclient-dev',
+    'postgresql' => 'libpq-dev',
+  }
+
+  package {
+    $db_build_dep:
+      ensure => present;
+  }
 
   File {
     owner => $app_name,
@@ -119,14 +131,25 @@ define rails::deployment::capistrano(
     "install-${app_name}-gem-bundle":
       command => "/usr/bin/ruby1.9.1 -S bundle --deployment --quiet --without development,test --path /u/apps/${app_name}/shared/bundle",
       user    => $app_name,
-      cwd     => "/u/apps/${app_name}/current",
-      require => [ File["/u/apps/${app_name}/current"], Package['bundler'] ];
+      cwd     => "/u/apps/${app_name}/shared/cached-copy",
+      require => [ Vcsrepo["${app_name}-repo-cached-copy"], Package['bundler'], Package[$db_build_dep] ];
+  }
 
-    "asset-precompile-${app_name}":
-      command => "/usr/bin/ruby1.9.1 -S bundle exec rake assets:precompile",
-      user    => $app_name,
-      creates => "/u/apps/${app_name}/current/public/assets/application.css",
-      cwd     => "/u/apps/${app_name}/current",
-      require => [ Exec["install-${app_name}-gem-bundle"], File["/u/apps/${app_name}/current/public/assets"] ];
+  if $precompile_assets {
+    # I feel dirty installing nodejs, but it seems to be the easiest JS runtime
+    # to get from the upstream package repo.
+    package {
+      'nodejs':
+        ensure => present;
+    }
+
+    exec {
+      "asset-precompile-${app_name}":
+        command => "/usr/bin/ruby1.9.1 -S bundle exec rake assets:precompile",
+        user    => $app_name,
+        creates => "/u/apps/${app_name}/current/public/assets/application.css",
+        cwd     => "/u/apps/${app_name}/current",
+        require => [ Exec["install-${app_name}-gem-bundle"], File["/u/apps/${app_name}/current/public/assets"], Package['nodejs'] ];
+    }
   }
 }

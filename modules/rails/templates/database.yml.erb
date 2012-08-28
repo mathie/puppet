@@ -1,5 +1,5 @@
 <%= @rails_env %>:
-  adapter: mysql2
+  adapter: <%= @db_type %>
   encoding: utf8
   reconnect: true
   database: <%= @database %>
