@@ -47,6 +47,10 @@ define rails::deployment::capistrano(
       ensure  => present,
       content => template('rails/database.yml.erb');
 
+    "/u/apps/${app_name}/shared/config/bundler-config":
+      ensure  => present,
+      content => template('rails/bundler-config.erb');
+
     "/u/apps/${app_name}/shared/log":
       ensure => directory;
 
@@ -80,6 +84,16 @@ define rails::deployment::capistrano(
   }
 
   file {
+    "/u/apps/${app_name}/shared/cached-copy/.bundle":
+      ensure  => directory,
+      require => Vcsrepo["${app_name}-repo-cached-copy"];
+
+    "/u/apps/${app_name}/shared/cached-copy/.bundle/config":
+      ensure  => link,
+      force   => true,
+      target  => "/u/apps/${app_name}/shared/config/bundler-config",
+      require => File["/u/apps/${app_name}/shared/cached-copy/.bundle"];
+
     "/u/apps/${app_name}/current":
       ensure  => link,
       target  => "/u/apps/${app_name}/releases/default",
@@ -91,6 +105,16 @@ define rails::deployment::capistrano(
       force   => true,
       target  => "/u/apps/${app_name}/shared/log",
       require => File["/u/apps/${app_name}/current"];
+
+    "/u/apps/${app_name}/current/.bundle":
+      ensure => directory,
+      require => File["/u/apps/${app_name}/current"];
+
+    "/u/apps/${app_name}/current/.bundle/config":
+      ensure  => link,
+      force   => true,
+      target  => "/u/apps/${app_name}/shared/config/bundler-config",
+      require => File["/u/apps/${app_name}/current/.bundle"];
 
     "/u/apps/${app_name}/current/config/database.yml":
       ensure  => link,
