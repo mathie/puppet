@@ -55,6 +55,10 @@ namespace :bootstrap do
     sh "ssh hyp-01.ovh.rubaidh.net -t 'sudo lxc-create -n #{node_name} -t ubuntu-cloud -- --userdata /home/mathie/#{user_data} && sudo ln -snf /var/lib/lxc/#{node_name}/config /etc/lxc/auto/#{node_name}.conf && sudo lxc-start -n #{node_name} -d'"
   end
 
+  def puppetmaster_ip
+    ENV['PUPPETMASTER_IP'] || '5.39.117.102'
+  end
+
   task :puppetmaster => 'user_data:puppetmaster' do
     run_instance 'puppet', 'puppetmaster'
   end
@@ -71,9 +75,8 @@ namespace :user_data do
 
   task :node => ['build/user-data'] do
     raise "Must specify a NODE_NAME" if ENV['NODE_NAME'].nil?
-    raise "Must specify a PUPPETMASTER_IP" if ENV['PUPPETMASTER_IP'].nil?
 
-    sh "sed -e 's/@@NODE_NAME@@/#{ENV['NODE_NAME']}/g' -e 's/@@PUPPETMASTER_IP@@/#{ENV['PUPPETMASTER_IP']}/g' < bootstrap/ec2-user-data/node.cloud-config.yaml.in > build/user-data/#{ENV['NODE_NAME']}"
+    sh "sed -e 's/@@NODE_NAME@@/#{ENV['NODE_NAME']}/g' -e 's/@@PUPPETMASTER_IP@@/#{puppetmaster_ip}/g' < bootstrap/ec2-user-data/node.cloud-config.yaml.in > build/user-data/#{ENV['NODE_NAME']}"
   end
 
   directory 'build/user-data'
