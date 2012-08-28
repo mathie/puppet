@@ -7,6 +7,12 @@ node 'temperature' {
       password => 'xyzzy';
   }
 
+  # To restore the database, get a dump file and do:
+  #
+  #   sudo -u temperature pg_restore -d temperature -O -c postgresql.dump
+  #
+  # (ignore the pointless errors about not being able to manipulate the public
+  # schema or the plpsql extension language).
   postgresql::server::database {
     'temperature':
       owner => 'temperature';
