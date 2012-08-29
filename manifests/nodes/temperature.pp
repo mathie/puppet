@@ -39,7 +39,10 @@ node 'temperature' {
     'poll-temperature-service':
       command     => 'cd /u/apps/temperature/current && /usr/bin/ruby1.9.1 -S bundle exec rake poll > /u/apps/temperature/shared/log/cron-poll.log 2>&1',
       user        => 'temperature',
-      environment => 'RAILS_ENV=production',
+      environment => [
+        'RAILS_ENV=production',
+        'PATH=/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games',
+      ],
       minute      => 15;
   }
 }
