@@ -37,7 +37,7 @@ node 'temperature' {
 
   cron {
     'poll-temperature-service':
-      command     => 'cd /u/apps/temperature/current && /usr/bin/ruby1.9.1 -S bundle exec rake poll',
+      command     => 'cd /u/apps/temperature/current && /usr/bin/ruby1.9.1 -S bundle exec rake poll > /u/apps/temperature/shared/log/cron-poll.log 2>&1',
       user        => 'temperature',
       environment => 'RAILS_ENV=production',
       minute      => 15;
