@@ -1,0 +1,3 @@
+class memcached::server::config {
+
+}
