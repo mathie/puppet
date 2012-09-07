@@ -106,6 +106,10 @@ define rails::deployment::capistrano(
       replace => false,
       require => Exec["create-default-${app_name}-release"];
 
+    "/u/apps/${app_name}/current/public":
+      ensure  => directory,
+      require => File["/u/apps/${app_name}/current"];
+
     "/u/apps/${app_name}/current/log":
       ensure  => link,
       force   => true,
@@ -122,22 +126,17 @@ define rails::deployment::capistrano(
       target  => "/u/apps/${app_name}/shared/config/bundler-config",
       require => File["/u/apps/${app_name}/current/.bundle"];
 
-    "/u/apps/${app_name}/current/config/database.yml":
-      ensure  => link,
-      target  => "/u/apps/${app_name}/shared/config/database.yml",
-      require => File["/u/apps/${app_name}/current"];
-
     "/u/apps/${app_name}/current/public/assets":
-      ensure => link,
-      force  => true,
-      target => "/u/apps/${app_name}/shared/assets",
-      require => File["/u/apps/${app_name}/current"];
+      ensure  => link,
+      force   => true,
+      target  => "/u/apps/${app_name}/shared/assets",
+      require => File["/u/apps/${app_name}/current/public"];
 
     "/u/apps/${app_name}/current/public/uploads":
       ensure  => link,
       force   => true,
       target  => "/u/apps/${app_name}/shared/uploads",
-      require => File["/u/apps/${app_name}/current"];
+      require => File["/u/apps/${app_name}/current/public"];
 
     "/u/apps/${app_name}/current/tmp":
       ensure  => directory,
