@@ -1,6 +1,4 @@
 class ntp::server {
-  include apparmor::disable
-
   include ntp::server::install, ntp::server::config, ntp::server::service
 
   Class['ntp::server::install'] -> Class['ntp::server::config'] ~> Class['ntp::server::service']
