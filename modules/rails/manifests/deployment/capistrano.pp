@@ -31,11 +31,7 @@ define rails::deployment::capistrano(
   $db_build_dep = $db_type ? {
     /mysql2?/    => 'libmysqlclient-dev',
     'postgresql' => 'libpq-dev',
-  }
-
-  package {
-    $db_build_dep:
-      ensure => present;
+    default      => undef,
   }
 
   File {
@@ -56,10 +52,6 @@ define rails::deployment::capistrano(
 
     "/u/apps/${app_name}/shared/config":
       ensure => directory;
-
-    "/u/apps/${app_name}/shared/config/database.yml":
-      ensure  => present,
-      content => template('rails/database.yml.erb');
 
     "/u/apps/${app_name}/shared/config/bundler-config":
       ensure  => present,
@@ -188,6 +180,27 @@ define rails::deployment::capistrano(
         creates => "/u/apps/${app_name}/current/public/assets/application.css",
         cwd     => "/u/apps/${app_name}/current",
         require => [ Exec["install-${app_name}-gem-bundle"], File["/u/apps/${app_name}/current/public/assets"], Package['nodejs'] ];
+    }
+  }
+
+  if $db_type {
+    if $db_build_dep {
+      package {
+        $db_build_dep:
+          ensure => present;
+      }
+    }
+
+    file {
+      "/u/apps/${app_name}/shared/config/database.yml":
+        ensure  => present,
+        content => template('rails/database.yml.erb'),
+        require => File["/u/apps/${app_name}/shared/config"];
+
+      "/u/apps/${app_name}/current/config/database.yml":
+        ensure  => link,
+        target  => "/u/apps/${app_name}/shared/config/database.yml",
+        require => [ File["/u/apps/${app_name}/current"], File["/u/apps/${app_name}/shared/config/database.yml"] ];
     }
   }
 }
