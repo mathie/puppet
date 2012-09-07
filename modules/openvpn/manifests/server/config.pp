@@ -10,7 +10,7 @@ class openvpn::server::config {
   }
 
   @@host {
-    "vpnmaster.${domain}":
+    "vpnmaster.${::domain}":
       ensure       => present,
       ip           => $::ipaddress_internal,
       host_aliases => [ 'vpnmaster' ];

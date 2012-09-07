@@ -45,13 +45,13 @@ define rails::deployment::capistrano(
   }
 
   file {
-    "/u/apps/$app_name":
+    "/u/apps/${app_name}":
       ensure => directory;
 
-    "/u/apps/$app_name/releases":
+    "/u/apps/${app_name}/releases":
       ensure => directory;
 
-    "/u/apps/$app_name/shared":
+    "/u/apps/${app_name}/shared":
       ensure => directory;
 
     "/u/apps/${app_name}/shared/config":
@@ -121,7 +121,7 @@ define rails::deployment::capistrano(
       require => File["/u/apps/${app_name}/current"];
 
     "/u/apps/${app_name}/current/.bundle":
-      ensure => directory,
+      ensure  => directory,
       require => File["/u/apps/${app_name}/current"];
 
     "/u/apps/${app_name}/current/.bundle/config":

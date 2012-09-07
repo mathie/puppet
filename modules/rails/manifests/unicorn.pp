@@ -46,8 +46,6 @@ define rails::unicorn($ruby_version, $rails_env = 'production') {
   service {
     $app_name:
       ensure     => running,
-      hasrestart => true,
-      hasstatus  => true,
       enable     => true,
       require    => [ File["/etc/init/${app_name}.conf"], File["/etc/init/${app_name}-unicorn.conf"] ];
   }
