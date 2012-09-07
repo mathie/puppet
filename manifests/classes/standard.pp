@@ -20,5 +20,6 @@ class standard {
 
   if $::hostname != 'puppet' {
     include rsyslog::client
+    include collectd::agent
   }
 }
