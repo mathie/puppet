@@ -39,11 +39,17 @@ class graphite::install {
       mode   => '0755';
 
     '/opt/graphite/storage/rrd/collectd':
-      ensure => link,
-      target => '/var/lib/collectd/rrd',
+      ensure => directory,
       owner  => graphite,
       group  => graphite,
       mode   => '0755';
+  }
+
+  exec {
+    'symlink-collectd-host-rrds':
+      command => '/bin/bash -c \'cd /var/lib/collectd/rrd && for i in *; do ln -snf /var/lib/collectd/rrd/${i} /opt/graphite/storage/rrd/collectd/${i//./_}; done\'',
+      user    => graphite,
+      require => File['/opt/graphite/storage/rrd/collectd'];
   }
 
   package {
