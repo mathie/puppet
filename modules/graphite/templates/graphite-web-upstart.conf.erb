@@ -1,0 +1,9 @@
+start on filesystem or runlevel [2345]
+stop on runlevel [!2345]
+respawn
+
+pre-start script
+  test -d /opt/graphite || { stop; exit 0; }
+end script
+
+exec su - graphite -s /bin/sh -c 'cd /opt/graphite && exec /usr/bin/gunicorn_django -b 127.0.0.1:8181 --log-file=/opt/graphite/storage/log/webapp/gunicorn.log --pythonpath=/opt/graphite/webapp/graphite --settings=settings'

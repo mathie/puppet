@@ -1,0 +1,21 @@
+upstream graphite_web {
+  server 127.0.0.1:8181 fail_timeout=0;
+}
+
+server {
+  listen 80 default;
+
+  root /opt/graphite/webapp/content;
+
+  location /media/ {
+    root /usr/lib/python2.7/dist-packages/django/contrib/admin/media;
+  }
+
+  location / {
+    try_files $uri/index.html $uri.html $uri @graphite_web;
+  }
+
+  location @graphite_web {
+    proxy_pass http://graphite_web;
+  }
+}

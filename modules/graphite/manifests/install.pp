@@ -72,4 +72,21 @@ class graphite::install {
       creates => '/opt/graphite/lib/carbon',
       require => Package['python-twisted'];
   }
+
+  apt::repository {
+    'gunicorn':
+      source => 'puppet:///modules/graphite/gunicorn-sources.list';
+  }
+
+  apt::key {
+    'gunicorn-public-key':
+      keyid => '5370FF2A';
+  }
+
+  package {
+    'gunicorn':
+      ensure => present;
+  }
+
+  Apt::Repository['gunicorn'] -> Apt::Key['gunicorn-public-key'] -> Exec['apt-get-update'] -> Package['gunicorn']
 }
