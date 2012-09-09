@@ -5,14 +5,15 @@ export DEBIAN_FRONTEND=noninteractive
 HOSTNAME=${1}
 DOMAINNAME=${2}
 PUPPETMASTER_IP=${3}
+FQDN=${HOSTNAME}.${DOMAINNAME}
 
 # Set the hostname
-if [ $(hostname) != ${HOSTNAME} ]; then
-  echo ${HOSTNAME} > /etc/hostname
-  hostname ${HOSTNAME}
+if [ $(hostname) != ${FQDN} ]; then
+  echo ${FQDN} > /etc/hostname
+  hostname ${FQDN}
   domainname ${DOMAINNAME}
 
-  sed -i "s/vagrant-ubuntu-precise-pangolin/${HOSTNAME}.${DOMAINNAME} ${HOSTNAME}/g" /etc/hosts
+  sed -i "s/vagrant-ubuntu-precise-pangolin/${FQDN} ${HOSTNAME}/g" /etc/hosts
 
   # Restart syslog so it starts logging with the right hostname early on.
   service rsyslog restart
