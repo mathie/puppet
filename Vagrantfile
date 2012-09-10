@@ -47,8 +47,7 @@ Vagrant::Config.run do |config|
 
   # All the puppet client nodes in the world ever
   {
-    :node        => {},
-    :temperature => {}
+    :node => {}
   }.each_with_index do |(hostname, options), i|
     config.vm.define hostname do |host_config|
       puppet_agent_bootstrap(host_config, hostname, "172.16.27.#{i + 101}", { :puppetmaster_ip => puppetmaster_ip }.merge(options))
