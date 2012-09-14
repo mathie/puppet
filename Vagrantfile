@@ -1,3 +1,19 @@
+# A list of nodes to bring up, with options for each.
+$nodes = {
+  :node => {}
+}
+
+# Customisation for the puppetmaster
+$puppetmaster_options = {
+  :memory => 512
+}
+
+# Variables you might want to change
+$base_box_name   = "ubuntu-12.04-server-amd64-4.1.20"
+$ip_network      = "172.16.27.%d"
+$puppetmaster_ip = 10
+$node_base_ip    = 100
+
 # Common setup for every VM
 def bootstrap(config, hostname, ip_address, options = {})
   if memory = options.delete(:memory)
@@ -14,7 +30,7 @@ def bootstrap(config, hostname, ip_address, options = {})
 
   config.vm.provision :shell do |shell|
     shell.path = 'bootstrap/vagrant-puppet.sh'
-    shell.args = "#{hostname} vagrant.vm unused #{options[:puppetmaster_ip]}"
+    shell.args = "#{hostname} vagrant.vm unused #{ip_address($puppetmaster_ip)}"
   end
 end
 
@@ -38,23 +54,22 @@ def puppet_agent_bootstrap(config, hostname, ip_address, options = {})
   puppet_bootstrap(config, hostname, ip_address, 'agent', options)
 end
 
+def ip_address(offset, base = 0)
+  $ip_network % (offset + base)
+end
+
 Vagrant::Config.run do |config|
   # Base box is a recently dist-upgrade'd 64-bit Ubuntu 12.04 LTS.
-  config.vm.box = "ubuntu-12.04-server-amd64-4.1.20"
-  config.vm.box_url = "http://mathie-vagrant-boxes.s3.amazonaws.com/ubuntu-12.04-server-amd64-4.1.20.box"
-
-  puppetmaster_ip = '172.16.27.11'
+  config.vm.box = $base_box_name
+  config.vm.box_url = "http://mathie-vagrant-boxes.s3.amazonaws.com/#{$base_box_name}"
 
   config.vm.define :puppet do |puppet|
-    puppet_master_bootstrap(puppet, puppetmaster_ip, :memory => 512)
+    puppet_master_bootstrap(puppet, ip_address($puppetmaster_ip), $puppetmaster_options)
   end
 
-  # All the puppet client nodes in the world ever
-  {
-    :node => {}
-  }.each_with_index do |(hostname, options), i|
+  $nodes.each_with_index do |(hostname, options), i|
     config.vm.define hostname do |host_config|
-      puppet_agent_bootstrap(host_config, hostname, "172.16.27.#{i + 101}", { :puppetmaster_ip => puppetmaster_ip }.merge(options))
+      puppet_agent_bootstrap(host_config, hostname, ip_address(i, $node_base_ip), options)
     end
   end
 end
