@@ -35,6 +35,17 @@ class graphite::config {
       require => File['/opt/graphite/webapp/graphite/local_settings.py'];
   }
 
+  nginx::upstream {
+    'graphite_web':
+  }
+
+  @@nginx::upstream::server {
+    'graphite-web-localhost':
+      upstream => 'graphite_web',
+      target   => '127.0.0.1:8181',
+      options  => 'fail_timeout=0';
+  }
+
   nginx::vhost {
     'graphite-web':
       content => template('graphite/nginx-vhost.conf.erb');
