@@ -10,7 +10,7 @@ def bootstrap(config, hostname, ip_address, options = {})
 
   config.vm.provision :shell do |shell|
     shell.path = 'bootstrap/vagrant-puppet.sh'
-    shell.args = "#{hostname} vagrant.vm #{options[:puppetmaster_ip]}"
+    shell.args = "#{hostname} vagrant.vm unused #{options[:puppetmaster_ip]}"
   end
 end
 

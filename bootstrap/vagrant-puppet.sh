@@ -4,7 +4,8 @@ export DEBIAN_FRONTEND=noninteractive
 
 HOSTNAME=${1}
 DOMAINNAME=${2}
-PUPPETMASTER_IP=${3}
+PUPPET_MANIFEST=${3}
+PUPPETMASTER_IP=${4}
 FQDN=${HOSTNAME}.${DOMAINNAME}
 
 # Set the hostname
@@ -19,14 +20,16 @@ if [ $(hostname) != ${FQDN} ]; then
   service rsyslog restart
 fi
 
-if ! grep 'puppet$' /etc/hosts >/dev/null 2>&1; then
-  echo "${PUPPETMASTER_IP} puppet.${DOMAINNAME} puppet" >> /etc/hosts
+if ! grep 'puppet' /etc/hosts >/dev/null 2>&1; then
+  if [ ! -z "${PUPPETMASTER_IP}" ]; then
+    echo "${PUPPETMASTER_IP} puppet.${DOMAINNAME} puppet" >> /etc/hosts
+  fi
 fi
 
 # Easiest way to add PPA repos, along with their PGP keys
 if [ ! -f /usr/bin/add-apt-repository ]; then
   apt-get update -qq
-  apt-get install -y -qq -o DPkg::Options::=--force-confnew python-software-properties
+  apt-get install -y -qq python-software-properties
 fi
 
 # Recent build of Ruby 1.8.7 (REE), 1.9 and a way for them to happily coexist.
@@ -44,7 +47,7 @@ EOF
 fi
 
 apt-get update -qq
-apt-get install -qq -y -o DPkg::Options::=--force-confnew ruby1.8 puppet
+apt-get install -qq -y ruby1.8 puppet git
 
 # At this point, we should have a bleeding edge stable puppet and Ruby, ready
 # for Puppet to start doing its thing.
