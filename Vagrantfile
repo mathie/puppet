@@ -1,5 +1,9 @@
 # Common setup for every VM
 def bootstrap(config, hostname, ip_address, options = {})
+  if memory = options.delete(:memory)
+    config.vm.customize ["modifyvm", :id, "--memory", memory]
+  end
+
   config.vm.network :hostonly, ip_address
 
   if forward_ports = options[:forward_ports]
@@ -42,7 +46,7 @@ Vagrant::Config.run do |config|
   puppetmaster_ip = '172.16.27.11'
 
   config.vm.define :puppet do |puppet|
-    puppet_master_bootstrap(puppet, puppetmaster_ip)
+    puppet_master_bootstrap(puppet, puppetmaster_ip, :memory => 512)
   end
 
   # All the puppet client nodes in the world ever
