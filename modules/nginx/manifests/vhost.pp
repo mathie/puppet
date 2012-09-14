@@ -8,7 +8,8 @@ define nginx::vhost($ensure = 'present', $content) {
       group   => root,
       mode    => '0644',
       content => $content,
-      require => Class['nginx'];
+      require => Class['nginx'],
+      notify  => Class['nginx::service'];
 
     "/etc/nginx/sites-enabled/${name}.conf":
       ensure  => $ensure ? {
