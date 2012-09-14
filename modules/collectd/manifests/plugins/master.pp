@@ -1,4 +1,12 @@
 class collectd::plugins::master {
+  file {
+    '/var/lib/collectd/rrd':
+      ensure => directory,
+      owner  => root,
+      group  => root,
+      mode   => '0755';
+  }
+
   collectd::plugin {
     [ 'rrdtool' ]:
       ensure => present,
