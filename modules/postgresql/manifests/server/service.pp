@@ -4,4 +4,9 @@ class postgresql::server::service {
       ensure => running,
       enable => true;
   }
+
+  firewall::allow {
+    'postgresql':
+      port => 5432;
+  }
 }
