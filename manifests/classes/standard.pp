@@ -1,12 +1,32 @@
 class standard {
-  if $::hostname != 'puppet' {
-    include openvpn::agent
-    include rsyslog::client
-    include collectd::agent
+  stage {
+    'first':
+      before => Stage['main'];
 
-    # Prefer OpenVPN to be running before setting up the hosts file so we use
-    # the VPN IP.
-    Class['openvpn::agent'] -> Class['network::hosts']
+    'last':
+      require => Stage['main'];
+  }
+
+  class {
+    'network::hosts':
+      stage => first;
+
+    'firewall':
+      stage => first;
+  }
+
+  if $::hostname != 'puppet' {
+    class {
+      'rsyslog::client':
+        stage   => first,
+        require => Class['network::hosts'];
+
+      'openvpn::agent':
+        stage   => first,
+        require => Class['network::hosts'];
+    }
+
+    include collectd::agent
   }
 
   include ntp::server
@@ -15,8 +35,6 @@ class standard {
   include cron
   include ssh::client, ssh::server
   include users
-  include network::hosts
-  include firewall
 
   class {
     'newrelic::agent':
