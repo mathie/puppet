@@ -4,4 +4,9 @@ class memcached::server::service {
       ensure => running,
       enable => true;
   }
+
+  firewall::allow {
+    'memcached':
+      port => '11211';
+  }
 }
