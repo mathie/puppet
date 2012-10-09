@@ -20,6 +20,15 @@ define rails::deployment::user($uid, $comment, $ssh_private_key, $ssh_authorized
       require   => Group[$username];
   }
 
+  sudo::user {
+    "${username}-can-restart-app-services":
+      user        => $username,
+      commands    => "/usr/sbin/service ${username} stop, /usr/sbin/service ${username} start, /usr/sbin/service ${username} restart",
+      no_password => true;
+  }
+
+  User[$username] -> Sudo::User["${username}-can-restart-app-services"]
+
   File {
     owner   => $username,
     group   => $username,

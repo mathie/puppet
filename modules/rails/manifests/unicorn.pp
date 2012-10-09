@@ -1,4 +1,4 @@
-define rails::unicorn($ruby_version, $rails_env = 'production') {
+define rails::unicorn($ruby_version = '1.9', $rails_env = 'production') {
   $app_name = $name
 
   class {

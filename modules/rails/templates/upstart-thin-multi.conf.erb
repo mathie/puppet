@@ -1,5 +1,10 @@
 start on starting <%= @app_name %>-thin
 stop on stopping <%= @app_name %>-thin
 respawn
+env RAILS_ENV="<%= @rails_env %>"
+export RAILS_ENV
+chdir /u/apps/<%= @app_name %>/current
+setuid <%= @app_name %>
+setgid <%= @app_name %>
 
-exec su - <%= @app_name %> -c 'cd /u/apps/<%= @app_name %>/current && RAILS_ENV=<%= @rails_env %> exec <%= @bundle_exec %> thin -e <%= @rails_env %> -S /u/apps/<%= @app_name %>/shared/thin.<%= @app_server_id %>.sock start >> /u/apps/<%= @app_name %>/shared/log/thin.<%= @app_server_id %>.log 2>&1'
+exec <%= @bundle_exec %> thin -e <%= @rails_env %> -S /u/apps/<%= @app_name %>/shared/thin.<%= @app_server_id %>.sock start

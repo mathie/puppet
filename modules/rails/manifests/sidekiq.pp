@@ -1,4 +1,4 @@
-define rails::sidekiq($ruby_version, $rails_env = 'production') {
+define rails::sidekiq($ruby_version = '1.9', $rails_env = 'production') {
   $app_name = $name
 
   $ruby_command = $ruby_version ? {
@@ -13,18 +13,15 @@ define rails::sidekiq($ruby_version, $rails_env = 'production') {
   class {
     'rails::sidekiq::install':
       ruby_version => $ruby_version;
+
+    'rails::sidekiq::config':
+      ruby_version => $ruby_version,
+      app_name     => $app_name,
+      rails_env    => $rails_env;
+
+    'rails::sidekiq::service':
+      app_name => $app_name;
   }
 
-  File {
-    owner   => root,
-    group   => root,
-    mode    => '0644',
-  }
-
-  file {
-    "/etc/init/${app_name}-sidekiq.conf":
-      ensure  => present,
-      content => template('rails/upstart-sidekiq.conf.erb'),
-      notify  => Service[$app_name];
-  }
+  Class['rails::sidekiq::install'] -> Class['rails::sidekiq::config'] ~> Class['rails::sidekiq::service']
 }

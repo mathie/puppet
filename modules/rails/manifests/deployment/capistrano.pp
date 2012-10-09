@@ -158,7 +158,7 @@ define rails::deployment::capistrano(
       require => [ File["/u/apps/${app_name}/current"], Package['git'] ];
 
     "install-${app_name}-gem-bundle":
-      command => "${bundler_command} --deployment --quiet --without development,test --path /u/apps/${app_name}/shared/bundle",
+      command => "${bundler_command} --deployment --without development,test --path /u/apps/${app_name}/shared/bundle",
       user    => $app_name,
       cwd     => "/u/apps/${app_name}/shared/cached-copy",
       require => [ Vcsrepo["${app_name}-repo-cached-copy"], Package['bundler'], Package[$db_build_dep] ];

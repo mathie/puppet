@@ -14,7 +14,7 @@ class rails::deployment::capistrano::base::common {
   }
 }
 
-class rails::deployment::capistrano::base($ruby_version) {
+class rails::deployment::capistrano::base($ruby_version = '1.9') {
   include rails::deployment::capistrano::base::common
 
   if $ruby_version == '1.8' {

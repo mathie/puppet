@@ -1,4 +1,4 @@
-class rails::unicorn::install($ruby_version) {
+class rails::unicorn::install($ruby_version = '1.9') {
   if $ruby_version == '1.8' {
     include ruby::ruby18
     $gem_provider    = 'gem18'

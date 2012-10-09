@@ -39,4 +39,17 @@ define rails::deployment(
   }
 
   Rails::Deployment::User[$app_name] -> Rails::Deployment::Capistrano[$app_name]
+
+  file {
+    "/etc/init/${app_name}.conf":
+      ensure  => present,
+      content => template('rails/upstart-master.conf.erb');
+  }
+
+  service {
+    $app_name:
+      ensure  => running,
+      enable  => true,
+      require => File["/etc/init/${app_name}.conf"];
+  }
 }
