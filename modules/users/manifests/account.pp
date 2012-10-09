@@ -4,7 +4,8 @@ define users::account(
   $comment,
   $groups = [],
   $ensure = present,
-  $shell = '/bin/bash'
+  $shell  = '/bin/bash',
+  $sudo   = false
 ) {
   $username = $name
 
@@ -25,6 +26,13 @@ define users::account(
     shell     => $shell,
     allowdupe => false,
     require   => Group[$username],
+  }
+
+  if $sudo {
+    sudo::user {
+      "${username}-is-all-powerful":
+        user => $username;
+    }
   }
 
   case $ensure {
