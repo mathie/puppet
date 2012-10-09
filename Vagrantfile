@@ -61,7 +61,7 @@ end
 Vagrant::Config.run do |config|
   # Base box is a recently dist-upgrade'd 64-bit Ubuntu 12.04 LTS.
   config.vm.box = $base_box_name
-  config.vm.box_url = "http://mathie-vagrant-boxes.s3.amazonaws.com/#{$base_box_name}"
+  config.vm.box_url = "http://mathie-vagrant-boxes.s3.amazonaws.com/#{$base_box_name}.box"
 
   config.vm.define :puppet do |puppet|
     puppet_master_bootstrap(puppet, ip_address($puppetmaster_ip), $puppetmaster_options)
