@@ -9,16 +9,15 @@ PUPPETMASTER_IP=${4}
 FQDN=${HOSTNAME}.${DOMAINNAME}
 
 # Set the hostname
-if [ $(hostname) != ${FQDN} ]; then
-  echo ${FQDN} > /etc/hostname
-  hostname ${FQDN}
-  domainname ${DOMAINNAME}
+echo ${FQDN} > /etc/hostname
+hostname ${FQDN}
+domainname ${DOMAINNAME}
 
-  sed -i "s/vagrant-ubuntu-precise-pangolin/${FQDN} ${HOSTNAME}/g" /etc/hosts
+echo '127.0.0.1 localhost' > /etc/hosts
+echo "127.0.1.1 ${HOSTNAME} ${FQDN}" >> /etc/hosts
 
-  # Restart syslog so it starts logging with the right hostname early on.
-  service rsyslog restart
-fi
+# Restart syslog so it starts logging with the right hostname early on.
+service rsyslog restart
 
 if ! grep 'puppet' /etc/hosts >/dev/null 2>&1; then
   if [ ! -z "${PUPPETMASTER_IP}" ]; then
@@ -26,9 +25,12 @@ if ! grep 'puppet' /etc/hosts >/dev/null 2>&1; then
   fi
 fi
 
+apt-get update -qq
+apt-get autoremove --purge -qq -y puppet-common puppet
+apt-get dist-upgrade -qq -y
+
 # Easiest way to add PPA repos, along with their PGP keys
 if [ ! -f /usr/bin/add-apt-repository ]; then
-  apt-get update -qq
   apt-get install -y -qq python-software-properties
 fi
 
