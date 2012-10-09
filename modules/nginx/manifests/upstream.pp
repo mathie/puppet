@@ -1,4 +1,6 @@
 define nginx::upstream {
+  include nginx
+
   concat::file {
     "nginx-upstream-${name}":
       path  => "/etc/nginx/upstreams.d/upstream-${name}.conf",
@@ -6,8 +8,10 @@ define nginx::upstream {
       group => root,
       mode  => '0644',
       head  => "upstream ${name} {\n",
-      tail  => "}";
+      tail  => "}\n";
   }
 
   Nginx::Upstream::Server <<| upstream == $name |>>
+
+  Class['nginx'] -> Concat::File["nginx-upstream-${name}"] ~> Class['nginx::service']
 }
