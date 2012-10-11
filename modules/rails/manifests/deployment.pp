@@ -12,7 +12,8 @@ define rails::deployment(
   $db_host           = 'localhost',
   $db_username       = $name,
   $db_password       = '',
-  $precompile_assets = true
+  $precompile_assets = true,
+  $asset_compiler    = 'nodejs'
 ) {
   $app_name = $name
 
@@ -35,7 +36,8 @@ define rails::deployment(
       db_host           => $db_host,
       db_username       => $db_username,
       db_password       => $db_password,
-      precompile_assets => $precompile_assets;
+      precompile_assets => $precompile_assets,
+      asset_compiler    => $asset_compiler;
   }
 
   Rails::Deployment::User[$app_name] -> Rails::Deployment::Capistrano[$app_name]
