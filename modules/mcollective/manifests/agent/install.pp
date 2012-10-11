@@ -1,6 +1,12 @@
 class mcollective::agent::install {
   package {
-    [ 'ruby-stomp', 'mcollective', 'mcollective-plugins-process', 'mcollective-plugins-facts-facter', 'mcollective-plugins-package', 'mcollective-plugins-service' ]:
+    [
+      'ruby-stomp', 'mcollective',
+      'mcollective-plugins-process',
+      'mcollective-plugins-facts-facter',
+      'mcollective-plugins-package',
+      'mcollective-plugins-service',
+      'mcollective-plugins-puppetd' ]:
       ensure => present,
   }
 
@@ -13,4 +19,5 @@ class mcollective::agent::install {
   Package['mcollective'] -> Package['mcollective-plugins-facts-facter']
   Package['mcollective'] -> Package['mcollective-plugins-package']
   Package['mcollective'] -> Package['mcollective-plugins-service']
+  Package['mcollective'] -> Package['mcollective-plugins-puppetd']
 }
