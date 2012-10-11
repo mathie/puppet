@@ -13,7 +13,7 @@ def puppet(command, manifests)
 end
 
 def puppet_lint(manifest, args = "")
-  bundle_exec "puppet-lint --log-format '%{path}:%{linenumber} - %{kind}: %{message}.' --no-80chars-check #{args} #{manifest}"
+  bundle_exec "puppet-lint --log-format '%{path}:%{linenumber} - %{kind}: %{message}.' --no-80chars-check --no-documentation-check #{args} #{manifest}"
 end
 
 def puppet_lint_many(manifests, args = "")
