@@ -35,6 +35,7 @@ class standard {
   include cron
   include ssh::client, ssh::server
   include users
+  include logrotate
 
   class {
     'newrelic::agent':
