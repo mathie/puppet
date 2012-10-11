@@ -1,0 +1,3 @@
+class postfix::config {
+
+}
