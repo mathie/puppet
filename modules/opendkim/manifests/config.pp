@@ -1,4 +1,4 @@
-class opendkim::config {
+class opendkim::config($mail_domain = $domain) {
   file {
     '/etc/opendkim.conf':
       ensure  => present,

@@ -1,5 +1,7 @@
 Syslog yes
+LogWhy yes
+SyslogSuccess yes
 
-Domain <%= domain %>
+Domain <%= @mail_domain %>
 Selector <%= hostname %>
 KeyFile /etc/opendkim/<%= hostname %>.private
