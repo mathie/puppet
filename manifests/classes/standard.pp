@@ -36,10 +36,12 @@ class standard {
   include ssh::client, ssh::server
   include users
   include logrotate
-  include postfix
 
   class {
     'newrelic::agent':
       license_key => '8994aa98999cb87e80a8a988d3320cc7078700ff';
+
+    'postfix':
+      mail_domain => 'rubaidh.com';
   }
 }
