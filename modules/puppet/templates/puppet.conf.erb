@@ -11,6 +11,9 @@
 [master]
   storeconfigs         = true
   storeconfigs_backend = puppetdb
+  reports              = store, http
+  reporturl            = http://puppet:8084/reports/upload
 
 [agent]
   runinterval = 60
+  report      = true

@@ -1,0 +1,13 @@
+server {
+  listen 8084;
+
+  root /usr/share/puppet-dashboard/public;
+
+  location / {
+    try_files $uri/index.html $uri.html $uri @puppet_dashboard;
+  }
+
+  location @puppet_dashboard {
+    proxy_pass http://puppet_dashboard;
+  }
+}
