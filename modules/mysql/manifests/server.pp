@@ -1,4 +1,6 @@
 class mysql::server {
+  include mysql::client
+
   include mysql::server::install, mysql::server::config, mysql::server::service
 
   # This is slightly unusual in terms of dependencies. The package helpfully
