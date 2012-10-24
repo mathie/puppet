@@ -6,5 +6,5 @@ class mysql::client {
       ensure => present;
   }
 
-  Class['mysql::repo'] -> Package['percona-server-client']
+  Class['mysql::repo'] -> Exec['apt-get-update'] -> Package['percona-server-client']
 }
