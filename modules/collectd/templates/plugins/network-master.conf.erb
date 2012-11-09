@@ -1,1 +1,6 @@
-Listen "<%= @ipaddress_preferred %>"
+<Listen "<%= @ipaddress_preferred %>">
+  SecurityLevel "encrypt"
+  AuthFile "/etc/collectd/users"
+</Listen>
+
+MaxPacketSize 1452
