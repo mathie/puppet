@@ -40,10 +40,7 @@ class postfix::config($mail_domain = $domain, $root_email = "root@${mail_domain}
   }
 
   postfix::alias {
-    'postmaster':
-      destination => 'root';
-
-    'root':
+    [ 'postmaster', 'root' ]:
       destination => $root_email;
   }
 }
