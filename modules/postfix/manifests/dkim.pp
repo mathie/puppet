@@ -1,7 +1,8 @@
-class postfix::dkim($mail_domain = $domain) {
+class postfix::dkim($mail_domain = $domain, $root_email = "root@${mail_domain}") {
   class {
     'postfix':
-      mail_domain => $mail_domain;
+      mail_domain => $mail_domain,
+      root_email  => $root_email;
 
     'opendkim':
       mail_domain => $mail_domain;
