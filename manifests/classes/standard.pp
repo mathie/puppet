@@ -36,6 +36,7 @@ class standard {
   include ssh::client, ssh::server
   include users
   include logrotate
+  include apt::unattended_upgrades
 
   class {
     'newrelic::agent':
