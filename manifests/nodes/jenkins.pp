@@ -1,4 +1,4 @@
-node /^jenkins/ {
+node 'jenkins' {
   include standard
   include jenkins
 }
