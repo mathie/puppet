@@ -1,9 +1,10 @@
-class postfix($mail_domain = $domain) {
+class postfix($mail_domain = $domain, $root_email = "root@${mail_domain}") {
   include postfix::install, postfix::service
 
   class {
     'postfix::config':
-      mail_domain => $mail_domain;
+      mail_domain => $mail_domain,
+      root_email  => $root_email;
   }
 
   Class['postfix::install'] -> Class['postfix::config'] ~> Class['postfix::service']
