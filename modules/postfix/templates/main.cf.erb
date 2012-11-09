@@ -1,6 +1,5 @@
 myhostname = <%= fqdn %>
 myorigin = <%= @mail_domain %>
-mydestination =
+mydestination = <%= fqdn %>, localhost
 mynetworks_style = host
 relay_domains =
-smtp_host_lookup = native
