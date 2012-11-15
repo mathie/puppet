@@ -1,5 +1,5 @@
 class firewall {
-  $enabled = true
+  $enabled = false
 
   include firewall::install, firewall::config, firewall::service
 
