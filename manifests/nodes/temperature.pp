@@ -30,11 +30,6 @@ node 'temperature' {
       precompile_assets   => false; # No point, no app server for now.
   }
 
-  rails::unicorn {
-    'temperature':
-      ruby_version => '1.9';
-  }
-
   cron {
     'poll-temperature-service':
       command     => 'cd /u/apps/temperature/current && /usr/bin/ruby1.9.1 -S bundle exec rake poll > /u/apps/temperature/shared/log/cron-poll.log 2>&1',
