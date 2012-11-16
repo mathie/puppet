@@ -10,7 +10,7 @@ $puppetmaster_options = {
 }
 
 # Variables you might want to change
-$base_box_name   = "ubuntu-12.04-server-amd64-4.2.0-1"
+$base_box_name   = "ubuntu-12.04-server-amd64-4.2.4-1"
 $ip_network      = "172.16.27.%d"
 $puppetmaster_ip = 10
 $node_base_ip    = 100
