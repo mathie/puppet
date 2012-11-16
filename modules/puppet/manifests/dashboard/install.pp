@@ -15,10 +15,6 @@ class puppet::dashboard::install {
       ensure   => present,
       provider => 'gem18';
 
-    'rdoc':
-      ensure   => present,
-      provider => 'gem18';
-
     # Puppet dashboard requires mysql-client to be installed. The package it
     # attempts to install is mysql-client to satisfy that dependency. However,
     # we provide it with percona-server-client. So that needs to be installed
