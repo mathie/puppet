@@ -5,7 +5,7 @@ $nodes = {
 
 # Customisation for the puppetmaster
 $puppetmaster_options = {
-  :memory        => 512,
+  :memory        => 1024, # Insanity!
   :forward_ports => { 8084 => 8084 }
 }
 
