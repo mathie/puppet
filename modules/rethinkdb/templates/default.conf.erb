@@ -1,0 +1,8 @@
+runuser=root
+rungroup=root
+directory=/var/lib/rethinkdb/instances.d/default
+pid-file=/var/run/rethinkdb/instances.d/default.pid
+driver-port=28015
+cluster-port=29015
+http-port=8080
+join=<%= @coordinator %>:29015
