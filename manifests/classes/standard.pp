@@ -20,6 +20,10 @@ class standard {
       'rsyslog::client':
         stage   => first,
         require => Class['network::hosts'];
+
+      'openvpn::agent':
+        stage   => first,
+        require => Class['network::hosts'];
     }
 
     include collectd::agent
