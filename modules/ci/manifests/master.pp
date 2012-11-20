@@ -1,5 +1,5 @@
 class ci::master {
-  include jenkins::tomcat
+  include jenkins
   include nginx
 
   nginx::vhost {
