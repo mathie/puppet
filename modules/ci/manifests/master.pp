@@ -1,7 +1,10 @@
 class ci::master {
   include jenkins
   include nginx
+
+  include ci::config
   include ci::dependencies
+  include ci::plugins
 
   nginx::vhost {
     'ci':

@@ -10,6 +10,9 @@ class jenkins::install {
 
     'jenkins':
       ensure => present;
+
+    'jenkins-cli':
+      ensure => present;
   }
 
   Class['jenkins::repo'] -> Exec['apt-get-update'] -> Class['jenkins::install']
