@@ -1,5 +1,4 @@
-node 'temperature' {
-  include standard
+class temperature {
   include postgresql::server
 
   postgresql::server::user {

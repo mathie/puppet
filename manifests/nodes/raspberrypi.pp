@@ -1,3 +1,0 @@
-node 'raspberrypi' {
-  include standard
-}
