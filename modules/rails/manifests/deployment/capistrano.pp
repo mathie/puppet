@@ -22,9 +22,10 @@ define rails::deployment::capistrano(
   $bundle_exec     = "${bundler_command} exec"
   $rake            = "${bundle_exec} rake"
 
-  class {
-    'rails::deployment::capistrano::base':
-      ruby_version => $ruby_version;
+  case $ruby_version {
+    '1.8':   { include rails::deployment::capistrano::ruby18 }
+    '1.9':   { include rails::deployment::capistrano::ruby19 }
+    default: { fail "Unknown ruby version ${ruby_version}." }
   }
 
   $app_name = $name
@@ -58,9 +59,9 @@ define rails::deployment::capistrano(
   $current_bundler_config = "${current_bundler_path}/config"
   $shared_bundler_install_path = "${shared_path}/bundle"
 
-  $db_build_dep = $db_type ? {
-    /mysql2?/    => 'libmysqlclient-dev',
-    'postgresql' => 'libpq-dev',
+  $db_dev_install = $db_type ? {
+    /mysql2?/    => 'mysql::dev',
+    'postgresql' => 'postgresql::dev',
     default      => undef,
   }
 
@@ -201,10 +202,12 @@ define rails::deployment::capistrano(
       timeout => 0, # May take a stupendous amount of time, it appears.
       user    => $username,
       cwd     => $cached_copy,
-      require => [ Vcsrepo["${app_name}-repo-cached-copy"], Package['bundler'], Package[$db_build_dep] ];
+      require => [ Vcsrepo["${app_name}-repo-cached-copy"], Package['bundler'], Class[$db_dev_install] ];
   }
 
   if $precompile_assets {
+    include $asset_compiler
+
     $shared_assets_path  = "${shared_path}/assets"
     $current_assets_path = "${current_public_path}/assets"
 
@@ -219,11 +222,6 @@ define rails::deployment::capistrano(
         require => File[$current_public_path];
     }
 
-    package {
-      $asset_compiler:
-        ensure => present;
-    }
-
     exec {
       "asset-precompile-${app_name}":
         command     => "${rake} assets:precompile",
@@ -231,7 +229,7 @@ define rails::deployment::capistrano(
         creates     => "${current_assets_path}/manifest-default.json",
         cwd         => $current_path,
         environment => "RAILS_ENV=${rails_env}",
-        require     => [ Exec["install-${app_name}-gem-bundle"], File[$current_assets_path], Package[$asset_compiler] ];
+        require     => [ Exec["install-${app_name}-gem-bundle"], File[$current_assets_path], Class[$asset_compiler] ];
     }
   }
 
@@ -239,11 +237,8 @@ define rails::deployment::capistrano(
     $shared_database_yml  = "${shared_config_path}/database.yml"
     $current_database_yml = "${current_path}/config/database.yml"
 
-    if $db_build_dep {
-      package {
-        $db_build_dep:
-          ensure => present;
-      }
+    if $db_dev_install {
+      include $db_dev_install
     }
 
     file {

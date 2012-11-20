@@ -1,4 +1,4 @@
-class rails::deployment::capistrano::base::common {
+class rails::deployment::capistrano::base {
   File {
     owner => root,
     group => root,
@@ -11,26 +11,5 @@ class rails::deployment::capistrano::base::common {
 
     '/u/apps':
       ensure => directory;
-  }
-}
-
-class rails::deployment::capistrano::base($ruby_version = '1.9') {
-  include rails::deployment::capistrano::base::common
-
-  if $ruby_version == '1.8' {
-    include ruby::ruby18
-    $gem_provider    = 'gem18'
-    $ruby_dependency = Class['ruby::ruby18']
-  } else {
-    include ruby::ruby19
-    $gem_provider    = 'gem19'
-    $ruby_dependency = Class['ruby::ruby19']
-  }
-
-  package {
-    'bundler':
-      ensure   => present,
-      provider => $gem_provider,
-      require  => $ruby_dependency;
   }
 }
