@@ -1,11 +1,5 @@
 class standard {
-  stage {
-    'first':
-      before => Stage['main'];
-
-    'last':
-      require => Stage['main'];
-  }
+  include bootstrap_common
 
   class {
     'network::hosts':
