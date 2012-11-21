@@ -15,11 +15,17 @@ $ip_network      = "172.16.27.%d"
 $puppetmaster_ip = 10
 $node_base_ip    = 100
 
+def customise_vm(config, option, value)
+  config.vm.customize [ 'modifyvm', :id, "--#{option}", value ]
+end
+
 # Common setup for every VM
 def bootstrap(config, hostname, ip_address, options = {})
   if memory = options.delete(:memory)
-    config.vm.customize ["modifyvm", :id, "--memory", memory]
+    customise_vm config, :memory, memory
   end
+
+  customise_vm config, :nictype1, 'Am79C973'
 
   config.vm.network :hostonly, ip_address
 
