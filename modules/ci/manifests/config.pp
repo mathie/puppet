@@ -27,4 +27,6 @@ class ci::config {
       mode   => '0644',
       source => 'puppet:///modules/ci/gitconfig';
   }
+
+  Class['jenkins::install'] -> Class['ci::config']
 }

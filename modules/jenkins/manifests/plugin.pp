@@ -17,4 +17,6 @@ define jenkins::plugin($version = 0) {
       user    => jenkins,
       notify  => Class['jenkins::service'];
   }
+
+  Class['jenkins::install'] -> Exec["jenkins-install-plugin-${name}"]
 }
