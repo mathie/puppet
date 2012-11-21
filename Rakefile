@@ -4,16 +4,19 @@ module_manifests = FileList['modules/*/manifests/**/*.pp']
 local_manifests  = FileList['manifests/**/*.pp']
 manifests = module_manifests + local_manifests
 
-def bundle_exec(command, options = {})
-  ruby "-S bundle exec #{command}", { :verbose => false }.merge(options)
+def bundle_exec(command, options = {}, &block)
+  ruby "-S bundle exec #{command}", { :verbose => false }.merge(options), &block
 end
 
 def puppet(command, manifests)
   bundle_exec "puppet #{command} #{manifests}"
 end
 
+$error_count = 0
 def puppet_lint(manifest, args = "")
-  bundle_exec "puppet-lint --log-format '%{path}:%{linenumber} - %{kind}: %{message}.' --no-80chars-check --no-documentation-check #{args} #{manifest}"
+  bundle_exec "puppet-lint --log-format '%{path}:%{linenumber} - %{kind}: %{message}.' --no-80chars-check --no-documentation-check #{args} #{manifest}" do |ok, res|
+    $error_count += 1 unless ok
+  end
 end
 
 def puppet_lint_many(manifests, args = "")
@@ -34,7 +37,10 @@ namespace :test do
   end
 
   desc "Run all the manifests through puppet-lint."
-  task :lint => ["lint:modules", "lint:manifests"]
+  task :lint => ["lint:modules", "lint:manifests"] do
+    fail "puppet-lint reported #{$error_count} errors." if $error_count > 0
+  end
+
   namespace :lint do
 
     task :modules => module_manifests do
