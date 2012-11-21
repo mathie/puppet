@@ -15,7 +15,8 @@ class ci::dependencies::live_auction {
     'jenkins':
       superuser => true;
 
-    $db_username: ;
+    $db_username:
+      superuser => true;
   }
 
   postgresql::server::database {
