@@ -19,5 +19,5 @@ define postgresql::server::user($password = undef, $superuser = false) {
   }
 
   Class['postgresql::client'] -> Exec["postgresql-user-${name}"]
-  Class['postgresql::server'] -> Exec["postgresql-user-${name}"]
+  Class['postgresql::server::service'] -> Exec["postgresql-user-${name}"]
 }
