@@ -5,7 +5,8 @@ class ci::plugins {
       'gravatar', 'ansicolor',
       'xvfb',
       'greenballs',
-      'compact-columns', 'dashboard-view', 'project-stats-plugin'
+      'compact-columns', 'dashboard-view', 'project-stats-plugin',
+      'configurationslicing', 'timestamper'
     ]: ;
   }
 }
