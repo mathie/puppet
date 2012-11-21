@@ -10,8 +10,10 @@ class ci::dependencies::live_auction {
 
 
   postgresql::server::user {
-    $db_username:
-      password => $db_password;
+    'jenkins':
+      superuser => true;
+
+    $db_username: ;
   }
 
   postgresql::server::database {
@@ -27,7 +29,6 @@ class ci::dependencies::live_auction {
       rails_env   => $rails_env,
       database    => $database,
       db_host     => $db_host,
-      db_username => $db_username,
-      db_password => $db_password;
+      db_username => $db_username;
   }
 }

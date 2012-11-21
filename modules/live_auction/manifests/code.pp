@@ -1,4 +1,4 @@
-class live_auction::code($database, $db_host, $db_username, $db_password, $rails_env = 'production') {
+class live_auction::code($database, $db_host, $db_username, $db_password = '', $rails_env = 'production') {
   include ssl # For the up to date SSL certificate.
   include libxml::dev, imagemagick::dev, wkhtmltopdf
 
