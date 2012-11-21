@@ -1,7 +1,11 @@
 class ci::config {
-  include jenkins
-
   file {
+    '/var/lib/jenkins':
+      ensure => directory,
+      owner  => jenkins,
+      group  => nogroup,
+      mode   => '0644';
+
     '/var/lib/jenkins/.ssh':
       ensure => directory,
       owner  => jenkins,
@@ -29,6 +33,4 @@ class ci::config {
       mode   => '0644',
       source => 'puppet:///modules/ci/gitconfig';
   }
-
-  Class['jenkins::install'] -> Class['ci::config']
 }
