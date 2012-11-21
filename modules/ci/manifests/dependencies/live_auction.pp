@@ -1,5 +1,7 @@
 class ci::dependencies::live_auction {
   include postgresql::server
+  include redis::server
+  include rabbitmq::server
   include phantomjs
 
   $db_host     = 'localhost'
