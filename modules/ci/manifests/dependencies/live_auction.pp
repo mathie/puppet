@@ -1,5 +1,6 @@
 class ci::dependencies::live_auction {
   include postgresql::server
+  include phantomjs
 
   $db_host     = 'localhost'
   $database    = 'live_auction_development'

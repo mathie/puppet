@@ -1,21 +1,6 @@
 class live_auction::code($database, $db_host, $db_username, $db_password, $rails_env = 'production') {
   include ssl # For the up to date SSL certificate.
-  include libxml::dev, imagemagick::dev
-
-  package {
-    [ 'wkhtmltopdf', 'xvfb', 'ttf-mscorefonts-installer' ]:
-      ensure => present,
-      before => Rails::Deployment['live_auction'];
-  }
-
-  file {
-    '/usr/bin/wkhtmltopdf-xvfb-shim':
-      ensure => present,
-      source => 'puppet:///modules/live_auction/wkhtmltopdf-xvfb-shim',
-      owner  => root,
-      group  => root,
-      mode   => '0755';
-  }
+  include libxml::dev, imagemagick::dev, wkhtmltopdf
 
   rails::deployment {
     'live_auction':
@@ -32,6 +17,7 @@ class live_auction::code($database, $db_host, $db_username, $db_password, $rails
       db_password         => $db_password;
   }
 
-  Class['libxml::dev'] -> Class['live_auction::code']
+  Class['libxml::dev']      -> Class['live_auction::code']
   Class['imagemagick::dev'] -> Class['live_auction::code']
+  Class['wkhtmltopdf']      -> Class['live_auction::code']
 }

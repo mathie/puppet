@@ -1,5 +1,6 @@
 class ci::dependencies::my_ewgeco {
   include mysql::server
+  include phantomjs
 
   mysql::server::database {
     'my_ewgeco_development':
