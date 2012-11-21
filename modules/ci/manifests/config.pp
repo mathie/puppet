@@ -1,4 +1,6 @@
 class ci::config {
+  include jenkins
+
   file {
     '/var/lib/jenkins/.ssh':
       ensure => directory,
