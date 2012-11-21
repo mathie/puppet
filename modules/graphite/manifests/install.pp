@@ -47,7 +47,7 @@ class graphite::install {
 
   exec {
     'symlink-collectd-host-rrds':
-      command => '/bin/bash -c \'cd /var/lib/collectd/rrd && for i in *; do ln -snf /var/lib/collectd/rrd/${i} /opt/graphite/storage/rrd/collectd/${i//./_}; done\'',
+      command => "/bin/bash -c 'cd /var/lib/collectd/rrd && for i in *; do ln -snf /var/lib/collectd/rrd/\${i} /opt/graphite/storage/rrd/collectd/\${i//./_}; done'",
       user    => graphite,
       require => [ File['/var/lib/collectd/rrd'], File['/opt/graphite/storage/rrd/collectd'] ];
   }
