@@ -12,6 +12,13 @@ class ci::config {
       group  => nogroup,
       mode   => '0600',
       source => 'puppet:///modules/ci/jenkins.keys';
+
+    '/var/lib/jenkins/.gitconfig':
+      ensure => present,
+      owner  => jenkins,
+      group  => nogroup,
+      mode   => '0644',
+      source => 'puppet:///modules/ci/gitconfig';
   }
 
   Class['jenkins'] -> Class['ci::config']
