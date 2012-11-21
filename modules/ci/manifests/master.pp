@@ -10,4 +10,6 @@ class ci::master {
     'ci':
       content => template('ci/nginx.conf.erb');
   }
+
+  Class['jenkins'] -> Class['ci::config']
 }

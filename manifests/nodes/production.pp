@@ -3,6 +3,15 @@ node /^ci\./ {
   include ci::master
 }
 
+node /^ci-slave[0-9]+\./ {
+  include standard
+
+  class {
+    'ci::slave':
+      master => "ci.${::domain}";
+  }
+}
+
 node 'temperature' {
   include standard
   include temperature

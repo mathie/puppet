@@ -13,6 +13,13 @@ class ci::config {
       mode   => '0600',
       source => 'puppet:///modules/ci/jenkins.keys';
 
+    '/var/lib/jenkins/.ssh/authorized_keys':
+      ensure => present,
+      owner  => jenkins,
+      group  => nogroup,
+      mode   => '0600',
+      source => 'puppet:///modules/ci/jenkins.keys.pub';
+
     '/var/lib/jenkins/.gitconfig':
       ensure => present,
       owner  => jenkins,
@@ -20,6 +27,4 @@ class ci::config {
       mode   => '0644',
       source => 'puppet:///modules/ci/gitconfig';
   }
-
-  Class['jenkins'] -> Class['ci::config']
 }
