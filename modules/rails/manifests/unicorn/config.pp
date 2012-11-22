@@ -34,7 +34,7 @@ class rails::unicorn::config($app_name, $ruby_version = '1.9', $rails_env = 'pro
     "${app_name}_${::hostname}_${rails_env}_unicorn_socket":
       upstream => "${app_name}_${::hostname}_${rails_env}_unicorn",
       target   => "unix:/u/apps/${app_name}/shared/unicorn.sock",
-      options  => "fail_timeout=0";
+      options  => 'fail_timeout=0';
   }
 
   nginx::vhost {

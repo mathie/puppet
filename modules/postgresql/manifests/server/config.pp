@@ -2,7 +2,7 @@ class postgresql::server::config {
   exec {
     'postgresql-drop-cluster':
       command => '/usr/bin/pg_dropcluster --stop 9.1 main',
-      onlyif  => "/usr/bin/psql -c '\\l+' |awk '/template0/ { print \$5 }' |grep 'SQL_ASCII'",
+      onlyif  => '/usr/bin/psql -c \'\\l+\' |awk \'/template0/ { print \$5 }\' |grep SQL_ASCII',
       user    => postgres,
       notify  => Exec['postgresql-create-cluster'];
 

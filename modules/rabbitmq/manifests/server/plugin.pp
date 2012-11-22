@@ -4,7 +4,7 @@ define rabbitmq::server::plugin($ensure = 'present') {
       "rabbitmq-enable-plugin-${name}":
         command     => "/usr/lib/rabbitmq/bin/rabbitmq-plugins enable ${name}",
         unless      => "/usr/lib/rabbitmq/bin/rabbitmq-plugins list ${name} | /bin/grep '^.E. ${name} '",
-        environment => "HOME=/root",
+        environment => 'HOME=/root',
         notify      => Class['rabbitmq::server::service'];
     }
   } else {
@@ -12,7 +12,7 @@ define rabbitmq::server::plugin($ensure = 'present') {
       "rabbitmq-disable-plugin-${name}":
         command     => "/usr/lib/rabbitmq/bin/rabbitmq-plugins disable ${name}",
         unless      => "/usr/lib/rabbitmq/bin/rabbitmq-plugins list ${name} | /bin/grep '^. . ${name} '",
-        environment => "HOME=/root",
+        environment => 'HOME=/root',
         notify      => Class['rabbitmq::server::service'];
     }
   }

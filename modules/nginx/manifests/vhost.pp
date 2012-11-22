@@ -1,5 +1,10 @@
-define nginx::vhost($ensure = 'present', $content) {
+define nginx::vhost($content, $ensure = 'present') {
   include nginx
+
+  $enabled = $ensure ? {
+    'present' => 'link',
+    default   => 'absent',
+  }
 
   file {
     "/etc/nginx/sites-available/${name}.conf":
@@ -12,10 +17,7 @@ define nginx::vhost($ensure = 'present', $content) {
       notify  => Class['nginx::service'];
 
     "/etc/nginx/sites-enabled/${name}.conf":
-      ensure  => $ensure ? {
-        'present' => 'link',
-        default   => 'absent',
-      },
+      ensure  => $enabled,
       owner   => root,
       group   => root,
       mode    => '0644',
