@@ -1,9 +1,5 @@
-class ci::slave($master) {
-  class {
-    'jenkins::slave':
-      master => $master;
-  }
-
+class ci::slave {
+  include jenkins::slave
   include ci::config
   include ci::dependencies
 

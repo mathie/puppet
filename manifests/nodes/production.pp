@@ -5,11 +5,7 @@ node /^ci\./ {
 
 node /^ci-slave[0-9]+\./ {
   include standard
-
-  class {
-    'ci::slave':
-      master => "ci.${::domain}";
-  }
+  include ci::slave
 }
 
 node 'temperature' {
