@@ -22,6 +22,28 @@ class gitlab($database, $db_host, $db_username, $db_password = '', $rails_env = 
       bundler_without => 'development test postgres sqlite';
   }
 
+  rails::unicorn {
+    'gitlab':
+  }
+
+  exec {
+    'create-gitlab-schema':
+      command     => '/usr/bin/ruby1.9.1 -S bundle exec rake gitlab:app:setup',
+      environment => [
+        'RAILS_ENV=production',
+        'HOME=/home/gitlab'
+      ],
+      cwd         => '/u/apps/gitlab/current',
+      refreshonly => true,
+      require     => [
+        Mysql::Server::Database[$database],
+        File['/u/apps/gitlab/current/config/database.yml'],
+        File['/u/apps/gitlab/current/config/gitlab.yml']
+      ];
+  }
+
+  Mysql::Server::Database[$database] ~> Exec['create-gitlab-schema']
+
   file {
     '/u/apps/gitlab/shared/config/gitlab.yml':
       ensure  => present,
@@ -38,7 +60,11 @@ class gitlab($database, $db_host, $db_username, $db_password = '', $rails_env = 
       mode    => '0644',
       target  => '/u/apps/gitlab/shared/config/gitlab.yml',
       require => [ File['/u/apps/gitlab/current'], File['/u/apps/gitlab/shared/config/gitlab.yml'] ];
+  }
 
+  File['/u/apps/gitlab/current/config/gitlab.yml'] -> Exec['asset-precompile-gitlab']
+
+  file {
     '/home/gitlab/.gitconfig':
       ensure  => present,
       owner   => gitlab,
@@ -67,8 +93,6 @@ class gitlab($database, $db_host, $db_username, $db_password = '', $rails_env = 
       unless  => '/usr/bin/groups gitlab |grep \'git\>\'',
       require => [ User['gitlab'], Group['git'] ];
   }
-
-  File['/u/apps/gitlab/current/config/gitlab.yml'] -> Exec['asset-precompile-gitlab']
 
   Class['libxml::dev'] -> Class['gitlab']
   Class['gitolite']    -> Class['gitlab']
