@@ -4,8 +4,9 @@ class rails::unicorn::config($app_name, $ruby_version = '1.9', $rails_env = 'pro
     '1.9' => '/usr/bin/ruby1.9.1',
   }
 
-  $bundler_command = "${ruby_command} -S bundle"
-  $bundle_exec     = "${bundler_command} exec"
+  $bundler_command  = "${ruby_command} -S bundle"
+  $bundle_exec      = "${bundler_command} exec"
+  $bundle_exec_args = '-S bundle exec'
 
   File {
     owner   => root,

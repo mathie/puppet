@@ -1,10 +1,14 @@
 start on starting <%= @app_name %>
 stop on stopping <%= @app_name %>
 respawn
+
 env RAILS_ENV="<%= @rails_env %>"
 export RAILS_ENV
-chdir /u/apps/<%= @app_name %>/current
-setuid <%= @app_name %>
-setgid <%= @app_name %>
 
-exec <%= @bundle_exec %> unicorn_rails -c /etc/unicorn/<%= @app_name %>.rb
+chdir /u/apps/<%= @app_name %>/current
+
+exec start-stop-daemon --exec <%= @ruby_command %> \
+  --user <%= @app_name %> --chuid <%= @app_name %> \
+  --pidfile /u/apps/<%= @app_name %>/shared/pids/unicorn.pid \
+  --chdir /u/apps/<%= @app_name %>/current \
+  --start -- <%= @bundle_exec_args %> unicorn_rails -c /etc/unicorn/<%= @app_name %>.rb
