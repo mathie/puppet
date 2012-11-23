@@ -16,10 +16,10 @@ omniauth:
   enabled: false
 
 git_host:
-  admin_uri: git@localhost:gitolite-admin
+  admin_uri: git@<%= @fqdn %>:gitolite-admin
   base_path: /home/git/repositories/
   hooks_path: /home/git/.gitolite/hooks/
-  gitolite_admin_key: gitlab
+  gitolite_admin_key: id_rsa
   git_user: git
   upload_pack: true
   receive_pack: true

@@ -22,7 +22,14 @@ class gitlab($database, $db_host, $db_username, $db_password = '', $rails_env = 
       bundler_without => 'development test postgres sqlite';
   }
 
+  # We need gitolite to generate it's ssh key so we can use it.
+  Exec['gitolite-ssh-keygen'] -> Rails::Deployment['gitlab']
+
   rails::unicorn {
+    'gitlab':
+  }
+
+  rails::resque {
     'gitlab':
   }
 
