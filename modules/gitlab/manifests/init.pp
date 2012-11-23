@@ -1,4 +1,4 @@
-class gitlab($database, $db_host, $db_username, $db_password = '', $rails_env = 'production') {
+class gitlab($database, $db_username, $db_password = '', $rails_env = 'production') {
   include libxml::dev, gitolite, pygments
 
   package {
@@ -16,7 +16,7 @@ class gitlab($database, $db_host, $db_username, $db_password = '', $rails_env = 
       ssh_private_key => '/home/git/.ssh/id_rsa',
       database        => $database,
       db_type         => 'mysql2',
-      db_host         => $db_host,
+      db_host         => 'localhost',
       db_username     => $db_username,
       db_password     => $db_password,
       bundler_without => 'development test postgres sqlite';

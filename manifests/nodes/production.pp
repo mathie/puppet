@@ -21,7 +21,6 @@ node /^git\./ {
 
   class {
     'gitlab':
-      db_host     => 'localhost',
       database    => 'gitlab',
       db_username => 'gitlab',
       db_password => 'Useebae9';
