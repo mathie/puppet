@@ -33,6 +33,9 @@ class gitlab($database, $db_username, $db_password = '', $rails_env = 'productio
     'gitlab':
   }
 
+  Rails::Deployment['gitlab'] -> Rails::Unicorn['gitlab']
+  Rails::Deployment['gitlab'] -> Rails::Resque['gitlab']
+
   exec {
     'create-gitlab-schema':
       command     => '/usr/bin/ruby1.9.1 -S bundle exec rake gitlab:app:setup',
@@ -50,6 +53,7 @@ class gitlab($database, $db_username, $db_password = '', $rails_env = 'productio
   }
 
   Mysql::Server::Database[$database] ~> Exec['create-gitlab-schema']
+  Exec['install-gitlab-gem-bundle'] -> Exec['create-gitlab-schema']
 
   file {
     '/u/apps/gitlab/shared/config/gitlab.yml':

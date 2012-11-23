@@ -89,6 +89,6 @@ class gitolite::install {
         'HOME=/home/git',
         'PATH=/home/git/bin:/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games'
       ],
-      require     => [ Vcsrepo['gitolite'], Exec['gitolite-ssh-keygen'] ];
+      require     => [ Exec['gitolite-install'], Exec['gitolite-ssh-keygen'] ];
   }
 }
