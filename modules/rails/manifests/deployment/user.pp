@@ -1,4 +1,9 @@
-define rails::deployment::user($uid, $comment, $ssh_private_key, $ssh_authorized_keys) {
+define rails::deployment::user(
+  $uid,
+  $comment,
+  $ssh_private_key     = undef,
+  $ssh_authorized_keys = undef
+) {
   $username = $name
 
   group {
@@ -39,18 +44,30 @@ define rails::deployment::user($uid, $comment, $ssh_private_key, $ssh_authorized
   file {
     "/home/${username}":
       ensure  => directory;
+  }
 
-    "/home/${username}/.ssh":
-      ensure => directory;
+  if $ssh_private_key or $ssh_authorized_keys {
+    file {
+      "/home/${username}/.ssh":
+        ensure => directory;
+    }
 
-    "${username}-ssh-private-key":
-      ensure => present,
-      path   => "/home/${username}/.ssh/id_rsa",
-      source => $ssh_private_key;
+    if $ssh_private_key {
+      file {
+        "${username}-ssh-private-key":
+          ensure => present,
+          path   => "/home/${username}/.ssh/id_rsa",
+          source => $ssh_private_key;
+      }
+    }
 
-    "${username}-ssh-authorized-keys":
-      ensure => present,
-      path   => "/home/${username}/.ssh/authorized_keys",
-      source => $ssh_authorized_keys;
+    if $ssh_authorized_keys {
+      file {
+        "${username}-ssh-authorized-keys":
+          ensure => present,
+          path   => "/home/${username}/.ssh/authorized_keys",
+          source => $ssh_authorized_keys;
+      }
+    }
   }
 }

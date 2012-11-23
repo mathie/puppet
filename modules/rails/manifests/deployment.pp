@@ -1,19 +1,19 @@
 define rails::deployment(
   $uid,
   $git_repo,
-  $ssh_private_key,
-  $ssh_authorized_keys,
-  $ruby_version      = '1.9',
-  $rails_env         = 'production',
-  $git_branch        = 'master',
-  $comment           = "${name} app server",
-  $db_type           = 'mysql2',
-  $database          = $name,
-  $db_host           = 'localhost',
-  $db_username       = $name,
-  $db_password       = '',
-  $precompile_assets = true,
-  $asset_compiler    = 'nodejs'
+  $ssh_private_key     = undef,
+  $ssh_authorized_keys = undef,
+  $ruby_version        = '1.9',
+  $rails_env           = 'production',
+  $git_branch          = 'master',
+  $comment             = "${name} app server",
+  $db_type             = 'mysql2',
+  $database            = $name,
+  $db_host             = 'localhost',
+  $db_username         = $name,
+  $db_password         = '',
+  $precompile_assets   = true,
+  $asset_compiler      = 'nodejs'
 ) {
   $app_name = $name
 

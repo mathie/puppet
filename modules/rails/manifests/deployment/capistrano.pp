@@ -118,7 +118,11 @@ define rails::deployment::capistrano(
       source   => $git_repo,
       provider => 'git',
       user     => $username,
-      require  => [ File[$shared_path], File["${app_name}-ssh-private-key"], Class['git'] ];
+      require  => [ File[$shared_path], Class['git'] ];
+  }
+
+  if defined(File["${app_name}-ssh-private-key"]) {
+    File["${app_name}-ssh-private-key"] -> Vcsrepo["${app_name}-repo-cached-copy"]
   }
 
   exec {
