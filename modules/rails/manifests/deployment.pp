@@ -13,7 +13,8 @@ define rails::deployment(
   $db_username         = $name,
   $db_password         = '',
   $precompile_assets   = true,
-  $asset_compiler      = 'nodejs'
+  $asset_compiler      = 'nodejs',
+  $bundler_without     = 'development test'
 ) {
   $app_name = $name
 
@@ -37,7 +38,8 @@ define rails::deployment(
       db_username       => $db_username,
       db_password       => $db_password,
       precompile_assets => $precompile_assets,
-      asset_compiler    => $asset_compiler;
+      asset_compiler    => $asset_compiler,
+      bundler_without   => $bundler_without;
   }
 
   Rails::Deployment::User[$app_name] -> Rails::Deployment::Capistrano[$app_name]

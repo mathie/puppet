@@ -9,7 +9,8 @@ define rails::deployment::capistrano(
   $db_username       = $name,
   $db_password       = '',
   $precompile_assets = true,
-  $asset_compiler    = 'nodejs'
+  $asset_compiler    = 'nodejs',
+  $bundler_without   = 'development test'
 ) {
   include git
 
@@ -202,7 +203,7 @@ define rails::deployment::capistrano(
       require => [ File[$current_path], Package['git'] ];
 
     "install-${app_name}-gem-bundle":
-      command => "${bundler_command} --deployment --quiet --without development test --path ${shared_bundler_install_path}",
+      command => "${bundler_command} --deployment --quiet --without ${bundler_without} --path ${shared_bundler_install_path}",
       timeout => 0, # May take a stupendous amount of time, it appears.
       user    => $username,
       cwd     => $cached_copy,
