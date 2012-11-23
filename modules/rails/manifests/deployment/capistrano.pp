@@ -203,12 +203,15 @@ define rails::deployment::capistrano(
       require => [ File[$current_path], Package['git'] ];
 
     "install-${app_name}-gem-bundle":
-      command => "${bundler_command} --deployment --quiet --without ${bundler_without} --path ${shared_bundler_install_path}",
-      timeout => 0, # May take a stupendous amount of time, it appears.
-      user    => $username,
-      cwd     => $cached_copy,
-      require => [ Vcsrepo["${app_name}-repo-cached-copy"], Package['bundler'], Class[$db_dev_install] ];
+      command     => "${bundler_command} --deployment --quiet --without ${bundler_without} --path ${shared_bundler_install_path}",
+      timeout     => 0, # May take a stupendous amount of time, it appears.
+      user        => $username,
+      cwd         => $cached_copy,
+      refreshonly => true,
+      require     => [ Vcsrepo["${app_name}-repo-cached-copy"], Package['bundler'], Class[$db_dev_install] ];
   }
+
+  Vcsrepo["${app_name}-repo-cached-copy"] ~> Exec["install-${app_name}-gem-bundle"]
 
   if $precompile_assets {
     include $asset_compiler
@@ -231,11 +234,12 @@ define rails::deployment::capistrano(
       "asset-precompile-${app_name}":
         command     => "${rake} assets:precompile",
         user        => $username,
-        creates     => "${current_assets_path}/manifest-default.json",
+        creates     => "${current_assets_path}/manifest.yml",
         cwd         => $current_path,
         environment => "RAILS_ENV=${rails_env}",
-        require     => [ Exec["install-${app_name}-gem-bundle"], File[$current_assets_path], Class[$asset_compiler] ];
+        require     => [ File[$current_assets_path], Class[$asset_compiler] ];
     }
+    Exec["install-${app_name}-gem-bundle"] -> Exec["asset-precompile-${app_name}"]
   }
 
   if $db_type {
