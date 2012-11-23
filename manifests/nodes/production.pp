@@ -10,7 +10,22 @@ node /^ci-slave[0-9]+\./ {
 
 node /^git\./ {
   include standard
-  include gitolite
+  include mysql::server
+  include redis::server
+
+  mysql::server::database {
+    'gitlab':
+      user     => 'gitlab',
+      password => 'Useebae9';
+  }
+
+  class {
+    'gitlab':
+      db_host     => 'localhost',
+      database    => 'gitlab',
+      db_username => 'gitlab',
+      db_password => 'Useebae9';
+  }
 }
 
 node 'temperature' {
