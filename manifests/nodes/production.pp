@@ -8,6 +8,11 @@ node /^ci-slave[0-9]+\./ {
   include ci::slave
 }
 
+node /^git\./ {
+  include standard
+  include gitolite
+}
+
 node 'temperature' {
   include standard
   include temperature
