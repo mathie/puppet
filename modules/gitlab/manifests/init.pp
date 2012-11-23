@@ -44,6 +44,7 @@ class gitlab($database, $db_username, $db_password = '', $rails_env = 'productio
         'HOME=/home/gitlab'
       ],
       cwd         => '/u/apps/gitlab/current',
+      user        => gitlab,
       refreshonly => true,
       require     => [
         Mysql::Server::Database[$database],
