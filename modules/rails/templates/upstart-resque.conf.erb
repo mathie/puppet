@@ -11,8 +11,10 @@ export QUEUE
 env COUNT=2
 export COUNT
 
-setuid <%= @app_name %>
-setgid <%= @app_name %>
 chdir /u/apps/<%= @app_name %>/current
 
-exec <%= @bundle_exec %> rake environment resque:work
+exec start-stop-daemon --exec <%= @ruby_command %> \
+  --user <%= @app_name %> --chuid <%= @app_name %> \
+  --pidfile /u/apps/<%= @app_name %>/shared/pids/resque.pid \
+  --chdir /u/apps/<%= @app_name %>/current \
+  --start -- <%= @bundle_exec_args %> rake environment resque:work

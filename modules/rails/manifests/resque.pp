@@ -7,8 +7,9 @@ define rails::resque($ruby_version = '1.9', $rails_env = 'production') {
 
   }
 
-  $bundler_command = "${ruby_command} -S bundle"
-  $bundle_exec     = "${bundler_command} exec"
+  $bundler_command  = "${ruby_command} -S bundle"
+  $bundle_exec      = "${bundler_command} exec"
+  $bundle_exec_args = "-S bundle exec"
 
   class {
     'rails::resque::install':
