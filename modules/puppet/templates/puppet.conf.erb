@@ -15,5 +15,9 @@
   reporturl            = http://puppet:8084/reports/upload
 
 [agent]
+<% if @domain == 'vagrant.vm' %>
   runinterval = 60
+<% else %>
+  runinterval = 300
+<% end %>
   report      = true
