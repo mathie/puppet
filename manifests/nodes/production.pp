@@ -27,6 +27,11 @@ node /^git\./ {
   }
 }
 
+node /^hubot\./ {
+  include standard
+  include hubot
+}
+
 node 'temperature' {
   include standard
   include temperature
