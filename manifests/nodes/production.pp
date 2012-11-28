@@ -27,6 +27,11 @@ node /^git\./ {
   }
 }
 
+node /^errors\./ {
+  include standard
+  include mongodb::server
+}
+
 node /^hubot\./ {
   include standard
   include hubot
