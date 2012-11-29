@@ -9,9 +9,5 @@ class puppet::agent::config {
     mode   => '0644',
   }
 
-  if $::bootstrapping {
-    Class['puppet::config'] -> Class['puppet::agent::service']
-  } else {
-    Class['puppet::config'] ~> Class['puppet::agent::service']
-  }
+  Class['puppet::config'] -> Class['puppet::agent::service']
 }

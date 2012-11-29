@@ -85,5 +85,5 @@ class puppet::master::config($ssh_key, $git_repo) {
     }
   }
 
-  Class['puppet::config'] ~> Class['puppet::master::service']
+  Class['puppet::config'] -> Class['puppet::master::service']
 }
