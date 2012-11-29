@@ -1,5 +1,8 @@
 server {
   listen 80 default;
+  <% if @domain == 'vagrant.vm' %>
+    listen 8090;
+  <% end %>
 
   root /u/apps/<%= @app_name %>/current/public;
 
