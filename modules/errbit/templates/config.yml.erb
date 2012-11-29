@@ -1,0 +1,31 @@
+host:                              <%= @fqdn %>
+enforce_ssl:                       false
+email_from:                        jenkins@<%= @domain %>
+per_app_email_at_notices:          false
+email_at_notices:                  [1, 10, 100]
+confirm_resolve_err:               true
+user_has_username:                 false
+allow_comments_with_issue_tracker: true
+use_gravatar:                      true
+gravatar_default:                  identicon
+
+deployment:
+  hosts:
+    web: <%= @fqdn %>
+    app: <%= @fqdn %>
+    db:  <%= @fqdn %>
+  repository: http://github.com/errbit/errbit.git
+  user:       errbit
+  deploy_to:  /u/apps/errbit
+
+github_authentication: true
+
+<% if @domain == 'vagrant.vm' %>
+github_client_id:    '77e8cc51759dad1cfdc5'
+github_secret:       'fc5b63370eb013a241a774207f258da4a043c3d3'
+github_access_scope: ['repo']
+<% else %>
+github_client_id:    '705a9be1415f4e85aa1a'
+github_secret:       'ab9a7cab63454c9f2d0d00d734ab6f29e6284fc8'
+github_access_scope: ['repo']
+<% end %>
