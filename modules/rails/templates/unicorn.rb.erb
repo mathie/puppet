@@ -5,9 +5,13 @@ listen '/u/apps/<%= @app_name %>/shared/unicorn.sock', :backlog => 2048
 pid '/u/apps/<%= @app_name %>/shared/pids/unicorn.pid'
 
 before_fork do |server, worker|
+  if defined?(ActiveRecord)
     ActiveRecord::Base.clear_all_connections!
+  end
 end
 
 after_fork do |server, worker|
+  if defined?(ActiveRecord)
     ActiveRecord::Base.establish_connection
+  end
 end
