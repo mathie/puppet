@@ -58,4 +58,34 @@ class puppet::dashboard::config {
     'puppet-dashboard':
       content => template('puppet/dashboard/nginx.conf.erb');
   }
+
+  cron {
+    'puppet-dashboard-report-cleanup':
+      command     => 'cd /usr/share/puppet-dashboard && /usr/bin/ruby1.8 -S rake reports:prune upto=1 unit=mon >> /usr/share/puppet-dashboard/log/cron.log 2>&1',
+      user        => www-data,
+      monthday    => 11,
+      hour        => 3,
+      minute      => 15,
+      environment => [
+        'RAILS_ENV=production',
+        'PATH=/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games',
+      ];
+
+    'puppet-dashboard-db-optimize':
+      command     => 'cd /usr/share/puppet-dashboard && /usr/bin/ruby1.8 -S rake db:raw:optimize >> /usr/share/puppet-dashboard/log/cron.log 2>&1',
+      user        => www-data,
+      monthday    => 12,
+      hour        => 3,
+      minute      => 15,
+      environment => [
+        'RAILS_ENV=production',
+        'PATH=/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games',
+      ];
+  }
+
+  logrotate::log_file {
+    'puppet-dashboard':
+      log_file => '/usr/share/puppet-dashboard/log/*.log',
+      days     => 28;
+  }
 }
