@@ -2,7 +2,7 @@ class pygments {
   include python::pip
 
   package {
-    'pygments':
+    'Pygments':
       ensure   => installed,
       provider => 'pip';
   }
