@@ -34,4 +34,10 @@ class mysql::server::config {
       source => 'puppet:///modules/mysql/server/my.cnf',
       mode   => '0644';
   }
+
+  logrotate::log_file {
+    'mysql-slow-query-log':
+      log_file => '/var/lib/mysql/mysql-slow.log',
+      days     => 28;
+  }
 }
