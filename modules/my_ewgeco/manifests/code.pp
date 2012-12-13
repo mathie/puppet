@@ -17,6 +17,6 @@ class my_ewgeco::code($database, $db_host, $db_username, $db_password, $rails_en
       db_password         => $db_password;
   }
 
-  Class['libxml::dev'] -> Class['live_auction::code']
-  Class['imagemagick::dev'] -> Class['live_auction::code']
+  Class['libxml::dev']      -> Class['my_ewgeco::code']
+  Class['imagemagick::dev'] -> Class['my_ewgeco::code']
 }
