@@ -6,7 +6,8 @@ class ci::plugins {
       'xvfb',
       'greenballs',
       'compact-columns', 'dashboard-view', 'project-stats-plugin',
-      'configurationslicing', 'timestamper'
+      'configurationslicing', 'timestamper',
+      'global-build-stats'
     ]: ;
   }
 }
