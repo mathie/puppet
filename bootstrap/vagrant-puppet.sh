@@ -26,7 +26,7 @@ if ! grep 'puppet' /etc/hosts >/dev/null 2>&1; then
 fi
 
 apt-get update -qq
-apt-get autoremove --purge -qq -y puppet-common puppet
+apt-get autoremove -qq -y puppet-common puppet
 apt-get dist-upgrade -qq -y
 
 # Easiest way to add PPA repos, along with their PGP keys

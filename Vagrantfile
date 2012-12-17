@@ -35,6 +35,10 @@ def bootstrap(config, hostname, ip_address, options = {})
     end
   end
 
+  config.vm.share_folder 'graphs',
+    '/var/lib/puppet/state/graphs',
+    "graphs/#{hostname}", :create => true
+
   config.vm.provision :shell do |shell|
     shell.path = 'bootstrap/vagrant-puppet.sh'
     shell.args = "#{hostname} vagrant.vm unused #{ip_address($puppetmaster_ip)}"
