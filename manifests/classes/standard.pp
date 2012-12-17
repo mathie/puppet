@@ -6,7 +6,8 @@ class standard {
       stage => first;
 
     'firewall':
-      stage => first;
+      enabled => false,
+      stage   => first;
   }
 
   if $::hostname != 'puppet' {
