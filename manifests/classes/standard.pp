@@ -6,7 +6,7 @@ class standard {
       stage => first;
 
     'firewall':
-      enabled => true,
+      enabled => false,
       stage   => first;
   }
 
