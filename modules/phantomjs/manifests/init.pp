@@ -15,15 +15,16 @@ class phantomjs {
       creates => $tarball;
 
     'unpack-phantomjs-binary':
-      command  => "/bin/tar jxf ${tarball}",
-      cwd      => '/opt',
-      creates  => '/opt/phantomjs-1.8.0-linux-x86_64',
-      requires => Exec['download-phantomjs-binary'];
+      command => "/bin/tar jxf ${tarball}",
+      cwd     => '/opt',
+      creates => '/opt/phantomjs-1.8.0-linux-x86_64',
+      require => Exec['download-phantomjs-binary'];
   }
 
   file {
     '/usr/local/bin/phantomjs':
-      ensure => link,
-      target => '/opt/phantomjs-1.8.0-linux-x86_64/bin/phantomjs';
+      ensure  => link,
+      target  => '/opt/phantomjs-1.8.0-linux-x86_64/bin/phantomjs',
+      require => Exec['unpack-phantomjs-binary'];
   }
 }
