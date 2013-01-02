@@ -2,6 +2,14 @@ class ci::dependencies::my_ewgeco {
   include mysql::server
   include phantomjs
 
+  # Need to install this as a system package because it depends upon
+  # ruby_core_source which insists on writing to /usr/include/ruby-1.9.1.
+  package {
+    'perftools.rb':
+      ensure   => present,
+      provider => 'gem19';
+  }
+
   mysql::server::database {
     'my_ewgeco_development':
       user     => 'root',
