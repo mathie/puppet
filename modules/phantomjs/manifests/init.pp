@@ -1,7 +1,7 @@
 class phantomjs {
   include xvfb
 
-  $version      = '1.8.0'
+  $version      = '1.8.1'
   $basename     = "phantomjs-${version}-linux-x86_64"
   $tarball      = "${basename}.tar.bz2"
   $tarball_path = "/opt/${tarball}"
