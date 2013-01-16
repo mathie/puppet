@@ -1,8 +1,12 @@
 class phantomjs {
   include xvfb
 
-  $url = 'http://phantomjs.googlecode.com/files/phantomjs-1.8.0-linux-x86_64.tar.bz2'
-  $tarball = '/opt/phantomjs-1.8.0-linux-x86_64.tar.bz2'
+  $version      = '1.8.0'
+  $basename     = "phantomjs-${version}-linux-x86_64"
+  $tarball      = "${basename}.tar.bz2"
+  $tarball_path = "/opt/${tarball}"
+  $url          = "http://phantomjs.googlecode.com/files/${tarball}"
+  $destdir      = "/opt/${basename}"
 
   package {
     'phantomjs':
@@ -11,20 +15,20 @@ class phantomjs {
 
   exec {
     'download-phantomjs-binary':
-      command => "/usr/bin/curl -L -o ${tarball} ${url}",
+      command => "/usr/bin/curl -L -o ${tarball_path} ${url}",
       creates => $tarball;
 
     'unpack-phantomjs-binary':
-      command => "/bin/tar jxf ${tarball}",
+      command => "/bin/tar jxf ${tarball_path}",
       cwd     => '/opt',
-      creates => '/opt/phantomjs-1.8.0-linux-x86_64',
+      creates => $destdir,
       require => Exec['download-phantomjs-binary'];
   }
 
   file {
     '/usr/local/bin/phantomjs':
       ensure  => link,
-      target  => '/opt/phantomjs-1.8.0-linux-x86_64/bin/phantomjs',
+      target  => "${destdir}/bin/phantomjs",
       require => Exec['unpack-phantomjs-binary'];
   }
 }
