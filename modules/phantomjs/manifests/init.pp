@@ -16,7 +16,7 @@ class phantomjs {
   exec {
     'download-phantomjs-binary':
       command => "/usr/bin/curl -L -o ${tarball_path} ${url}",
-      creates => $tarball;
+      creates => $tarball_path;
 
     'unpack-phantomjs-binary':
       command => "/bin/tar jxf ${tarball_path}",
