@@ -1,0 +1,3 @@
+node /^gamevial/ {
+  include standard
+}
