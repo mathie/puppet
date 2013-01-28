@@ -1,4 +1,4 @@
-class mysql::server {
+class mysql::server($root_password = undef) {
   include mysql::client
 
   include mysql::server::install, mysql::server::config, mysql::server::service

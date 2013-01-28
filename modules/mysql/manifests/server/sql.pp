@@ -1,6 +1,6 @@
-define mysql::server::sql($sql, $user = 'root', $password = undef, $unless = undef) {
+define mysql::server::sql($sql, $user = 'root', $password = $mysql::server::root_password, $unless = undef) {
   if $password {
-    $password_arg = "-p${password}"
+    $password_arg = " -p${password}"
   } else {
     $password_arg = ''
   }
