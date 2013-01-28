@@ -1,4 +1,4 @@
-define postfix::config::fragment($key, $value, $order = 50) {
+define postfix::config::fragment($value, $key = $name, $order = 50) {
   concat::fragment {
     "postfix-config-fragment-${name}":
       file    => 'postfix-main-cf',
