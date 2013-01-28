@@ -4,4 +4,4 @@ NAME=saslauthd
 
 MECHANISMS="pam"
 THREADS=2
-OPTIONS="-c -m /var/run/saslauthd"
+OPTIONS="-c -m /var/spool/postfix/var/run/saslauthd"

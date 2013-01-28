@@ -1,4 +1,4 @@
-class postfix::config($mail_domain = $domain, $root_email = "root@${mail_domain}") {
+class postfix::config($mail_domain = $domain, $root_email = "root@${mail_domain}", $destination = undef) {
   file {
     '/etc/mailname':
       ensure  => present,
@@ -42,5 +42,33 @@ class postfix::config($mail_domain = $domain, $root_email = "root@${mail_domain}
   postfix::alias {
     [ 'postmaster', 'root' ]:
       destination => $root_email;
+  }
+
+  concat::file {
+    'postfix-virtual':
+      path   => '/etc/postfix/virtual',
+      owner  => root,
+      group  => root,
+      mode   => '0644',
+      notify => Exec['postfix-update-virtual-db'];
+  }
+
+  exec {
+    'postfix-update-virtual-db':
+      command     => '/usr/sbin/postmap virtual',
+      refreshonly => true;
+  }
+
+  postfix::config::fragment {
+    'virtual_alias_maps':
+      value => 'hash:/etc/postfix/virtual';
+  }
+
+  postfix::config::fragment {
+    'home_mailbox':
+      value => 'Maildir/';
+
+    'mailbox_size_limit':
+      value => '0';
   }
 }

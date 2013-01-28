@@ -4,11 +4,13 @@ class postfix::satellite(
   $root_email  = "root@${mail_domain}",
   $username    = undef,
   $password    = undef,
-  $port        = 587
+  $port        = 587,
+  $destination = undef
 ) {
   class {
     'postfix':
       mail_domain => $mail_domain,
+      destination => $destination,
       root_email  => $root_email;
   }
 
