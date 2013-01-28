@@ -9,12 +9,10 @@ class postfix::dkim($mail_domain = $domain, $root_email = "root@${mail_domain}")
   }
 
   postfix::config::fragment {
-    'smtpd-milters':
-      key   => 'smtpd_milters',
+    'smtpd_milters':
       value => 'inet:127.0.0.1:8891';
 
-    'non-smtpd-milters':
-      key   => 'non_smtpd_milters',
+    'non_smtpd_milters':
       value => 'inet:127.0.0.1:8891';
   }
 }
