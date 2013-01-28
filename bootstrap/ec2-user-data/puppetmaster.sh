@@ -44,4 +44,4 @@ ssh-keyscan github.com >> ~/.ssh/known_hosts
 git clone git@github.com:rubaidh/puppet.git
 
 cd puppet
-puppet apply --modulepath=`pwd`/modules:`pwd`/rubaidh-modules --manifestdir=`pwd`/manifests `pwd`/manifests/bootstrap/puppetmaster.pp
+puppet apply --modulepath=`pwd`/modules --manifestdir=`pwd`/manifests `pwd`/manifests/bootstrap/puppetmaster.pp
