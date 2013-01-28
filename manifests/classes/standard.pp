@@ -2,6 +2,10 @@ class standard {
   include bootstrap_common
 
   class {
+    'dhcp::client':
+      stage     => first,
+      interface => 'eth0';
+
     'network::hosts':
       stage => first;
 
