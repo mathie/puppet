@@ -55,7 +55,8 @@ class postfix::config($mail_domain = $domain, $root_email = "root@${mail_domain}
 
   exec {
     'postfix-update-virtual-db':
-      command     => '/usr/sbin/postmap virtual',
+      command     => '/usr/sbin/postmap /etc/postfix/virtual',
+      cwd         => '/etc/postfix',
       refreshonly => true;
   }
 
