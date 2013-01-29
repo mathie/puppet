@@ -1,5 +1,4 @@
 class apache::php_fastcgi {
-  include apache::suexec
   include php::cgi
 
   apache::module {
@@ -8,7 +7,6 @@ class apache::php_fastcgi {
 
   class {
     'apache::fastcgi':
-      suexec => true;
   }
 
   file {
@@ -17,7 +15,8 @@ class apache::php_fastcgi {
       source => 'puppet:///modules/apache/php_fastcgi.conf',
       owner  => root,
       group  => root,
-      mode   => '0644';
+      mode   => '0644',
+      notify => Class['apache::service'];
 
     '/var/www/fcgi-bin':
       ensure => directory,

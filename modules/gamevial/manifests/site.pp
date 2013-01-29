@@ -1,4 +1,6 @@
 define gamevial::site($apache_vhost_name, $uid, $default = false) {
+  $username = $name
+
   users::account {
     $name:
       uid                 => $uid,
