@@ -56,6 +56,7 @@ define users::account(
   file {
     "/home/${username}":
       ensure  => directory,
+      mode    => '0755',
       require => User[$username];
   }
 
