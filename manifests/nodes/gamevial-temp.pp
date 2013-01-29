@@ -83,13 +83,7 @@ node /^gamevial/ {
       root_password => 'Eepeew4iEsohx9ou';
   }
 
-  mysql::server::database {
-    'gamevial':
-      password => '5hit3time2';
-
-    'poogames':
-      password => 'weewi';
-  }
-
   include dovecot::pop3
+
+  include gamevial::sites
 }
