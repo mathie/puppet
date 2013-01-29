@@ -1,0 +1,7 @@
+<VirtualHost *:80>
+  ServerName <%= @apache_vhost_name %>
+  ServerAlias *.<%= @apache_vhost_name %>
+  DocumentRoot /home/<%= @username %>/public_html
+  ErrorLog /var/log/apache2/<%= @apache_vhost_name %>_error_log
+  CustomLog /var/log/apache2/<%= @apache_vhost_name %>_access_log combined
+</VirtualHost>
