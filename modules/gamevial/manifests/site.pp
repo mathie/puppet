@@ -1,4 +1,4 @@
-define gamevial::site($apache_vhost_name, $uid) {
+define gamevial::site($apache_vhost_name, $uid, $default = false) {
   users::account {
     $name:
       uid                 => $uid,
@@ -13,10 +13,24 @@ define gamevial::site($apache_vhost_name, $uid) {
       group   => $name,
       mode    => '0755',
       require => Users::Account[$name];
+
+    "/home/${name}/fcgi-bin":
+      ensure => directory,
+      owner  => $name,
+      group  => $name,
+      mode   => '0755';
+
+    "/home/${name}/fcgi-bin/php-fastcgi":
+      ensure => present,
+      source => 'puppet:///modules/apache/php-fastcgi',
+      owner  => $name,
+      group  => $name,
+      mode   => '0755';
   }
 
   apache::site {
     $name:
-      apache_vhost_name => $apache_vhost_name;
+      apache_vhost_name => $apache_vhost_name,
+      default           => $default;
   }
 }

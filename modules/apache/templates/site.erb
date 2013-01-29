@@ -4,4 +4,6 @@
   DocumentRoot /home/<%= @username %>/public_html
   ErrorLog /var/log/apache2/<%= @apache_vhost_name %>_error_log
   CustomLog /var/log/apache2/<%= @apache_vhost_name %>_access_log combined
+
+  Alias /fgci-bin/ /home/<%= @username %>/fcgi-bin/
 </VirtualHost>

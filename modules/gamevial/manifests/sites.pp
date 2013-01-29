@@ -1,12 +1,6 @@
 class gamevial::sites {
   include apache
-  include apache::suexec
-  include php::cgi
-
-  class {
-    'apache::fastcgi':
-      suexec => true;
-  }
+  include apache::php_fastcgi
 
   php::module {
     'mysql':
@@ -14,6 +8,12 @@ class gamevial::sites {
 
   apache::module {
     'userdir':
+      source => 'puppet:///modules/gamevial/userdir.conf';
+  }
+
+  apache::site {
+    [ 'default-ssl' ]:
+      ensure => absent;
   }
 
   mysql::server::database {
@@ -31,6 +31,7 @@ class gamevial::sites {
 
       'gamevial':
         apache_vhost_name => 'gamevial.com',
+        default           => true,
         uid               => 10041;
 
       'teamtanks':
