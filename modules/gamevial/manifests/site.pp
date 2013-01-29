@@ -22,9 +22,9 @@ define gamevial::site($apache_vhost_name, $uid, $default = false) {
       group  => $name,
       mode   => '0755';
 
-    "/home/${name}/fcgi-bin/php-fastcgi":
+    "/home/${name}/fcgi-bin/php-fcgid":
       ensure => present,
-      source => 'puppet:///modules/apache/php-fastcgi',
+      source => 'puppet:///modules/apache/php-fcgid',
       owner  => $name,
       group  => $name,
       mode   => '0755';

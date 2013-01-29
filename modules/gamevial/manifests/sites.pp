@@ -1,6 +1,6 @@
 class gamevial::sites {
   include apache
-  include apache::php_fastcgi
+  include apache::php_fcgid
 
   php::module {
     'mysql':

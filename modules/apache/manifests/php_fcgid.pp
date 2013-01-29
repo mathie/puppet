@@ -1,18 +1,15 @@
-class apache::php_fastcgi {
+class apache::php_fcgid {
   include php::cgi
+  include apache::fcgid
 
   apache::module {
     'actions':
   }
 
-  class {
-    'apache::fastcgi':
-  }
-
   file {
-    '/etc/apache2/conf.d/php_fastcgi':
+    '/etc/apache2/conf.d/php_fcgid':
       ensure => present,
-      source => 'puppet:///modules/apache/php_fastcgi.conf',
+      source => 'puppet:///modules/apache/php_fcgid.conf',
       owner  => root,
       group  => root,
       mode   => '0644',
@@ -24,9 +21,9 @@ class apache::php_fastcgi {
       group  => www-data,
       mode   => '0755';
 
-    '/var/www/fcgi-bin/php-fastcgi':
+    '/var/www/fcgi-bin/php-fcgid':
       ensure => present,
-      source => 'puppet:///modules/apache/php-fastcgi',
+      source => 'puppet:///modules/apache/php-fcgid',
       owner  => www-data,
       group  => www-data,
       mode   => '0755';
