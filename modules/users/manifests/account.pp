@@ -1,11 +1,12 @@
 define users::account(
-  $password,
   $uid,
   $comment,
-  $groups = [],
-  $ensure = present,
-  $shell  = '/bin/bash',
-  $sudo   = false
+  $password            = '*',
+  $groups              = [],
+  $ensure              = present,
+  $shell               = '/bin/bash',
+  $ssh_authorized_keys = "puppet:///modules/users/keys/${name}.keys.pub",
+  $sudo                = false
 ) {
   $username = $name
 
@@ -56,14 +57,18 @@ define users::account(
     "/home/${username}":
       ensure  => directory,
       require => User[$username];
+  }
 
-    "/home/${username}/.ssh":
-      ensure  => directory,
-      require => File["/home/${username}"];
+  if $ssh_authorized_keys {
+    file {
+      "/home/${username}/.ssh":
+        ensure  => directory,
+        require => File["/home/${username}"];
 
-    "/home/${username}/.ssh/authorized_keys":
-      ensure  => $ensure,
-      source  => "puppet:///modules/users/keys/${username}.keys.pub",
-      require => File["/home/${username}/.ssh"];
+      "/home/${username}/.ssh/authorized_keys":
+        ensure  => $ensure,
+        source  => $ssh_authorized_keys,
+        require => File["/home/${username}/.ssh"];
+    }
   }
 }
