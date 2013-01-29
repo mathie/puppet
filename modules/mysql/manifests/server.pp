@@ -1,7 +1,10 @@
 class mysql::server($root_password = undef) {
   include mysql::client
 
-  include mysql::server::install, mysql::server::config, mysql::server::service
+  include mysql::server::install,
+    mysql::server::config,
+    mysql::server::service,
+    mysql::server::timezones
 
   # This is slightly unusual in terms of dependencies. The package helpfully
   # configures MySQL, creates the data store and starts the service for us. If
@@ -16,4 +19,5 @@ class mysql::server($root_password = undef) {
   Class['mysql::server::config'] -> Class['mysql::server::install']
   Class['mysql::server::install'] -> Class['mysql::server::service']
   Class['mysql::server::config'] ~> Class['mysql::server::service']
+  Class['mysql::server::service'] -> Class['mysql::server::timezones']
 }
