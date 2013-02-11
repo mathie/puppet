@@ -8,10 +8,6 @@ define rails::deployment(
   $git_branch          = 'master',
   $comment             = "${name} app server",
   $db_type             = 'mysql2',
-  $database            = $name,
-  $db_host             = 'localhost',
-  $db_username         = $name,
-  $db_password         = '',
   $precompile_assets   = true,
   $asset_compiler      = 'nodejs',
   $bundler_without     = 'development test'
@@ -33,10 +29,6 @@ define rails::deployment(
       ruby_version      => $ruby_version,
       rails_env         => $rails_env,
       db_type           => $db_type,
-      database          => $database,
-      db_host           => $db_host,
-      db_username       => $db_username,
-      db_password       => $db_password,
       precompile_assets => $precompile_assets,
       asset_compiler    => $asset_compiler,
       bundler_without   => $bundler_without;

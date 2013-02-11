@@ -10,22 +10,25 @@ class ci::dependencies::my_ewgeco {
       provider => 'gem19';
   }
 
-  mysql::server::database {
+  rails::database {
     'my_ewgeco_development':
-      user     => 'root',
-      password => '';
+      app       => 'my_ewgeco',
+      rails_env => 'development',
+      user      => 'root',
+      db_type   => 'mysql2',
+      order     => 1;
 
     'my_ewgeco_test':
-      user     => 'root',
-      password => '';
+      app          => 'my_ewgeco',
+      rails_env    => 'development',
+      stanza_title => 'test',
+      user         => 'root',
+      db_type      => 'mysql2',
+      order        => 2;
   }
 
   class {
     'my_ewgeco::code':
-      database    => 'my_ewgeco_development',
-      db_host     => 'localhost',
-      db_username => 'root',
-      db_password => '',
       rails_env   => 'development';
   }
 }

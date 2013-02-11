@@ -4,34 +4,31 @@ class ci::dependencies::live_auction {
   include rabbitmq::server
   include phantomjs
 
-  $db_host     = 'localhost'
-  $database    = 'live_auction_development'
-  $db_username = 'live_auction'
-  $db_password = ''
   $rails_env   = 'development'
 
 
   postgresql::server::user {
     'jenkins':
       superuser => true;
-
-    $db_username:
-      superuser => true;
   }
 
-  postgresql::server::database {
-    $database:
-      owner => $db_username;
+  rails::database {
+    'live_auction_development':
+      db_type     => 'postgresql',
+      db_username => 'live_auction',
+      rails_env   => $rails_env,
+      order       => 1;
 
     'live_auction_test':
-      owner => $db_username;
+      db_type      => 'postgresql',
+      db_username  => 'live_auction',
+      rails_env    => $rails_env,
+      stanza_title => 'test',
+      order        => 2;
   }
 
   class {
     'live_auction::code':
-      rails_env   => $rails_env,
-      database    => $database,
-      db_host     => $db_host,
-      db_username => $db_username;
+      rails_env   => $rails_env;
   }
 }

@@ -13,18 +13,13 @@ node /^git\./ {
   include mysql::server
   include redis::server
 
-  mysql::server::database {
+  rails::database {
     'gitlab':
-      user     => 'gitlab',
+      db_type  => 'mysql2',
       password => 'Useebae9';
   }
 
-  class {
-    'gitlab':
-      database    => 'gitlab',
-      db_username => 'gitlab',
-      db_password => 'Useebae9';
-  }
+  include gitlab
 }
 
 # If you're freshly bootstrapping and errors node, you'll want to seed the

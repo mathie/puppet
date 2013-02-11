@@ -4,10 +4,6 @@ define rails::deployment::capistrano(
   $rails_env         = 'production',
   $ruby_version      = '1.9',
   $db_type           = 'mysql2',
-  $database          = $name,
-  $db_host           = 'localhost',
-  $db_username       = $name,
-  $db_password       = '',
   $precompile_assets = true,
   $asset_compiler    = 'nodejs',
   $bundler_without   = 'development test'
@@ -250,16 +246,18 @@ define rails::deployment::capistrano(
       include $db_dev_install
     }
 
-    file {
-      $shared_database_yml:
-        ensure  => present,
-        content => template('rails/database.yml.erb'),
-        require => File[$shared_config_path];
+    rails::database::config {
+      $app_name:
+        rails_env => $rails_env,
+        path      => $shared_database_yml,
+        require   => File[$shared_config_path];
+    }
 
+    file {
       $current_database_yml:
         ensure  => link,
         target  => $shared_database_yml,
-        require => [ File[$current_path], File[$shared_database_yml] ];
+        require => [ File[$current_path], Rails::Database::Config[$app_name] ];
     }
   }
 }

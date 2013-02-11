@@ -1,4 +1,4 @@
-class live_auction::code($database, $db_host, $db_username, $db_password = '', $rails_env = 'production') {
+class live_auction::code($rails_env = 'production') {
   include ssl # For the up to date SSL certificate.
   include libxml::dev, imagemagick::dev, wkhtmltopdf
 
@@ -10,11 +10,7 @@ class live_auction::code($database, $db_host, $db_username, $db_password = '', $
       git_repo            => 'git@github.com:lionelnierop/Live_Auction.git',
       ssh_private_key     => 'puppet:///modules/live_auction/keys/live-auction-deploy.keys',
       ssh_authorized_keys => 'puppet:///modules/users/keys/mathie.keys.pub',
-      database            => $database,
-      db_type             => 'postgresql',
-      db_host             => $db_host,
-      db_username         => $db_username,
-      db_password         => $db_password;
+      db_type             => 'postgresql';
   }
 
   Class['libxml::dev']      -> Class['live_auction::code']

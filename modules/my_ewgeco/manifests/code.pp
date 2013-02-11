@@ -1,4 +1,4 @@
-class my_ewgeco::code($database, $db_host, $db_username, $db_password, $rails_env = 'production') {
+class my_ewgeco::code($rails_env = 'production') {
   include libxml::dev, imagemagick::dev
 
   rails::deployment {
@@ -10,11 +10,7 @@ class my_ewgeco::code($database, $db_host, $db_username, $db_password, $rails_en
       git_branch          => 'rails-3.2',
       ssh_private_key     => 'puppet:///modules/my_ewgeco/my-ewgeco-deploy.keys',
       ssh_authorized_keys => 'puppet:///modules/users/keys/mathie.keys.pub',
-      database            => $database,
-      db_type             => 'mysql2',
-      db_host             => $db_host,
-      db_username         => $db_username,
-      db_password         => $db_password;
+      db_type             => 'mysql2';
   }
 
   Class['libxml::dev']      -> Class['my_ewgeco::code']
