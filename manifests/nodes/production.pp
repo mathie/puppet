@@ -4,7 +4,7 @@ node /^ci\./ {
 }
 
 node /^ci-slave[0-9]+\./ {
-  include rubaidh
+  include standard::rubaidh
   include ci::slave
 }
 
