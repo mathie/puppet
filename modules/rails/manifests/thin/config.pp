@@ -5,8 +5,9 @@ class rails::thin::config($app_name, $ruby_version = '1.9', $rails_env = 'produc
 
   }
 
-  $bundler_command = "${ruby_command} -S bundle"
-  $bundle_exec     = "${bundler_command} exec"
+  $bundler_command  = "${ruby_command} -S bundle"
+  $bundle_exec      = "${bundler_command} exec"
+  $bundle_exec_args = '-S bundle exec'
 
   File {
     owner   => root,
@@ -15,12 +16,12 @@ class rails::thin::config($app_name, $ruby_version = '1.9', $rails_env = 'produc
   }
 
   nginx::upstream {
-    "${app_name}_${::hostname}_${rails_env}_thin":
+    "${app_name}_${::hostname}_${rails_env}":
   }
 
   nginx::vhost {
-    "${app_name}_${rails_env}-thin":
-      content => template('rails/nginx-thin-vhost.conf.erb');
+    "${app_name}_${rails_env}":
+      content => template('rails/nginx-vhost.conf.erb');
   }
 
   if $app_servers == 1 {
@@ -32,8 +33,8 @@ class rails::thin::config($app_name, $ruby_version = '1.9', $rails_env = 'produc
     }
 
     @@nginx::upstream::server {
-      "${app_name}_${::hostname}_${rails_env}_thin_socket":
-        upstream => "${app_name}_${::hostname}_${rails_env}_thin",
+      "${app_name}_${::hostname}_${rails_env}_socket":
+        upstream => "${app_name}_${::hostname}_${rails_env}",
         target   => "unix:/u/apps/${app_name}/shared/thin.sock",
         options  => 'fail_timeout=0';
     }

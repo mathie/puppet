@@ -1,3 +1,18 @@
 class rails::thin::install($ruby_version = '1.9') {
-  # Currently a no-op, assuming it's part of the app's production bundle.
+  if $ruby_version == '1.8' {
+    include ruby::ruby18
+    $gem_provider    = 'gem18'
+    $ruby_dependency = Class['ruby::ruby18']
+  } else {
+    include ruby::ruby19
+    $gem_provider    = 'gem19'
+    $ruby_dependency = Class['ruby::ruby19']
+  }
+
+  package {
+    'thin':
+      ensure   => present,
+      provider => $gem_provider,
+      require  => $ruby_dependency;
+  }
 }
