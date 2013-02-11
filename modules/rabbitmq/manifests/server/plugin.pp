@@ -1,4 +1,4 @@
-define rabbitmq::server::plugin($ensure = 'present') {
+define rabbitmq::server::plugin($ensure = present) {
   if($ensure == 'present') {
     exec {
       "rabbitmq-enable-plugin-${name}":
