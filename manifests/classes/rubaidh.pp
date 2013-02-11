@@ -1,4 +1,4 @@
-class rubaidh {
+class standard::rubaidh {
   include standard
 
   class {

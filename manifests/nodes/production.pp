@@ -1,5 +1,5 @@
 node /^ci\./ {
-  include rubaidh
+  include standard::rubaidh
   include ci::master
 }
 
@@ -9,7 +9,7 @@ node /^ci-slave[0-9]+\./ {
 }
 
 node /^git\./ {
-  include rubaidh
+  include standard::rubaidh
   include mysql::server
   include redis::server
 
@@ -35,7 +35,7 @@ node /^git\./ {
 #
 # as the errbit user in /u/apps/errbit/current.
 node /^errors\./ {
-  include rubaidh
+  include standard::rubaidh
   include mongodb::server
   include errbit
 
@@ -43,17 +43,17 @@ node /^errors\./ {
 }
 
 node /^hubot\./ {
-  include rubaidh
+  include standard::rubaidh
   include hubot
 }
 
 node 'temperature' {
-  include rubaidh
+  include standard::rubaidh
   include temperature
 }
 
 node 'puppet' {
-  include rubaidh
+  include standard::rubaidh
   include puppetmaster, puppet::dashboard
   include mcollective::middleware, mcollective::client
   include openvpn::server

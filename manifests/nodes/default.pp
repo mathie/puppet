@@ -1,3 +1,3 @@
 node default {
-  include standard
+  include standard::rubaidh
 }
