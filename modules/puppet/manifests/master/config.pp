@@ -10,10 +10,19 @@ class puppet::master::config($ssh_key, $git_repo) {
     mode   => '0644',
   }
 
-  file {
-    '/etc/puppet/autosign.conf':
-      source => 'puppet:///modules/puppet/autosign.conf';
+  if $::domain == 'vagrant.vm' {
+    file {
+      '/etc/puppet/autosign.conf':
+        source => 'puppet:///modules/puppet/autosign.conf';
+    }
+  } else {
+    file {
+      '/etc/puppet/autosign.conf':
+        ensure => absent;
+    }
+  }
 
+  file {
     '/etc/puppet/puppetdb.conf':
       content => template('puppet/puppetdb.conf.erb');
 
