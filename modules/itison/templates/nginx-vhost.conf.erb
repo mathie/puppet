@@ -1,0 +1,50 @@
+server {
+  <% if @mobile -%>
+    if ($host != 'm.itison.com' ) {
+      rewrite  ^/(.*)$  $scheme://m.itison.com/$1  permanent;
+    }
+
+    server_name m.itison.com;
+  <% else -%>
+    if ($host != 'www.itison.com' ) {
+      rewrite  ^/(.*)$  $scheme://www.itison.com/$1  permanent;
+    }
+
+    server_name www.itison.com itison.com;
+  <% end -%>
+
+  <% if @ssl -%>
+    listen 443 default;
+
+    ssl on;
+    ssl_certificate /etc/ssl/certs/itison-bundle.pem;
+    ssl_certificate_key /etc/ssl/private/itison.key;
+  <% else -%>
+    listen 80 default;
+  <% end -%>
+
+  # Set some sensible headers for proxied requests.
+  proxy_set_header Host              $host;
+  proxy_set_header X-Forwarded-For   $proxy_add_x_forwarded_for;
+  proxy_set_header X-Real-IP         $remote_addr;
+  proxy_set_header X-Forwarded-Proto $scheme;
+
+  location ~ ^/tr/ {
+    proxy_pass https://itison_email_<%= @rails_env %>_ssl;
+  }
+
+  location ~ ^/(system|javascripts|images|stylesheets|assets)/ {
+    proxy_pass https://itison_asset_<%= @rails_env %>_ssl;
+    proxy_cache one;
+  }
+
+  <% if @ssl -%>
+    location  /gasket/ {
+      proxy_pass https://itison_asset_<%= @rails_env %>_ssl;
+    }
+  <% end -%>
+
+  location / {
+    proxy_pass https://itison_<%= @rails_env %>_ssl;
+  }
+}
