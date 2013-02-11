@@ -14,7 +14,7 @@ class ci::dependencies::my_ewgeco {
     'my_ewgeco_development':
       app       => 'my_ewgeco',
       rails_env => 'development',
-      user      => 'root',
+      username  => 'root',
       db_type   => 'mysql2',
       order     => 1;
 
@@ -22,7 +22,7 @@ class ci::dependencies::my_ewgeco {
       app          => 'my_ewgeco',
       rails_env    => 'development',
       stanza_title => 'test',
-      user         => 'root',
+      username     => 'root',
       db_type      => 'mysql2',
       order        => 2;
   }

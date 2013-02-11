@@ -9,8 +9,8 @@ class temperature {
   # schema or the plpsql extension language).
   rails::database {
     'temperature':
-      db_type     => 'postgresql',
-      db_password => 'xyzzy';
+      db_type  => 'postgresql',
+      password => 'xyzzy';
   }
 
   rails::deployment {

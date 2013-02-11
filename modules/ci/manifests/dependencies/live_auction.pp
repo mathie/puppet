@@ -14,14 +14,14 @@ class ci::dependencies::live_auction {
 
   rails::database {
     'live_auction_development':
-      db_type     => 'postgresql',
-      db_username => 'live_auction',
-      rails_env   => $rails_env,
-      order       => 1;
+      db_type   => 'postgresql',
+      username  => 'live_auction',
+      rails_env => $rails_env,
+      order     => 1;
 
     'live_auction_test':
       db_type      => 'postgresql',
-      db_username  => 'live_auction',
+      username     => 'live_auction',
       rails_env    => $rails_env,
       stanza_title => 'test',
       order        => 2;
