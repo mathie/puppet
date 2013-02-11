@@ -20,4 +20,14 @@ class mysql::server($root_password = undef) {
   Class['mysql::server::install'] -> Class['mysql::server::service']
   Class['mysql::server::config'] ~> Class['mysql::server::service']
   Class['mysql::server::service'] -> Class['mysql::server::timezones']
+
+  if $root_password {
+    mysql::server::sql {
+      'set-root-password':
+        sql      => "UPDATE user SET password=PASSWORD('${root_password}') WHERE user='root'; FLUSH PRIVILEGES;",
+        user     => 'root',
+        password => '',
+        unless   => "/usr/bin/mysql -uroot -p${root_password} mysql -e 'SELECT 1=1'";
+    }
+  }
 }
