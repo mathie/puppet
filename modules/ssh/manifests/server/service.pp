@@ -7,6 +7,6 @@ class ssh::server::service {
 
   firewall::allow {
     'ssh':
-      port => '22';
+      port => $ssh::server::real_port;
   }
 }
