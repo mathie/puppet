@@ -42,13 +42,13 @@ class gitlab($rails_env = 'production') {
       user        => gitlab,
       refreshonly => true,
       require     => [
-        Mysql::Server::Database[$database],
+        Mysql::Server::Database['gitlab'],
         File['/u/apps/gitlab/current/config/database.yml'],
         File['/u/apps/gitlab/current/config/gitlab.yml']
       ];
   }
 
-  Mysql::Server::Database[$database] ~> Exec['create-gitlab-schema']
+  Mysql::Server::Database['gitlab'] ~> Exec['create-gitlab-schema']
   Exec['install-gitlab-gem-bundle'] -> Exec['create-gitlab-schema']
 
   file {
