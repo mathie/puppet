@@ -2,6 +2,11 @@ class standard {
   include bootstrap_common
 
   class {
+    'localisation':
+      stage    => first,
+      locale   => 'en_GB', # UTF-8 is automatically appended.
+      timezone => 'Europe/London';
+
     'dhcp::client':
       stage     => first,
       interface => 'eth0';
