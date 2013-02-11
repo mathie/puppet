@@ -13,9 +13,14 @@ class opendkim::config($mail_domain = $domain) {
       group  => root,
       mode   => '0644',
       source => 'puppet:///modules/opendkim/etc-default-opendkim';
-  }
 
-  file {
+    '/usr/bin/opendkim-genkey':
+      ensure => present,
+      owner  => root,
+      group  => root,
+      mode   => '0755',
+      source => 'puppet:///modules/opendkim/opendkim-genkey';
+
     '/etc/opendkim':
       ensure => directory,
       owner  => 'opendkim',
@@ -27,7 +32,7 @@ class opendkim::config($mail_domain = $domain) {
     'opendkim-genkey':
       command => "/usr/bin/opendkim-genkey -d ${::domain} -D /etc/opendkim -s ${::hostname}",
       creates => "/etc/opendkim/${::hostname}.private",
-      require => File['/etc/opendkim'];
+      require => [ File['/usr/bin/opendkim-genkey'], File['/etc/opendkim'] ];
   }
 
   file {
