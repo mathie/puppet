@@ -215,6 +215,11 @@ define rails::deployment::capistrano(
     $shared_assets_path  = "${shared_path}/assets"
     $current_assets_path = "${current_public_path}/assets"
 
+    $manifest_file = $asset_compiler ? {
+      'java'  => 'manifest-default.json',
+      default => 'manifest.yml',
+    }
+
     file {
       $shared_assets_path:
         ensure => directory;
@@ -230,7 +235,7 @@ define rails::deployment::capistrano(
       "asset-precompile-${app_name}":
         command     => "${rake} assets:precompile",
         user        => $username,
-        creates     => "${current_assets_path}/manifest.yml",
+        creates     => "${current_assets_path}/${manifest_file}",
         cwd         => $current_path,
         environment => "RAILS_ENV=${rails_env}",
         require     => [ File[$current_assets_path], Class[$asset_compiler] ];
