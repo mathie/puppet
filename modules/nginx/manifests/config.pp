@@ -48,5 +48,17 @@ class nginx::config {
     '/etc/nginx/conf.d/gzip.conf':
       ensure => present,
       source => 'puppet:///modules/nginx/gzip.conf';
+
+    '/etc/nginx/conf.d/limits.conf':
+      ensure => present,
+      source => 'puppet:///modules/nginx/limits.conf';
+
+    '/etc/nginx/conf.d/proxy.conf':
+      ensure => present,
+      source => 'puppet:///modules/nginx/proxy.conf';
+
+    '/etc/nginx/htpasswd':
+      ensure => present,
+      source => 'puppet:///modules/nginx/htpasswd';
   }
 }

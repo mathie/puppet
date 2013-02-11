@@ -1,8 +1,8 @@
-define nginx::vhost($content, $ensure = 'present') {
+define nginx::vhost($content, $ensure = present) {
   include nginx
 
   $enabled = $ensure ? {
-    'present' => 'link',
+    present => 'link',
     default   => 'absent',
   }
 
