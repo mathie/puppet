@@ -1,6 +1,6 @@
 # A list of nodes to bring up, with options for each.
 $nodes = {
-  :gamevial => {}
+  :node => {}
 }
 
 # Customisation for the puppetmaster
