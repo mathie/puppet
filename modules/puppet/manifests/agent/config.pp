@@ -9,5 +9,7 @@ class puppet::agent::config {
     mode   => '0644',
   }
 
-  Class['puppet::config'] -> Class['puppet::agent::service']
+  anchor { 'puppet::agent::config::begin': } ->
+    Class['puppet::config'] ->
+    anchor { 'puppet::agent::config::end': }
 }

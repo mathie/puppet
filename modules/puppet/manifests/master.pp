@@ -1,12 +1,10 @@
 class puppet::master($ssh_key, $git_repo) {
   include puppet::agent
-  include puppet::master::install, puppet::master::service
+  include puppet::master::install, puppet::master::config, puppet::master::service
 
-  class {
-    'puppet::master::config':
-      ssh_key  => $ssh_key,
-      git_repo => $git_repo;
-  }
-
-  Class['puppet::master::install'] -> Class['puppet::master::config'] ~> Class['puppet::master::service']
+  anchor { 'puppet::master::begin': } ->
+    Class['puppet::master::install'] ->
+    Class['puppet::master::config'] ~>
+    Class['puppet::master::service'] ->
+    anchor { 'puppet::master::end': }
 }

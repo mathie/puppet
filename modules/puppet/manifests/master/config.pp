@@ -1,4 +1,4 @@
-class puppet::master::config($ssh_key, $git_repo) {
+class puppet::master::config {
   include git
   include ssh::client
   include puppet::config
@@ -46,7 +46,7 @@ class puppet::master::config($ssh_key, $git_repo) {
       owner  => root,
       group  => root,
       mode   => '0600',
-      source => $ssh_key;
+      source => $puppet::master::ssh_key;
   }
 
   vcsrepo {
@@ -54,7 +54,7 @@ class puppet::master::config($ssh_key, $git_repo) {
       ensure   => latest,
       revision => 'master',
       path     => '/etc/puppet/repo',
-      source   => $git_repo,
+      source   => $puppet::master::git_repo,
       provider => 'git',
       require  => [ File['/root/.ssh/id_rsa'], Class['git'] ],
       notify   => Exec['touch-site-pp'];
@@ -94,5 +94,7 @@ class puppet::master::config($ssh_key, $git_repo) {
     }
   }
 
-  Class['puppet::config'] -> Class['puppet::master::service']
+  anchor { 'puppet::master::config::begin': } ->
+    Class['puppet::config'] ->
+    anchor { 'puppet::master::config::end': }
 }
