@@ -1,5 +1,5 @@
 class puppetdb::client::config {
-  $puppetdb_server_host_name = $puppetdb::client::puppetdb_server_host_name
+  $puppetdb_server_hostname = $puppetdb::client::puppetdb_server_hostname
 
   file {
     '/etc/puppet/puppetdb.conf':

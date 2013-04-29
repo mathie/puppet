@@ -1,5 +1,5 @@
 class puppetdb::client(
-  $puppetdb_server_host_name = $puppet::agent::puppetmaster_host_name
+  $puppetdb_server_hostname = $puppet::agent::puppetmaster_hostname
 ) {
   include puppetdb::client::install, puppetdb::client::config
 
