@@ -1,10 +1,5 @@
 class gitlab($rails_env = 'production') {
-  include libxml::dev, gitolite, pygments
-
-  package {
-    'libicu-dev':
-      ensure => present;
-  }
+  include libxml::dev, libicu::dev, gitolite, pygments
 
   rails::deployment {
     'gitlab':
