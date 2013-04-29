@@ -1,7 +1,7 @@
 
 [main]
-  server      = puppet.<%= @domain %>
-  pluginsync  = true
+  server     = <%= @puppetmaster_hostname %>
+  pluginsync = true
 
 [agent]
 <% if @vagrant == 'true' %>

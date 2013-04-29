@@ -1,4 +1,6 @@
 class puppet::agent::config {
+  $puppetmaster_hostname = $puppet::agent::puppetmaster_hostname
+
   include puppet::config
 
   file { '/etc/default/puppet':
