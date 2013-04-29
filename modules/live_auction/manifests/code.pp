@@ -1,6 +1,6 @@
 class live_auction::code($rails_env = 'production') {
   include ssl # For the up to date SSL certificate.
-  include libxml::dev, imagemagick::dev, wkhtmltopdf
+  include libxml::dev, imagemagick::dev, wkhtmltopdf, libicu::dev
 
   rails::deployment {
     'live_auction':
@@ -16,4 +16,5 @@ class live_auction::code($rails_env = 'production') {
   Class['libxml::dev']      -> Class['live_auction::code']
   Class['imagemagick::dev'] -> Class['live_auction::code']
   Class['wkhtmltopdf']      -> Class['live_auction::code']
+  Class['libicu::dev']      -> Class['live_auction::code']
 }
