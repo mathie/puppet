@@ -20,6 +20,12 @@ set_hostname() {
   echo '127.0.0.1 localhost' > /etc/hosts
   echo "127.0.1.1 ${FQDN} ${HOSTNAME}" >> /etc/hosts
 
+  # This is one of the places Facter will use to get its domain name, so let's
+  # have a little defense in depth.
+  echo 'nameserver 8.8.8.8'    > /etc/resolv.conf
+  echo 'nameserver 8.8.4.4'   >> /etc/resolv.conf
+  echo "domain ${DOMAINNAME}" >> /etc/resolv.conf
+
   # Restart syslog so it starts logging with the right hostname early on.
   service rsyslog restart
 }
