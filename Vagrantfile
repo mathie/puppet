@@ -25,7 +25,7 @@ def bootstrap(config, hostname, ip_address, options = {})
   end
 
   graphs_folder = "graphs/#{hostname}"
-  FileUtils.mkdir_p(graphs_folder) unless Dir.exist?(graphs_folder)
+  FileUtils.mkdir_p(graphs_folder) unless File.directory?(graphs_folder)
   config.vm.synced_folder graphs_folder, '/var/lib/puppet/state/graphs'
 
   config.vm.provision :shell do |shell|
