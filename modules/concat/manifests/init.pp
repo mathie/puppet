@@ -1,5 +1,5 @@
 class concat {
-  $fragment_root = '/var/lib/puppet/concat_fragments'
+  $fragment_root = '/var/lib/puppet_concat'
 
   file {
     $fragment_root:
