@@ -1,5 +1,12 @@
 class apt::unattended_upgrades::config {
   file {
+    '/etc/apt/apt.conf.d/10periodic':
+      ensure => present,
+      owner  => root,
+      group  => root,
+      mode   => '0644',
+      source => 'puppet:///modules/apt/10periodic';
+
     '/etc/apt/apt.conf.d/50unattended-upgrades':
       ensure => present,
       owner  => root,
