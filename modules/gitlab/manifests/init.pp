@@ -7,7 +7,7 @@ class gitlab($rails_env = 'production') {
       rails_env       => $rails_env,
       uid             => 20005,
       git_repo        => 'git://github.com/gitlabhq/gitlabhq.git',
-      git_branch      => 'stable',
+      git_branch      => '3-1-stable',
       ssh_private_key => '/home/git/.ssh/id_rsa',
       bundler_without => 'development test postgres sqlite';
   }
