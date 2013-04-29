@@ -31,7 +31,7 @@ define rails::database(
   }
 
   @@rails::database::stanza {
-    "${app}_${rails_env}_${database}":
+    "${hostname}_${app}_${rails_env}_${database}":
       stanza_title => $stanza_title,
       db_type      => $db_type,
       app          => $app,
