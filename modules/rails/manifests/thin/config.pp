@@ -24,6 +24,11 @@ class rails::thin::config($app_name, $ruby_version = '1.9', $rails_env = 'produc
       content => template('rails/nginx-vhost.conf.erb');
   }
 
+  nginx::vhost {
+    "${app_name}_${rails_env}_ssl":
+      content => template('rails/nginx-ssl-vhost.conf.erb');
+  }
+
   if $app_servers == 1 {
     file {
       "/etc/init/${app_name}-thin.conf":
