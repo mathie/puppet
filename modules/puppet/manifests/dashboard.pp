@@ -1,6 +1,4 @@
 class puppet::dashboard {
-  include mysql::server
-
   include puppet::dashboard::install, puppet::dashboard::config, puppet::dashboard::service
 
   anchor { 'puppet::dashboard::begin': } ->

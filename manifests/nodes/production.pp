@@ -49,6 +49,7 @@ node 'temperature' {
 
 node 'puppet' {
   include standard::rubaidh
+  include mysql::server
   include puppetmaster, puppet::dashboard
   include mcollective::middleware, mcollective::client
   include openvpn::server
