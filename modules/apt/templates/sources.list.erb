@@ -1,1 +1,5 @@
+<% if @components.nil? || @components.empty? -%>
+deb <%= @url %> <%= @distribution %>/
+<% else -%>
 deb <%= @url %> <%= @distribution %> <%= @components.join(' ') %>
+<% end -%>
