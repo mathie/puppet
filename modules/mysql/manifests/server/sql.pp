@@ -11,10 +11,16 @@ define mysql::server::sql(
     $password_arg = ''
   }
 
+  if $password_arg != '' and $user == 'root' and $password == $mysql::server::root_password {
+    $require = Class['mysql::server']
+  } else {
+    $require = Class['mysql::server::service']
+  }
+
   exec {
     "mysql-sql-${name}":
       command => "/usr/bin/mysql -u${user}${password_arg} -e \"${sql}\" ${database}",
       unless  => $unless,
-      require => Class['mysql::server::service'];
+      require => $require;
   }
 }

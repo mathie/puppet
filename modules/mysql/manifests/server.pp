@@ -21,6 +21,9 @@ class mysql::server($root_password = undef) {
   Class['mysql::server::config'] ~> Class['mysql::server::service']
   Class['mysql::server::service'] -> Class['mysql::server::timezones']
 
+  anchor { 'mysql::server::begin': } -> Class['mysql::server::config']
+  Class['mysql::server::service'] -> anchor { 'mysql::server::end': }
+
   if $root_password {
     mysql::server::sql {
       'set-root-password':
