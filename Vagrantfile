@@ -5,39 +5,28 @@ $nodes = {
 
 # Customisation for the puppetmaster
 $puppetmaster_options = {
-  :memory        => 1024, # Insanity!
-  :forward_ports => { 8084 => 8084 }
+  :forward_ports => { 8084 => 8084, 8085 => 8085 }
 }
 
 # Variables you might want to change
-$base_box_name   = "ubuntu-12.04-server-amd64-4.2.6-1"
+$base_box_name   = "ubuntu-12.04.2-server-amd64"
 $ip_network      = "172.16.27.%d"
 $puppetmaster_ip = 10
 $node_base_ip    = 100
 
-def customise_vm(config, option, value)
-  config.vm.customize [ 'modifyvm', :id, "--#{option}", value ]
-end
-
 # Common setup for every VM
 def bootstrap(config, hostname, ip_address, options = {})
-  if memory = options.delete(:memory)
-    customise_vm config, :memory, memory
-  end
-
-  customise_vm config, :nictype1, 'Am79C973'
-
-  config.vm.network :hostonly, ip_address
+  config.vm.network :private_network, :ip => ip_address
 
   if forward_ports = options[:forward_ports]
     forward_ports.each do |guest_port, host_port|
-      config.vm.forward_port guest_port, host_port
+      config.vm.network :forwarded_port, :guest => guest_port, :host => host_port
     end
   end
 
-  config.vm.share_folder 'graphs',
-    '/var/lib/puppet/state/graphs',
-    "graphs/#{hostname}", :create => true
+  graphs_folder = "graphs/#{hostname}"
+  FileUtils.mkdir_p(graphs_folder) unless Dir.exist?(graphs_folder)
+  config.vm.synced_folder graphs_folder, '/var/lib/puppet/state/graphs'
 
   config.vm.provision :shell do |shell|
     shell.path = 'bootstrap/vagrant-puppet.sh'
@@ -69,8 +58,7 @@ def ip_address(offset, base = 0)
   $ip_network % (offset + base)
 end
 
-Vagrant::Config.run do |config|
-  # Base box is a recently dist-upgrade'd 64-bit Ubuntu 12.04 LTS.
+Vagrant.configure('2') do |config|
   config.vm.box = $base_box_name
   config.vm.box_url = "http://mathie-vagrant-boxes.s3.amazonaws.com/#{$base_box_name}.box"
 
