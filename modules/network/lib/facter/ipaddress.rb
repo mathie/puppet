@@ -12,13 +12,17 @@ end
 
 Facter.add(:ipaddress_internal) do
   setcode do
-    case Facter.value('virtual')
-    when 'virtualbox', 'xenu' # xenu is Rackspace Cloud
+    if Facter.value('vagrant') == 'true'
       Facter.value('ipaddress_eth1')
-    when 'physical' # An LXC container, I think?
-      Facter.value('ipaddress_eth0')
     else
-      raise "Don't know the internal IP for #{Facter.value('virtual')}"
+      case Facter.value('virtual')
+      when 'xenu' # xenu is Rackspace Cloud
+        Facter.value('ipaddress_eth1')
+      when 'physical' # An LXC container, I think?
+        Facter.value('ipaddress_eth0')
+      else
+        raise "Don't know the internal IP for #{Facter.value('virtual')}"
+      end
     end
   end
 end
