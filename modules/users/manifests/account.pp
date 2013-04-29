@@ -1,32 +1,44 @@
 define users::account(
-  $uid,
-  $comment,
+  $uid                 = 65534,
+  $comment             = $name,
   $password            = '*',
   $groups              = [],
   $ensure              = present,
   $shell               = '/bin/bash',
   $ssh_authorized_keys = "puppet:///modules/users/keys/${name}.keys.pub",
+  $ssh_private_key     = undef,
   $sudo                = false
 ) {
   $username = $name
 
-  group { $username:
-    ensure    => $ensure,
-    gid       => $uid,
-    allowdupe => false,
+  # If the user is being removed, then just stop managing the group for now.
+  # Attempting to ensure it's absent fails because it's the primary group for
+  # the user.
+  if $ensure == present {
+    group { $username:
+      ensure    => $ensure,
+      gid       => $uid,
+      allowdupe => false,
+    }
   }
 
-  user { $username:
-    ensure    => $ensure,
-    password  => $password,
-    uid       => $uid,
-    gid       => $uid,
-    groups    => $groups,
-    comment   => $comment,
-    home      => "/home/${name}",
-    shell     => $shell,
-    allowdupe => false,
-    require   => Group[$username],
+  $user_require = $ensure ? {
+    present => Group[$username],
+    default => undef,
+  }
+
+  user {
+    $username:
+      ensure    => $ensure,
+      password  => $password,
+      uid       => $uid,
+      gid       => $uid,
+      groups    => $groups,
+      comment   => $comment,
+      home      => "/home/${name}",
+      shell     => $shell,
+      allowdupe => false,
+      require   => $user_require;
   }
 
   if $sudo {
@@ -58,18 +70,37 @@ define users::account(
       ensure  => directory,
       mode    => '0755',
       require => User[$username];
+
+    "/home/${username}/.ssh":
+      ensure  => directory,
+      require => File["/home/${username}"];
   }
 
-  if $ssh_authorized_keys {
+  if $ensure == present and $ssh_authorized_keys {
     file {
-      "/home/${username}/.ssh":
-        ensure  => directory,
-        require => File["/home/${username}"];
-
       "/home/${username}/.ssh/authorized_keys":
-        ensure  => $ensure,
+        ensure  => present,
         source  => $ssh_authorized_keys,
         require => File["/home/${username}/.ssh"];
+    }
+  } else {
+    file {
+      "/home/${username}/.ssh/authorized_keys":
+        ensure => absent;
+    }
+  }
+
+  if $ensure == present and $ssh_private_key {
+    file {
+      "/home/${username}/.ssh/id_rsa":
+        ensure  => present,
+        source  => $ssh_private_key,
+        require => File["/home/${username}/.ssh"];
+    }
+  } else {
+    file {
+      "/home/${username}/.ssh/id_rsa":
+        ensure => absent;
     }
   }
 }
