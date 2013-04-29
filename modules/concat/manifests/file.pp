@@ -24,20 +24,28 @@ define concat::file(
 
   $generate_command = '/bin/cat `/bin/ls * | /usr/bin/sort -n -t _ -k1`'
 
-  exec {
-    "concat-${name}":
-      cwd     => $fragment_dir,
-      command => "${generate_command} > ${path}",
-      unless  => "${generate_command} | cmp ${path}",
-      require => File["${fragment_dir}/00_empty_file"];
-  }
+  if $ensure == present {
+    exec {
+      "concat-${name}":
+        cwd     => $fragment_dir,
+        command => "${generate_command} > ${path}",
+        unless  => "${generate_command} | cmp ${path}",
+        require => File["${fragment_dir}/00_empty_file"];
+    }
 
-  file {
-    $path:
-      owner   => $owner,
-      group   => $group,
-      mode    => $mode,
-      require => Exec["concat-${name}"];
+    file {
+      $path:
+        ensure  => $ensure,
+        owner   => $owner,
+        group   => $group,
+        mode    => $mode,
+        require => Exec["concat-${name}"];
+    }
+  } else {
+    file {
+      $path:
+        ensure => $ensure;
+    }
   }
 
   if($head) {
