@@ -9,6 +9,12 @@ class puppet::agent::config {
     mode    => '0644',
   }
 
+  concat::fragment {
+    'puppet-conf-agent':
+      file    => 'puppet.conf',
+      content => template('puppet/puppet-agent.conf.erb');
+  }
+
   anchor { 'puppet::agent::config::begin': } ->
     Class['puppet::config'] ->
     anchor { 'puppet::agent::config::end': }

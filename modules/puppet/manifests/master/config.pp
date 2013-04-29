@@ -10,6 +10,12 @@ class puppet::master::config {
     mode   => '0644',
   }
 
+  concat::fragment {
+    'puppet-conf-master':
+      file    => 'puppet.conf',
+      content => template('puppet/puppet-master.conf.erb');
+  }
+
   $autosign_ensure = $::vagrant ? {
     'true'  => present,
     default => absent,
