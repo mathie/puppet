@@ -10,19 +10,16 @@ class puppet::master::config {
     mode   => '0644',
   }
 
-  if $::vagrant == 'true' {
-    file {
-      '/etc/puppet/autosign.conf':
-        source => 'puppet:///modules/puppet/autosign.conf';
-    }
-  } else {
-    file {
-      '/etc/puppet/autosign.conf':
-        ensure => absent;
-    }
+  $autosign_ensure = $::vagrant ? {
+    'true'  => present,
+    default => absent,
   }
 
   file {
+    '/etc/puppet/autosign.conf':
+      ensure  => $autosign_ensure,
+      content => "*\n";
+
     '/etc/puppet/puppetdb.conf':
       content => template('puppet/puppetdb.conf.erb');
 
