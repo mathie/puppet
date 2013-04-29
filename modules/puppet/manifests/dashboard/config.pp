@@ -9,6 +9,12 @@ class puppet::dashboard::config {
       password => $db_password;
   }
 
+  concat::fragment {
+    'puppet-conf-dashboard':
+      file    => 'puppet.conf',
+      content => template('puppet/puppet-dashboard.conf.erb');
+  }
+
   file {
     '/etc/puppet-dashboard/database.yml':
       ensure  => present,

@@ -1,5 +1,5 @@
 class puppetmaster {
-  include puppet::db
+  include puppetdb::client, puppetdb::server
 
   class {
     'puppet::master':

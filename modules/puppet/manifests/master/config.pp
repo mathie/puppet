@@ -26,12 +26,6 @@ class puppet::master::config {
       ensure  => $autosign_ensure,
       content => "*\n";
 
-    '/etc/puppet/puppetdb.conf':
-      content => template('puppet/puppetdb.conf.erb');
-
-    '/etc/puppet/routes.yaml':
-      source => 'puppet:///modules/puppet/routes.yaml';
-
     '/var/lib/puppet':
       ensure => directory,
       mode   => '0755';
