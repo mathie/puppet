@@ -6,8 +6,5 @@ class puppetdb::server::install {
       ensure => present;
   }
 
-  anchor { 'puppetdb::server::install::begin': } ->
-    Class['puppet::repo'] ->
-    Package['puppetdb'] ->
-    anchor { 'puppetdb::server::install::end': }
+  Class['puppet::repo'] -> Package['puppetdb']
 }

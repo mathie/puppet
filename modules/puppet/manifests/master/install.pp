@@ -4,10 +4,7 @@ class puppet::master::install {
   package {
     'puppetmaster':
       ensure => installed;
-
-    'puppetdb-terminus':
-      ensure => present;
   }
 
-  Class['puppet::repo'] -> Class['puppet::master::install']
+  Class['puppet::repo'] -> Package['puppetmaster']
 }

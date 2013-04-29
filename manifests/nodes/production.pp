@@ -51,6 +51,7 @@ node 'puppet' {
   include standard::rubaidh
   include mysql::server
   include puppetmaster, puppet::dashboard
+  include puppetdb::client, puppetdb::server
   include mcollective::middleware, mcollective::client
   include openvpn::server
   include rsyslog::server

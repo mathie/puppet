@@ -1,6 +1,4 @@
 class puppetmaster {
-  include puppetdb::client, puppetdb::server
-
   class {
     'puppet::master':
       ssh_key  => 'puppet:///modules/users/keys/root.keys',

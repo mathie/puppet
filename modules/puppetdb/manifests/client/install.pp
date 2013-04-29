@@ -6,8 +6,5 @@ class puppetdb::client::install {
       ensure => present;
   }
 
-  anchor { 'puppetdb::client::install::begin': } ->
-    Class['puppet::repo'] ->
-    Package['puppetdb-terminus'] ->
-    anchor { 'puppetdb::client::install::end': }
+  Class['puppet::repo'] -> Package['puppetdb-terminus']
 }
