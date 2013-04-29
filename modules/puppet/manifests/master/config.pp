@@ -10,7 +10,7 @@ class puppet::master::config($ssh_key, $git_repo) {
     mode   => '0644',
   }
 
-  if $::domain == 'vagrant.vm' {
+  if $::vagrant == 'true' {
     file {
       '/etc/puppet/autosign.conf':
         source => 'puppet:///modules/puppet/autosign.conf';
@@ -66,7 +66,7 @@ class puppet::master::config($ssh_key, $git_repo) {
       refreshonly => true;
   }
 
-  if $::virtual == 'virtualbox' {
+  if $::vagrant == 'true' {
     file {
       '/etc/puppet/modules':
         ensure => link,

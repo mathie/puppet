@@ -1,5 +1,5 @@
 class itison::hosts {
-  if $::virtual != 'virtualbox' {
+  if $::vagrant != 'true' {
     host {
       'einstein.itison.com':
         ensure       => present,

@@ -32,7 +32,7 @@ class network::hosts {
       ip     => 'ff02::3';
   }
 
-  if $::virtual == 'virtualbox' {
+  if $::vagrant == 'true' {
     host {
       "gate.${::domain}":
         ensure => present,

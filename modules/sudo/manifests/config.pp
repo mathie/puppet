@@ -13,7 +13,7 @@ class sudo::config {
       user => root;
   }
 
-  if $::virtual == 'virtualbox' {
+  if $::vagrant == 'true' {
     sudo::user {
       'vagrant-is-also-all-powerful':
         user        => vagrant,

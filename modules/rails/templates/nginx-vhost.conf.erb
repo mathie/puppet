@@ -1,6 +1,6 @@
 server {
   listen 80 default;
-  <% if @domain == 'vagrant.vm' %>
+  <% if @vagrant == 'true' %>
     listen 8090;
   <% end %>
 
