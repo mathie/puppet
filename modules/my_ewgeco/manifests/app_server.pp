@@ -13,4 +13,11 @@ class my_ewgeco::app_server($rails_env = 'production') {
       target   => "${::ipaddress_preferred}:80",
       options  => 'fail_timeout=2';
   }
+
+  @@nginx::upstream::server {
+    "my_ewgeco-appserver-${::hostname}-${rails_env}_ssl":
+      upstream => "my_ewgeco-${rails_env}_ssl",
+      target   => "${::ipaddress_preferred}:443",
+      options  => 'fail_timeout=2';
+  }
 }
