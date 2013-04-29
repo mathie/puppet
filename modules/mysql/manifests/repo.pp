@@ -1,13 +1,7 @@
 class mysql::repo {
-  include apt
-
   apt::repository {
     'percona':
-      source => 'puppet:///modules/mysql/percona-sources.list';
-  }
-
-  apt::key {
-    'percona-public-key':
+      url   => 'http://repo.percona.com/apt',
       keyid => 'CD2EFD2A';
   }
 }

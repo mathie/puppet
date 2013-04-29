@@ -6,5 +6,5 @@ class rethinkdb::server::install {
       ensure => present;
   }
 
-  Class['rethinkdb::repo'] -> Exec['apt-get-update'] -> Package['rethinkdb']
+  Class['rethinkdb::repo'] -> Package['rethinkdb']
 }

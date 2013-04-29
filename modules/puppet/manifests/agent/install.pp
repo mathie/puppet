@@ -6,5 +6,5 @@ class puppet::agent::install {
     ensure => present,
   }
 
-  Class['puppet::repo'] -> Exec['apt-get-update'] -> Class['puppet::agent::install']
+  Class['puppet::repo'] -> Class['puppet::agent::install']
 }

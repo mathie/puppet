@@ -9,5 +9,5 @@ class puppet::master::install {
       ensure => present;
   }
 
-  Class['puppet::repo'] -> Exec['apt-get-update'] -> Class['puppet::master::install']
+  Class['puppet::repo'] -> Class['puppet::master::install']
 }

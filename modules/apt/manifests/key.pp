@@ -5,4 +5,3 @@ define apt::key($keyid) {
       unless  => "/usr/bin/apt-key list |grep ${keyid} >/dev/null 2>&1";
   }
 }
-

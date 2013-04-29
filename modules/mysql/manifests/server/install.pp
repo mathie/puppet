@@ -6,7 +6,5 @@ class mysql::server::install {
       ensure => present;
   }
 
-  # FIXME: I'm trying to convince the apt-get update to happen (if necessary)
-  # before the package install. This doesn't feel like an elegant way, though.
-  Class['mysql::repo'] -> Exec['apt-get-update'] -> Package['percona-server-server']
+  Class['mysql::repo'] -> Package['percona-server-server']
 }

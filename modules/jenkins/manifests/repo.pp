@@ -1,13 +1,9 @@
 class jenkins::repo {
-  include apt
-
   apt::repository {
     'jenkins':
-      source => 'puppet:///modules/jenkins/sources.list';
-  }
-
-  apt::key {
-    'jenkins-public-key':
-      keyid => 'D50582E6';
+      url          => 'http://pkg.jenkins-ci.org/debian',
+      keyid        => 'D50582E6',
+      distribution => '',
+      components   => [ 'binary' ];
   }
 }

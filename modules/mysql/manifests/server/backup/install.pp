@@ -9,5 +9,5 @@ class mysql::server::backup::install {
       ensure => present;
   }
 
-  Class['mysql::repo'] -> Exec['apt-get-update'] -> Package['percona-xtrabackup']
+  Class['mysql::repo'] -> Package['percona-xtrabackup']
 }

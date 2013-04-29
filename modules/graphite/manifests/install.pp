@@ -81,11 +81,7 @@ class graphite::install {
 
   apt::repository {
     'gunicorn':
-      source => 'puppet:///modules/graphite/gunicorn-sources.list';
-  }
-
-  apt::key {
-    'gunicorn-public-key':
+      url   => 'http://ppa.launchpad.net/gunicorn/ppa/ubuntu',
       keyid => '5370FF2A';
   }
 
@@ -94,5 +90,5 @@ class graphite::install {
       ensure => present;
   }
 
-  Apt::Repository['gunicorn'] -> Apt::Key['gunicorn-public-key'] -> Exec['apt-get-update'] -> Package['gunicorn']
+  Apt::Repository['gunicorn'] -> Package['gunicorn']
 }

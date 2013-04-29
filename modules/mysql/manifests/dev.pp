@@ -6,5 +6,5 @@ class mysql::dev {
       ensure => present;
   }
 
-  Class['mysql::repo'] -> Exec['apt-get-update'] -> Class['mysql::dev']
+  Class['mysql::repo'] -> Class['mysql::dev']
 }

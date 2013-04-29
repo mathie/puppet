@@ -15,5 +15,5 @@ class jenkins::install {
       ensure => present;
   }
 
-  Class['jenkins::repo'] -> Exec['apt-get-update'] -> Class['jenkins::install']
+  Class['jenkins::repo'] -> Class['jenkins::install']
 }

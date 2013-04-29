@@ -1,13 +1,8 @@
 class puppet::repo {
-  include apt
-
   apt::repository {
     'puppetlabs':
-      source => 'puppet:///modules/puppet/sources.list';
-  }
-
-  apt::key {
-    'puppetlabs-public-key':
-      keyid => '4BD6EC30';
+      url        => 'http://apt.puppetlabs.com/',
+      components => [ 'main', 'dependencies' ],
+      keyid      => '4BD6EC30';
   }
 }
