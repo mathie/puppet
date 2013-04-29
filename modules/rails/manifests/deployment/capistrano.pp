@@ -15,6 +15,11 @@ define rails::deployment::capistrano(
     '1.9' => '/usr/bin/ruby1.9.1',
   }
 
+  $bundler_dep = $ruby_version ? {
+    '1.8' => Package['bundler18'],
+    '1.9' => Package['bundler19'],
+  }
+
   $bundler_command = "${ruby_command} -S bundle"
   $bundle_exec     = "${bundler_command} exec"
   $rake            = "${bundle_exec} rake"
@@ -204,7 +209,7 @@ define rails::deployment::capistrano(
       user        => $username,
       cwd         => $cached_copy,
       refreshonly => true,
-      require     => [ Vcsrepo["${app_name}-repo-cached-copy"], Package['bundler'], Class[$db_dev_install] ];
+      require     => [ Vcsrepo["${app_name}-repo-cached-copy"], $bundler_dep, Class[$db_dev_install] ];
   }
 
   Vcsrepo["${app_name}-repo-cached-copy"] ~> Exec["install-${app_name}-gem-bundle"]
