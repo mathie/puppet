@@ -45,12 +45,7 @@ class graphite::install {
       mode   => '0755';
   }
 
-  exec {
-    'symlink-collectd-host-rrds':
-      command => "/bin/bash -c 'cd /var/lib/collectd/rrd && for i in *; do ln -snf /var/lib/collectd/rrd/\${i} /opt/graphite/storage/rrd/collectd/\${i//./_}; done'",
-      user    => graphite,
-      require => [ File['/var/lib/collectd/rrd'], File['/opt/graphite/storage/rrd/collectd'] ];
-  }
+  File <<| tag == 'collectd-host-rrds' |>>
 
   package {
     [ 'python-cairo', 'python-memcache', 'python-django',
