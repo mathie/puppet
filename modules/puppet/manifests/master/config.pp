@@ -29,6 +29,14 @@ class puppet::master::config {
     '/var/lib/puppet':
       ensure => directory,
       mode   => '0755';
+
+    '/var/lib/puppet/reports':
+      ensure       => directory,
+      owner        => puppet,
+      group        => puppet,
+      mode         => '0750',
+      recurse      => true,
+      recurselimit => 1;
   }
 
   file {
