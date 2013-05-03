@@ -18,21 +18,26 @@ class mysql::server::config {
       require   => Group['mysql'];
   }
 
-  File {
-    owner   => mysql,
-    group   => mysql,
-    require => [ Group['mysql'], User['mysql'] ],
-  }
-
   file {
     '/etc/mysql':
       ensure => directory,
+      owner  => root,
+      group  => root,
       mode   => '0755';
 
     '/etc/mysql/my.cnf':
       ensure => present,
       source => 'puppet:///modules/mysql/server/my.cnf',
+      owner  => root,
+      group  => root,
       mode   => '0644';
+
+    '/var/lib/mysql':
+      ensure  => directory,
+      owner   => mysql,
+      group   => mysql,
+      mode    => '0660',
+      recurse => true;
   }
 
   logrotate::log_file {
