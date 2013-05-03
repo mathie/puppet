@@ -8,7 +8,7 @@ define sudo::user($user, $commands = 'ALL', $no_password = false, $hosts = 'ALL'
   }
 
   concat::fragment {
-    "${user}-${hosts}-${as}":
+    "${user}-${hosts}-${as}-${commands}":
       file    => 'sudoers',
       content => "${user} ${hosts} = (${as}) ${no_password_string} ${commands}\n";
   }
