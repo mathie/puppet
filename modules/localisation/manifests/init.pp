@@ -1,4 +1,4 @@
-class localisation($locale = 'en_GB', $timezone = 'Europe/London') {
+class localisation($locale = 'en_GB', $timezone = 'GB-Eire') {
   $full_locale     = "${locale}.UTF-8"
   $localedef_locale = "${locale}.utf8"
 

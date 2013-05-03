@@ -8,7 +8,7 @@ class standard {
     'localisation':
       stage    => first,
       locale   => 'en_GB', # UTF-8 is automatically appended.
-      timezone => 'Europe/London';
+      timezone => 'GB-Eire';
 
     'dhcp::client':
       stage     => first,
