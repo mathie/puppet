@@ -9,7 +9,8 @@ define concat::file(
 ) {
   include concat
 
-  $fragment_dir = "${concat::fragment_root}/${name}"
+  $sanitised_name = regsubst($name, '[/ ]', '_', 'G')
+  $fragment_dir   = "${concat::fragment_root}/${sanitised_name}"
 
   file {
     $fragment_dir:
@@ -50,7 +51,7 @@ define concat::file(
 
   if($head) {
     concat::fragment {
-      "${name}-head":
+      "${sanitised_name}-head":
         file    => $name,
         order   => 0,
         content => $head;
@@ -59,7 +60,7 @@ define concat::file(
 
   if($tail) {
     concat::fragment {
-      "${name}-tail":
+      "${sanitised_name}-tail":
         file    => $name,
         order   => 99,
         content => $tail;
