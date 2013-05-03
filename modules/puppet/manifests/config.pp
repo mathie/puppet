@@ -14,4 +14,10 @@ class puppet::config {
       file    => 'puppet.conf',
       content => template('puppet/puppet-main.conf.erb');
   }
+
+  file {
+    '/var/lib/puppet':
+      ensure => directory,
+      mode   => '0755';
+  }
 }

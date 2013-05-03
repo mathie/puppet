@@ -26,10 +26,6 @@ class puppet::master::config {
       ensure  => $autosign_ensure,
       content => "*\n";
 
-    '/var/lib/puppet':
-      ensure => directory,
-      mode   => '0755';
-
     '/var/lib/puppet/reports':
       ensure       => directory,
       owner        => puppet,
