@@ -4,7 +4,8 @@ class mysql::server($root_password = undef) {
   include mysql::server::install,
     mysql::server::config,
     mysql::server::service,
-    mysql::server::timezones
+    mysql::server::timezones,
+    mysql::deadlocks
 
   # This is slightly unusual in terms of dependencies. The package helpfully
   # configures MySQL, creates the data store and starts the service for us. If
