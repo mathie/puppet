@@ -1,8 +1,6 @@
-$bootstrapping = true
-
-import '../classes/bootstrap_common'
+import './common'
 
 node default {
-  include bootstrap_common
+  include bootstrap::common
   include puppet::agent
 }

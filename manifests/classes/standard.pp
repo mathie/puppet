@@ -1,5 +1,5 @@
 class standard {
-  include bootstrap_common
+  include stages
 
   class {
     'apt':

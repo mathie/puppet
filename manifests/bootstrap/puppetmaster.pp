@@ -1,9 +1,13 @@
 $bootstrapping = true
 
-import '../classes/bootstrap_common'
-import '../classes/puppetmaster'
+import './common'
 
-node 'puppet' {
-  include bootstrap_common
-  include puppetmaster
+node default {
+  include bootstrap::common
+
+  class {
+    'puppet::master':
+      ssh_key  => 'puppet:///modules/users/keys/root.keys',
+      git_repo => 'git@github.com:rubaidh/puppet.git';
+  }
 }
