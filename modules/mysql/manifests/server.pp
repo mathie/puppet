@@ -10,6 +10,7 @@ class mysql::server($root_password = undef) {
     mysql::server::config,
     mysql::server::service,
     mysql::server::timezones,
+    mysql::server::checks,
     mysql::deadlocks
 
   # This is slightly unusual in terms of dependencies. The package helpfully

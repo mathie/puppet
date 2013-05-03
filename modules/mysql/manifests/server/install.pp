@@ -1,5 +1,5 @@
 class mysql::server::install {
-  include mysql::repo, mysql::client
+  include mysql::repo
 
   package {
     'percona-server-server':
