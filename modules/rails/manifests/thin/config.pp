@@ -15,18 +15,13 @@ class rails::thin::config($app_name, $ruby_version = '1.9', $rails_env = 'produc
     mode    => '0644',
   }
 
-  nginx::upstream {
-    "${app_name}_${::hostname}_${rails_env}":
-  }
-
-  nginx::vhost {
-    "${app_name}_${rails_env}":
-      content => template('rails/nginx-vhost.conf.erb');
-  }
-
-  nginx::vhost {
-    "${app_name}_${rails_env}_ssl":
-      content => template('rails/nginx-ssl-vhost.conf.erb');
+  nginx::vhost_to_upstream {
+    "${app_name}-${::hostname}-${rails_env}":
+      root                    => "/u/apps/${app_name}/current/public",
+      vagrant_additional_port => 8090,
+      extra_ssl_vhost         => true,
+      static_asset_path       => '/assets',
+      content                 => template('rails/nginx-vhost.conf.erb');
   }
 
   if $app_servers == 1 {
@@ -37,9 +32,9 @@ class rails::thin::config($app_name, $ruby_version = '1.9', $rails_env = 'produc
         notify  => Service["${app_name}-thin"];
     }
 
-    @@nginx::upstream::server {
+    nginx::upstream::server {
       "${app_name}_${::hostname}_${rails_env}_socket":
-        upstream => "${app_name}_${::hostname}_${rails_env}",
+        upstream => "${app_name}-${::hostname}-${rails_env}",
         target   => "unix:/u/apps/${app_name}/shared/thin.sock",
         options  => 'fail_timeout=0';
     }

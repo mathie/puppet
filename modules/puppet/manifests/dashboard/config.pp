@@ -49,20 +49,13 @@ class puppet::dashboard::config {
 
   Mysql::Server::Database[$database] ~> Exec['create-puppet-dashboard-schema']
 
-  nginx::upstream {
-    'puppet_dashboard':
-  }
-
-  @@nginx::upstream::server {
-    'puppet_dashboard_localhost_production':
-      upstream => 'puppet_dashboard',
-      target   => '127.0.0.1:3000',
-      options  => 'fail_timeout=0';
-  }
-
-  nginx::vhost {
+  nginx::vhost_to_local_upstream {
     'puppet-dashboard':
-      content => template('puppet/dashboard/nginx.conf.erb');
+      upstream_port        => 3000,
+      aliases              => [ 'puppet' ],
+      root                 => '/usr/share/puppet-dashboard',
+      additional_port      => 8084,
+      remote_auth_required => true;
   }
 
   cron {

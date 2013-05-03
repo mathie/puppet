@@ -1,0 +1,9 @@
+server {
+  listen 443;
+
+  ssl on;
+  ssl_certificate /var/lib/puppet/ssl/certs/<%= fqdn %>.pem;
+  ssl_certificate_key /var/lib/puppet/ssl/private_keys/<%= fqdn %>.pem;
+
+  <%= scope.function_template(['nginx/vhost_to_upstream_common.conf.erb']) %>
+}

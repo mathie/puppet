@@ -1,0 +1,11 @@
+server {
+  listen 80;
+  <% if @vagrant == 'true' && @vagrant_additional_port -%>
+    listen <%= @vagrant_additional_port %>;
+  <% end -%>
+  <% if @additional_port -%>
+    listen <%= @additional_port %>;
+  <% end -%>
+
+  <%= scope.function_template(['nginx/vhost_to_upstream_common.conf.erb']) %>
+}

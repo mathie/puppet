@@ -6,9 +6,11 @@ class ci::master {
   include ci::dependencies
   include ci::plugins
 
-  nginx::vhost {
+  nginx::vhost_to_local_upstream {
     'ci':
-      content => template('ci/nginx.conf.erb');
+      upstream_port           => 8080,
+      root                    => '/var/lib/jenkins/www',
+      vagrant_additional_port => 8090;
   }
 
   Class['jenkins'] -> Class['ci::config']

@@ -27,28 +27,19 @@ class rails::unicorn::config($app_name, $ruby_version = '1.9', $rails_env = 'pro
       content => template('rails/upstart-unicorn.conf.erb');
   }
 
-  @@nginx::upstream::server {
+  nginx::vhost_to_upstream {
+    "${app_name}-${hostname}-${rails_env}":
+      root                    => "/u/apps/${app_name}/current/public",
+      vagrant_additional_port => 8090,
+      extra_ssl_vhost         => true,
+      static_asset_path       => '/assets',
+      content                 => template('rails/nginx-vhost.conf.erb');
+  }
+
+  nginx::upstream::server {
     "${app_name}_${::hostname}_${rails_env}_socket":
-      upstream => "${app_name}_${::hostname}_${rails_env}",
+      upstream => "${app_name}-${::hostname}-${rails_env}",
       target   => "unix:/u/apps/${app_name}/shared/unicorn.sock",
       options  => 'fail_timeout=0';
-  }
-
-  # FIXME: The upstream and vhost declarations really belong to the app server
-  # itself. Move them there.
-  nginx::upstream {
-    "${app_name}_${::hostname}_${rails_env}":
-  }
-
-  # FIXME: And, for good measure, merge these two vhost declarations, which are
-  # identical bar the SSL declaration.
-  nginx::vhost {
-    "${app_name}_${rails_env}":
-      content => template('rails/nginx-vhost.conf.erb');
-  }
-
-  nginx::vhost {
-    "${app_name}_${rails_env}_ssl":
-      content => template('rails/nginx-ssl-vhost.conf.erb');
   }
 }
