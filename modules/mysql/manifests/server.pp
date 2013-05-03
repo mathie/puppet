@@ -1,4 +1,9 @@
 class mysql::server($root_password = undef) {
+  $root_password_flag = $root_password ? {
+    undef   => '',
+    default => " -p${mysql::server::root_password}",
+  }
+
   include mysql::client
 
   include mysql::server::install,
