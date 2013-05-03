@@ -5,7 +5,7 @@ $nodes = {
 
 # Customisation for the puppetmaster
 $puppetmaster_options = {
-  :forward_ports => { 8084 => 8084, 8085 => 8085 }
+  :forward_ports =>  { 8084 => 8084, 8085 => 8085, 8086 => 8086, 8087 => 8087 }
 }
 
 # Variables you might want to change
