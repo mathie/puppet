@@ -19,5 +19,7 @@ class collectd::config {
       content => template('collectd/collectd.conf.erb');
   }
 
-  Class['collectd::config'] -> Class['collectd::plugins::standard']
+  anchor { 'collectd::config::begin': } ->
+    Class['collectd::plugins::standard'] ->
+    anchor { 'collectd::config::end': }
 }

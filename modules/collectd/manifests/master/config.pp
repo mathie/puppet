@@ -11,5 +11,8 @@ class collectd::master::config {
       source => 'puppet:///modules/collectd/users';
   }
 
-  Class['collectd::config'] -> Class['collectd::plugins::master'] ~> Class['collectd::service']
+  anchor { 'collectd::master::config::begin': } ->
+    Class['collectd::config'] ->
+    Class['collectd::plugins::master'] ->
+    anchor { 'collectd::master::config::end': }
 }
