@@ -14,6 +14,4 @@ class jenkins::install {
     'jenkins-cli':
       ensure => present;
   }
-
-  Class['jenkins::repo'] -> Class['jenkins::install']
 }

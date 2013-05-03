@@ -1,4 +1,4 @@
-class jenkins::repo {
+class jenkins::repo($stage = first) {
   apt::repository {
     'jenkins':
       url          => 'http://pkg.jenkins-ci.org/debian',

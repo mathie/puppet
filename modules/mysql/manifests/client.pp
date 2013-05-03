@@ -5,6 +5,4 @@ class mysql::client {
     'percona-server-client':
       ensure => present;
   }
-
-  Class['mysql::repo'] -> Package['percona-server-client']
 }

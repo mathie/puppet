@@ -5,6 +5,4 @@ class puppetdb::client::install {
     'puppetdb-terminus':
       ensure => present;
   }
-
-  Class['puppet::repo'] -> Package['puppetdb-terminus']
 }

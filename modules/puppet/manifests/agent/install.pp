@@ -5,6 +5,4 @@ class puppet::agent::install {
   package { 'puppet':
     ensure => present,
   }
-
-  Class['puppet::repo'] -> Package['puppet']
 }

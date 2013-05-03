@@ -1,4 +1,4 @@
-class puppet::repo {
+class puppet::repo($stage = first) {
   apt::repository {
     'puppetlabs':
       url        => 'http://apt.puppetlabs.com/',

@@ -1,4 +1,4 @@
-class mysql::repo {
+class mysql::repo($stage = first) {
   apt::repository {
     'percona':
       url   => 'http://repo.percona.com/apt',

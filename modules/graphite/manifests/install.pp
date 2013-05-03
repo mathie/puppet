@@ -73,17 +73,4 @@ class graphite::install {
       creates => '/opt/graphite/lib/carbon',
       require => Package['python-twisted'];
   }
-
-  apt::repository {
-    'gunicorn':
-      url   => 'http://ppa.launchpad.net/gunicorn/ppa/ubuntu',
-      keyid => '5370FF2A';
-  }
-
-  package {
-    'gunicorn':
-      ensure => present;
-  }
-
-  Apt::Repository['gunicorn'] -> Package['gunicorn']
 }

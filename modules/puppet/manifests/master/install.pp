@@ -5,6 +5,4 @@ class puppet::master::install {
     'puppetmaster':
       ensure => installed;
   }
-
-  Class['puppet::repo'] -> Package['puppetmaster']
 }

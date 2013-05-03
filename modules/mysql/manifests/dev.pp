@@ -6,5 +6,4 @@ class mysql::dev {
       ensure => present;
   }
 
-  Class['mysql::repo'] -> Class['mysql::dev']
 }

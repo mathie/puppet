@@ -8,6 +8,4 @@ class mysql::server::backup::install {
     's3cmd':
       ensure => present;
   }
-
-  Class['mysql::repo'] -> Package['percona-xtrabackup']
 }

@@ -5,6 +5,4 @@ class puppetdb::server::install {
     'puppetdb':
       ensure => present;
   }
-
-  Class['puppet::repo'] -> Package['puppetdb']
 }

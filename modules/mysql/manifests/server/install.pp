@@ -5,6 +5,4 @@ class mysql::server::install {
     'percona-server-server':
       ensure => present;
   }
-
-  Class['mysql::repo'] -> Package['percona-server-server']
 }

@@ -2,6 +2,9 @@ class standard {
   include bootstrap_common
 
   class {
+    'apt':
+      stage => first;
+
     'localisation':
       stage    => first,
       locale   => 'en_GB', # UTF-8 is automatically appended.
