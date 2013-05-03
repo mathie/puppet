@@ -48,6 +48,16 @@ class standard {
   include logrotate
   include apt::unattended_upgrades
 
+  nagios::host { $::fqdn: }
+  include nagios::nrpe_check::disk_space,
+    nagios::nrpe_check::users,
+    nagios::nrpe_check::processes,
+    nagios::nrpe_check::load,
+    nagios::nrpe_check::apt,
+    nagios::nrpe_check::puppet,
+    nagios::nrpe_check::swap,
+    nagios::nrpe_check::memory
+
   include users
   users::account {
     'ubuntu':

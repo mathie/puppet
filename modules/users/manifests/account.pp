@@ -8,6 +8,7 @@ define users::account(
   $shell               = '/bin/bash',
   $ssh_authorized_keys = "puppet:///modules/users/keys/${name}.keys.pub",
   $ssh_private_key     = undef,
+  $email               = undef,
   $sudo                = false
 ) {
   $username = $name
@@ -40,6 +41,15 @@ define users::account(
       shell     => $shell,
       allowdupe => false,
       require   => $user_require;
+  }
+
+  if $email and $email != '' {
+    @nagios_contact {
+      $username:
+        ensure => $ensure,
+        alias  => $comment,
+        email  => $email;
+    }
   }
 
   if $sudo {

@@ -1,0 +1,1 @@
+command[<%= @check_name %>]=<%= @sudo ? 'sudo ' : '' %><%= @check_command_path %>/<%= @real_check_command %><%= @warning_string.nil? ? '' : " -w #{@warning_string}" %><%= @critical_string.nil? ? '' : " -c #{@critical_string}" %><%= @arguments.nil? ? '' : " #{@arguments}" %>

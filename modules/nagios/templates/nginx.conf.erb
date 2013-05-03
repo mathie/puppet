@@ -1,0 +1,36 @@
+server {
+  listen 80;
+  <% if @vagrant == 'true' -%>
+  listen 8085;
+  <% end -%>
+  server_name nagios nagios.<%= @domain %>;
+
+  auth_basic 'Ewgeco Ops';
+  auth_basic_user_file /etc/nginx/htpasswd;
+
+  root /usr/share/nagios3/htdocs;
+  index index.php index.html;
+
+  location /stylesheets {
+    alias /etc/nagios3/stylesheets;
+  }
+
+  location ~ \.cgi$ {
+    root /usr/lib/cgi-bin/nagios3;
+
+    rewrite ^/cgi-bin/nagios3/(.*)$ /$1;
+
+    include /etc/nginx/fastcgi_params;
+
+    fastcgi_param AUTH_USER $remote_user;
+    fastcgi_param REMOTE_USER $remote_user;
+    fastcgi_param SCRIPT_FILENAME /usr/lib/cgi-bin/nagios3$fastcgi_script_name;
+
+    fastcgi_pass fcgiwrap;
+  }
+
+  location ~ \.php$ {
+    include /etc/nginx/fastcgi_params;
+    fastcgi_pass php;
+  }
+}
