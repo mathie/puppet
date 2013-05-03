@@ -11,7 +11,7 @@ define nginx::upstream {
       tail  => "}\n";
   }
 
-  @@nginx::upstream::server {
+  nginx::upstream::server {
     "${name}-${::hostname}-dummy-upstream":
       upstream => $name,
       target   => '127.0.0.1:65535',
