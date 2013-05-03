@@ -50,10 +50,24 @@ node 'temperature' {
 node 'puppet' {
   include standard::rubaidh
   include mysql::server
-  include puppetmaster, puppet::dashboard
+  include puppet::dashboard
   include puppetdb::client, puppetdb::server
   include mcollective::middleware, mcollective::client
+  include nagios::master
   include openvpn::server
   include rsyslog::server
   include graphite
+
+  class {
+    'apt::cache::server':
+      stage => first;
+
+    'apt::cache::client':
+      stage   => first,
+      require => Class['apt::cache::server'];
+
+    'puppet::master':
+      ssh_key  => 'puppet:///modules/users/keys/root.keys',
+      git_repo => 'git@github.com:rubaidh/puppet.git';
+  }
 }
