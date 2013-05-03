@@ -56,9 +56,16 @@ class nginx::config {
     '/etc/nginx/conf.d/proxy.conf':
       ensure => present,
       source => 'puppet:///modules/nginx/proxy.conf';
-
-    '/etc/nginx/htpasswd':
-      ensure => present,
-      source => 'puppet:///modules/nginx/htpasswd';
   }
+
+  concat::file {
+    'nginx-htpasswd':
+      ensure => present,
+      path   => '/etc/nginx/htpasswd',
+      owner  => root,
+      group  => root,
+      mode   => '0644';
+  }
+
+  Concat::Fragment <| file == 'nginx-htpasswd' |>
 }

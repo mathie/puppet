@@ -2,6 +2,7 @@ define users::account(
   $uid                 = 65534,
   $comment             = $name,
   $password            = '*',
+  $htpasswd            = undef,
   $groups              = [],
   $ensure              = present,
   $shell               = '/bin/bash',
@@ -45,6 +46,14 @@ define users::account(
     sudo::user {
       "${username}-is-all-powerful":
         user => $username;
+    }
+  }
+
+  if $htpasswd {
+    nginx::user {
+      $username:
+        ensure   => $ensure,
+        password => $htpasswd;
     }
   }
 
