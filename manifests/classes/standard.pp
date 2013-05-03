@@ -31,6 +31,10 @@ class standard {
       'openvpn::agent':
         stage   => first,
         require => Class['network::hosts'];
+
+      'apt::cache::client':
+        stage   => first,
+        require => Class['openvpn::agent'];
     }
 
     include collectd::agent
