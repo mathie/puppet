@@ -300,16 +300,16 @@ Puppet::Type.type(:vcsrepo).provide(:git, :parent => Puppet::Provider::Vcsrepo) 
         env_save = ENV['GIT_SSH']
         ENV['GIT_SSH'] = f.path
 
-        ret = git(*args)
+        ret = with_timeout { git(*args) }
 
         ENV['GIT_SSH'] = env_save
 
         return ret
       end
     elsif @resource.value(:user)
-      su(@resource.value(:user), '-c', "git #{args.join(' ')}" )
+      with_timeout { su(@resource.value(:user), '-c', "git #{args.join(' ')}" ) }
     else
-      git(*args)
+      with_timeout { git(*args) }
     end
   end
 end

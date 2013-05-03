@@ -27,6 +27,14 @@ class Puppet::Provider::Vcsrepo < Puppet::Provider
     value
   end
 
+  def with_timeout(&block)
+    value = nil
+    Timeout::timeout(@resource.value(:timeout)) do
+      value = yield
+    end
+    value
+  end
+
   def tempdir
     @tempdir ||= File.join(Dir.tmpdir, 'vcsrepo-' + Digest::MD5.hexdigest(@resource.value(:path)))
   end

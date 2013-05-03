@@ -147,6 +147,12 @@ Puppet::Type.newtype(:vcsrepo) do
     defaultto false
   end
 
+  newparam :timeout do
+    desc "Time out command invocations (to recover from failed communication with remotes)."
+    newvalues(/^[0-9]+$/)
+    defaultto 60
+  end
+
   newparam :compression, :required_features => [:gzip_compression] do
     desc "Compression level"
     validate do |amount|
