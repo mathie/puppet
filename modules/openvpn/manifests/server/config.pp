@@ -9,10 +9,5 @@ class openvpn::server::config {
       source => 'puppet:///modules/openvpn/dh1024.pem';
   }
 
-  @@host {
-    "vpnmaster.${::domain}":
-      ensure       => present,
-      ip           => $::ipaddress_internal,
-      host_aliases => [ 'vpnmaster' ];
-  }
+  network::host_alias { 'vpnmaster': }
 }
