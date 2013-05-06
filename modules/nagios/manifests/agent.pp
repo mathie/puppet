@@ -1,4 +1,7 @@
-class nagios::agent {
+class nagios::agent(
+  $htpasswd_user     = 'nagios',
+  $htpasswd_password = 'Gahqua4f'
+) {
   include nagios::plugins
   include nagios::agent::install, nagios::agent::config, nagios::agent::service
 

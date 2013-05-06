@@ -1,4 +1,9 @@
 class nagios::agent::config {
+  nginx::user {
+    $nagios::agent::htpasswd_user:
+      password => $nagios::agent::htpasswd_password;
+  }
+
   file {
     '/etc/nagios/nrpe_local.cfg':
       ensure => absent;
