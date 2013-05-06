@@ -68,8 +68,8 @@ class nagios::master::config {
   anchor { 'nagios::master::config::begin': }
   anchor { 'nagios::master::config::end': }
 
-  Anchor['nagios::master::config::begin'] -> Class['nagios::master::contacts']    -> Anchor['nagios::master::config::end']
-  Anchor['nagios::master::config::begin'] -> Class['nagios::master::timeperiods'] -> Anchor['nagios::master::config::end']
-  Anchor['nagios::master::config::begin'] -> Class['nagios::master::hosts']       -> Anchor['nagios::master::config::end']
-  Anchor['nagios::master::config::begin'] -> Class['nagios::master::services']    -> Anchor['nagios::master::config::end']
+  Anchor['nagios::master::config::begin'] -> File['/etc/nagios'] -> Class['nagios::master::contacts']    -> Anchor['nagios::master::config::end']
+  Anchor['nagios::master::config::begin'] -> File['/etc/nagios'] -> Class['nagios::master::timeperiods'] -> Anchor['nagios::master::config::end']
+  Anchor['nagios::master::config::begin'] -> File['/etc/nagios'] -> Class['nagios::master::hosts']       -> Anchor['nagios::master::config::end']
+  Anchor['nagios::master::config::begin'] -> File['/etc/nagios'] -> Class['nagios::master::services']    -> Anchor['nagios::master::config::end']
 }
