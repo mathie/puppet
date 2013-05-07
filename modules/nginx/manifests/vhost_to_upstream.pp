@@ -62,7 +62,9 @@ define nginx::vhost_to_upstream(
     }
   }
 
-  network::host_alias {
-    $name:
+  if $name != $::hostname {
+    network::host_alias {
+      $name:
+    }
   }
 }
