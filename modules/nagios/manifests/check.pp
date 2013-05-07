@@ -16,6 +16,6 @@ define nagios::check(
       host_name           => $::fqdn,
       service_description => $service_description,
       servicegroups       => $groups,
-      check_command       => "${full_check_command}";
+      check_command       => $full_check_command;
   }
 }

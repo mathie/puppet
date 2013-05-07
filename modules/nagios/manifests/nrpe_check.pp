@@ -58,7 +58,7 @@ define nagios::nrpe_check(
 
   concat::fragment {
     "nagios-nrpe-check-${check_name}":
-      file => 'nagios-nrpe-config',
+      file    => 'nagios-nrpe-config',
       content => template('nagios/nrpe-check.conf.erb');
   }
 

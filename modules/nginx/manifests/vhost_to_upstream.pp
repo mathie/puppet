@@ -39,7 +39,7 @@ define nginx::vhost_to_upstream(
     }
   }
 
-  if $vagrant == 'true' and $vagrant_additional_port {
+  if $::vagrant == 'true' and $vagrant_additional_port {
     nginx::nrpe_check {
       "${vhost_fqdn}-${vagrant_additional_port}":
         vhost         => $vhost_fqdn,

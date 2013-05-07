@@ -15,12 +15,12 @@ class nagios::master::hosts {
 
   nagios_host {
     'ubuntu-precise-host':
-      register       => 0,
-      use            => 'generic-host',
-      notes          => 'Ubuntu 12.04 LTS servers',
-      icon_image     => 'base/ubuntu.png',
-      icon_image_alt => 'Ubuntu 12.04 LTS servers',
-      vrml_image     => 'ubuntu.png',
+      register        => 0,
+      use             => 'generic-host',
+      notes           => 'Ubuntu 12.04 LTS servers',
+      icon_image      => 'base/ubuntu.png',
+      icon_image_alt  => 'Ubuntu 12.04 LTS servers',
+      vrml_image      => 'ubuntu.png',
       statusmap_image => 'base/ubuntu.gd2';
 
     'generic-host':
