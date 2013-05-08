@@ -6,9 +6,14 @@ define rails::database(
   $username     = $name,
   $password     = '',
   $rails_env    = 'production',
-  $stanza_title = $rails_env,
+  $stanza_title = undef,
   $order        = 50
 ) {
+
+  $real_stanza_title = $stanza_title ? {
+    undef   => $rails_env,
+    default => $stanza_title,
+  }
 
   if $db_type == 'mysql' or $db_type == 'mysql2' {
     mysql::server::database {
@@ -32,7 +37,7 @@ define rails::database(
 
   @@rails::database::stanza {
     "${hostname}_${app}_${rails_env}_${database}":
-      stanza_title => $stanza_title,
+      stanza_title => $real_stanza_title,
       db_type      => $db_type,
       app          => $app,
       database     => $database,
