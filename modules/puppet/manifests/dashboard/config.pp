@@ -36,6 +36,13 @@ class puppet::dashboard::config {
       group   => root,
       mode    => '0644',
       content => template('puppet/dashboard/etc-default-puppet-dashboard-workers.erb');
+
+    '/etc/init.d/puppet-dashboard':
+      ensure  => present,
+      owner   => root,
+      group   => root,
+      mode    => '0644',
+      content => template('puppet/dashboard/puppet-dashboard-init.erb');
   }
 
   exec {
