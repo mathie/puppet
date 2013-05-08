@@ -41,7 +41,7 @@ class puppet::dashboard::config {
       ensure  => present,
       owner   => root,
       group   => root,
-      mode    => '0644',
+      mode    => '0755',
       content => template('puppet/dashboard/puppet-dashboard-init.erb');
   }
 
