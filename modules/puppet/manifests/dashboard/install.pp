@@ -24,7 +24,7 @@ class puppet::dashboard::install {
     # linked to the version of Rails that puppet dashboard relies on, so in
     # order to not suffer pain, I'm fixing the version for now.
     'puppet-dashboard':
-      ensure  => '1.2.22-1puppetlabs1',
+      ensure  => '1.2.23-1puppetlabs1',
       require => Class['mysql::client'];
   }
 }
