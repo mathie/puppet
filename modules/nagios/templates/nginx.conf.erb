@@ -11,6 +11,10 @@ server {
   root /usr/share/nagios3/htdocs;
   index index.php index.html;
 
+  if ($request_method !~ ^(GET|HEAD|POST)$ ) {
+    return 405;
+  }
+
   location /stylesheets {
     alias /etc/nagios3/stylesheets;
   }
