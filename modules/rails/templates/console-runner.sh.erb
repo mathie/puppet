@@ -1,0 +1,8 @@
+#!/bin/bash
+
+if [ "${USER}" != "<%= @username %>" ]; then
+  exec sudo -u <%= @username %> -p "[%u@%h -> %U] Password:" $0
+fi
+
+cd <%= @current_path %>
+exec <%= @bundle_exec %> rails console <%= @rails_env %>

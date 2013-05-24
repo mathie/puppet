@@ -214,6 +214,15 @@ define rails::deployment::capistrano(
 
   Vcsrepo["${app_name}-repo-cached-copy"] ~> Exec["install-${app_name}-gem-bundle"]
 
+  file {
+    "/usr/local/bin/${app_name}":
+      ensure  => present,
+      owner   => root,
+      group   => root,
+      mode    => '0755',
+      content => template('rails/console-runner.sh.erb');
+  }
+
   if $precompile_assets {
     include $asset_compiler
 
