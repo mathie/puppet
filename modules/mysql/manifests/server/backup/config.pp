@@ -37,6 +37,11 @@ class mysql::server::backup::config {
       ensure => present,
       source => 'puppet:///modules/mysql/server/mysql-backup.sh',
       mode   => '0755';
+
+    '/usr/sbin/mysql-restore':
+      ensure => present,
+      source => 'puppet:///modules/mysql/server/mysql-restore.sh',
+      mode   => '0755';
   }
 
   cron {

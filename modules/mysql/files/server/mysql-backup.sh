@@ -22,12 +22,7 @@ if [ ${MODE} != 'full' -a ${MODE} != 'differential' ]; then
   exit 1
 fi
 
-BACKUP_BASE=/var/backups/mysql
-BACKUP_TMP=${BACKUP_BASE}/tmp
 BACKUP_DIR=${BACKUP_BASE}/${MODE}
-FULL_BACKUP_DIR="${BACKUP_BASE}/full"
-
-COMMON_INNOBACKUPEX_OPTIONS="--user=${MYSQL_USERNAME} --password=${MYSQL_PASSWORD}"
 
 if [ ${MODE} = 'differential' ]; then
   MOST_RECENT_FULL_BACKUP_TIMESTAMP="$(ls -1c ${FULL_BACKUP_DIR} | head -1)"
@@ -50,7 +45,6 @@ TAR_FILE="${BACKUP_TMP}/${TAR_FILENAME}"
 
 (cd ${BACKUP_DIR} && tar jcf ${TAR_FILE} ${NEW_BACKUP_TIMESTAMP})
 
-S3CMD_OPTIONS="-c /etc/s3cmd.cfg -v"
 S3_DESTINATION="s3://${AWS_BUCKET}/${S3_PREFIX}/${MOST_RECENT_FULL_BACKUP_TIMESTAMP}/${TAR_FILENAME}"
 
 (cd ${BACKUP_DIR} && s3cmd ${S3CMD_OPTIONS} put ${TAR_FILE} ${S3_DESTINATION})
