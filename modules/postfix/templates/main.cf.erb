@@ -1,9 +1,9 @@
-myhostname = <%= fqdn %>
+myhostname = <%= @fqdn %>
 myorigin = <%= @mail_domain %>
 <% if @destination -%>
-mydestination = <%= @destination %>, <%= fqdn %>, localhost
+mydestination = <%= @destination %>, <%= @fqdn %>, localhost
 <% else -%>
-mydestination = <%= fqdn %>, localhost
+mydestination = <%= @fqdn %>, localhost
 <% end -%>
 mynetworks_style = host
 relay_domains =

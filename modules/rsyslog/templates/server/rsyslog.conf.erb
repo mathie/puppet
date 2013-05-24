@@ -21,11 +21,11 @@ $DefaultNetstreamDriver gtls
 
 # certificate files
 $DefaultNetstreamDriverCAFile /var/lib/puppet/ssl/certs/ca.pem
-$DefaultNetstreamDriverCertFile /var/lib/puppet/ssl/certs/<%= fqdn %>.pem
-$DefaultNetstreamDriverKeyFile /var/lib/puppet/ssl/private_keys/<%= fqdn %>.pem
+$DefaultNetstreamDriverCertFile /var/lib/puppet/ssl/certs/<%= @fqdn %>.pem
+$DefaultNetstreamDriverKeyFile /var/lib/puppet/ssl/private_keys/<%= @fqdn %>.pem
 
 $InputTCPServerStreamDriverAuthMode x509/name
-$InputTCPServerStreamDriverPermittedPeer *.<%= domain %>
+$InputTCPServerStreamDriverPermittedPeer *.<%= @domain %>
 $InputTCPServerStreamDriverMode 1 # run driver in TLS-only mode
 $InputTCPServerRun 10514 # start up listener at port 10514
 

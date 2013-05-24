@@ -1,12 +1,16 @@
 server_name <%= ([@name] + (@aliases || [])).uniq.map { |name| [name, "#{name}.#{@domain}"] }.flatten.join(' ') %>;
 
-root <%= root %>;
+root <%= @root %>;
+
+  if ($request_method !~ ^(GET|HEAD|POST|PUT|DELETE)$ ) {
+    return 405;
+  }
 
 <% if @remote_auth_required -%>
   satisfy any;
 
   allow 127.0.0.1;
-  allow <%= ipaddress_preferred %>;
+  allow <%= @ipaddress_preferred %>;
   deny all;
 
   auth_basic 'Ewgeco Ops';

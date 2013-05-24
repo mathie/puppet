@@ -19,14 +19,14 @@ $DefaultNetstreamDriver gtls
 
 # certificate files
 $DefaultNetstreamDriverCAFile /var/lib/puppet/ssl/certs/ca.pem
-$DefaultNetstreamDriverCertFile /var/lib/puppet/ssl/certs/<%= fqdn %>.pem
-$DefaultNetstreamDriverKeyFile /var/lib/puppet/ssl/private_keys/<%= fqdn %>.pem
+$DefaultNetstreamDriverCertFile /var/lib/puppet/ssl/certs/<%= @fqdn %>.pem
+$DefaultNetstreamDriverKeyFile /var/lib/puppet/ssl/private_keys/<%= @fqdn %>.pem
 
 $ActionSendStreamDriverAuthMode x509/name
-$ActionSendStreamDriverPermittedPeer puppet.<%= domain %>
+$ActionSendStreamDriverPermittedPeer puppet.<%= @domain %>
 $ActionSendStreamDriverMode 1 # run driver in TLS-only mode
 
-*.* @@puppet.<%= domain %>:10514 # forward everything to remote server
+*.* @@puppet.<%= @domain %>:10514 # forward everything to remote server
 
 ###########################
 #### GLOBAL DIRECTIVES ####

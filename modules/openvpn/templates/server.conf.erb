@@ -7,8 +7,8 @@ persist-tun
 dev tun
 
 ca /var/lib/puppet/ssl/certs/ca.pem
-cert /var/lib/puppet/ssl/certs/<%= fqdn %>.pem
-key /var/lib/puppet/ssl/private_keys/<%= fqdn %>.pem
+cert /var/lib/puppet/ssl/certs/<%= @fqdn %>.pem
+key /var/lib/puppet/ssl/private_keys/<%= @fqdn %>.pem
 crl-verify /var/lib/puppet/ssl/crl.pem
 
 comp-lzo
