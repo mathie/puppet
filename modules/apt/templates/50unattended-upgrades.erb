@@ -8,6 +8,8 @@ Unattended-Upgrade::Allowed-Origins {
 Unattended-Upgrade::Package-Blacklist {
 };
 
-Unattended-Upgrade::Mail "mathie@rubaidh.com";
+<% if @notify_email -%>
+Unattended-Upgrade::Mail "<%= @notify_email %>";
+<% end -%>
 
 Unattended-Upgrade::Remove-Unused-Dependencies "true";
