@@ -23,6 +23,8 @@ class standard {
   }
 
   if $::hostname != 'puppet' {
+    include collectd::agent
+
     class {
       'rsyslog::client':
         stage   => first,
@@ -31,13 +33,15 @@ class standard {
       'openvpn::agent':
         stage   => first,
         require => Class['network::hosts'];
-
-      'apt::cache::client':
-        stage   => first,
-        require => Class['openvpn::agent'];
     }
 
-    include collectd::agent
+    if $::vagrant == 'true' {
+      class {
+        'apt::cache::client':
+          stage   => first,
+          require => Class['openvpn::agent'];
+      }
+    }
   }
 
   include ntp::server
@@ -45,8 +49,8 @@ class standard {
   include mcollective::agent
   include cron
   include ssh::client, ssh::server
+  include users
   include logrotate
-  include apt::unattended_upgrades
 
   nagios::host { $::fqdn: }
   include nagios::nrpe_check::disk_space,
@@ -58,17 +62,8 @@ class standard {
     nagios::nrpe_check::swap,
     nagios::nrpe_check::memory
 
-  include users
   users::account {
     'ubuntu':
       ensure => absent;
-
-    'mathie':
-      uid      => 10001,
-      password => '$6$sIQnqvVz$LOocGXi65myfyIne7knOr0KL0QkjReLbuSe9Fe5ct.jGOVTWf6NID4toF6Pkm5I5nRldC4CtcC.kyLo6ddZKQ0',
-      htpasswd => '$apr1$z7n8mzjB$rNsr7NhLnqPDnR.Pd20zz0',
-      comment  => 'Graeme Mathieson',
-      email    => 'mathie@rubaidh.com',
-      sudo     => true;
   }
 }
