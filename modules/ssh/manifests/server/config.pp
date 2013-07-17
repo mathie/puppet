@@ -9,4 +9,11 @@ class ssh::server::config {
       mode    => '0644',
       content => template('ssh/sshd_config.erb');
   }
+
+  fail2ban::jail {
+    'ssh':
+      port     => $port,
+      bantime => 604800,
+      maxretry => 3;
+  }
 }
