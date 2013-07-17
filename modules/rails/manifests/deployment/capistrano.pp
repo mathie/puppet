@@ -108,8 +108,7 @@ define rails::deployment::capistrano(
 
   logrotate::log_file {
     $app_name:
-      log_file => "${shared_log_path}/*.log",
-      days     => 28;
+      log_file => "${shared_log_path}/*.log";
   }
 
   vcsrepo {

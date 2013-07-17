@@ -91,7 +91,6 @@ class puppet::dashboard::config {
 
   logrotate::log_file {
     'puppet-dashboard':
-      log_file => '/usr/share/puppet-dashboard/log/*.log',
-      days     => 28;
+      log_file => '/usr/share/puppet-dashboard/log/*.log';
   }
 }

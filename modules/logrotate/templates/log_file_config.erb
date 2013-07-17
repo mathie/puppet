@@ -1,8 +1,26 @@
 <%= @log_file %> {
-  daily
+  <%= @frequency %>
   missingok
-  rotate <%= @days %>
+  rotate <%= @keep %>
+  compress
   delaycompress
   notifempty
-  copytruncate
+  <% if @owner && @group && @mode -%>
+    create <%= @mode %> <%= @owner %> <%= @group %>
+    sharedscripts
+  <% else -%>
+    copytruncate
+  <% end %>
+
+  <% if @prerotate -%>
+    prerotate
+      <%= @prerotate %>
+    endscript
+  <% end -%>
+
+  <% if @postrotate -%>
+    postrotate
+      <%= @postrotate %>
+    endscript
+  <% end -%>
 }

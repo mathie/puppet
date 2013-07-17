@@ -42,7 +42,6 @@ class mysql::server::config {
 
   logrotate::log_file {
     'mysql-slow-query-log':
-      log_file => '/var/lib/mysql/mysql-slow.log',
-      days     => 28;
+      log_file => '/var/lib/mysql/mysql-slow.log';
   }
 }
