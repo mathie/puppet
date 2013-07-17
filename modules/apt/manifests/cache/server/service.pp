@@ -4,4 +4,9 @@ class apt::cache::server::service {
       ensure => running,
       enable => true;
   }
+
+  firewall::allow {
+    'apt-cacher-ng':
+      port => '3142';
+  }
 }
