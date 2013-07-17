@@ -1,0 +1,5 @@
+[DEFAULT]
+destemail = <%= @email.join(',') %>
+ignoreip = 127.0.0.0/8 <%= @whitelist.join(' ') %>
+action = %(action_mwl)s
+bantime = 604800 # 1 week.

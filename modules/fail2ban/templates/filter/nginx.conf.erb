@@ -1,0 +1,24 @@
+# Fail2Ban configuration file
+#
+# Author: http://www.go2linux.org
+#
+[Definition]
+
+# Option: failregex
+# Note: This regex will match any GET entry in your logs, so basically all valid and not valid entries are a match.
+# You should set up in the jail.conf file, the maxretry and findtime carefully in order to avoid false positives.
+
+failregex = ^<HOST>.*
+
+# Option: ignoreregex
+# Notes.: regex to ignore. If this regex matches, the line is ignored.
+# Values: TEXT
+#
+#  The IP addresses are either the DADA office or our spider server
+#  The '400' and 408 line appears to be how nginx records an odd request that people are attributing to browsers doing predictive requests?
+#  I'm not keen on the file-type filters - they're far too loose.
+ignoreregex = ^46\.226\.7\.250
+              ^95\.138\.191\.209
+               "-" 400 0 "-" "-"$
+               "-" 408 0 "-" "-"$
+              \] "GET .*\.(css|js|jpg|gif|png) HTTP/1..".+".*" ".*"

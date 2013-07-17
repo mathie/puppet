@@ -1,0 +1,4 @@
+# Not a great defense, but it should hopefully alert me if someone is trying one of the Rails marshal attacks
+[Definition]
+failregex = ^<HOST> -.*(ruby.*object|ActionDispatch|SessionHash|ActionController|NamedRouteCollection).*
+ignoreregex =

@@ -1,0 +1,27 @@
+[<%= @jail_name %>]
+<% if @enabled -%>
+enabled = true
+<% else -%>
+enabled = false
+<% end -%>
+<% if @port -%>
+port = <%= @port %>
+<% end -%>
+<% if @maxretry -%>
+maxretry = <%= @maxretry %>
+<% end -%>
+<% if @banaction -%>
+banaction = <%= @banaction %>
+<% end -%>
+<% if @filter -%>
+filter = <%= @filter %>
+<% end -%>
+<% if @logpath -%>
+logpath = <%= @logpath %>
+<% end -%>
+<% if @findtime -%>
+findtime = <%= @findtime %>
+<% end -%>
+<% if @bantime -%>
+bantime = <%= @bantime %>
+<% end -%>
