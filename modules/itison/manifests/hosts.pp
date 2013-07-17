@@ -16,11 +16,6 @@ class itison::hosts {
         ip           => '10.177.130.245',
         host_aliases => [ 'maxwell' ];
 
-      'yvonne.itison.com':
-        ensure       => present,
-        ip           => '10.177.130.196',
-        host_aliases => [ 'yvonne' ];
-
       'wooster.itison.com':
         ensure       => present,
         ip           => '10.177.128.106',

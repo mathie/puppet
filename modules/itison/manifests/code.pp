@@ -19,18 +19,19 @@ class itison::code($rails_env = 'production') {
       require => Package['rubygems-update'];
   }
 
-  Exec['install-rubygems-141'] -> Package['bundler']
+  Exec['install-rubygems-141'] -> Package['bundler18']
 
   rails::deployment {
     'itison':
       uid                 => 20001,
       git_repo            => 'git@github.com:dadaevents/itison.git',
-      git_branch          => 'puppet-production',
+      git_branch          => 'master',
       ssh_private_key     => 'puppet:///modules/users/keys/itison.keys',
       ssh_authorized_keys => 'puppet:///modules/itison/authorized_keys',
       ruby_version        => '1.8',
       rails_env           => $rails_env,
       asset_compiler      => 'java',
+	  precompile_assets   => false,
       db_type             => 'mysql';
   }
 
