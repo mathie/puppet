@@ -35,66 +35,6 @@ class puppet::master::config {
       recurselimit => 1;
   }
 
-  file {
-    '/root/.ssh':
-      ensure => directory,
-      owner  => root,
-      group  => root,
-      mode   => '0700';
-
-    '/root/.ssh/id_rsa':
-      ensure => present,
-      owner  => root,
-      group  => root,
-      mode   => '0600',
-      source => $puppet::master::ssh_key;
-  }
-
-  vcsrepo {
-    'puppet-master-repo':
-      ensure   => latest,
-      revision => 'master',
-      path     => '/etc/puppet/repo',
-      source   => $puppet::master::git_repo,
-      provider => 'git',
-      require  => [ File['/root/.ssh/id_rsa'], Class['git'] ],
-      notify   => Exec['touch-site-pp'];
-  }
-
-  exec {
-    'touch-site-pp':
-      command     => '/usr/bin/touch /etc/puppet/manifests/site.pp',
-      refreshonly => true;
-  }
-
-  if $::vagrant == 'true' {
-    file {
-      '/etc/puppet/modules':
-        ensure => link,
-        force  => true,
-        target => '/vagrant/modules';
-
-      '/etc/puppet/manifests':
-        ensure => link,
-        force  => true,
-        target => '/vagrant/manifests';
-    }
-  } else {
-    file {
-      '/etc/puppet/modules':
-        ensure  => link,
-        force   => true,
-        target  => '/etc/puppet/repo/modules',
-        require => Vcsrepo['puppet-master-repo'];
-
-      '/etc/puppet/manifests':
-        ensure  => link,
-        force   => true,
-        target  => '/etc/puppet/repo/manifests',
-        require => Vcsrepo['puppet-master-repo'];
-    }
-  }
-
   anchor { 'puppet::master::config::begin': } ->
     Class['puppet::config'] ->
     anchor { 'puppet::master::config::end': }
