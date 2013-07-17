@@ -7,7 +7,8 @@ define rails::database(
   $password     = '',
   $rails_env    = 'production',
   $stanza_title = undef,
-  $order        = 50
+  $order        = 50,
+  $grant        = true
 ) {
 
   $real_stanza_title = $stanza_title ? {
@@ -19,12 +20,15 @@ define rails::database(
     mysql::server::database {
       $database:
         user     => $username,
-        password => $password;
+        password => $password,
+        grant    => $grant;
     }
   } elsif $db_type == 'postgresql' {
-    postgresql::server::user {
-      $username:
-        password => $password;
+    if $grant {
+      postgresql::server::user {
+        $username:
+          password => $password;
+      }
     }
 
     postgresql::server::database {
