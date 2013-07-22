@@ -14,3 +14,7 @@ Pin-Priority: -10
 Package: nginx*
 Pin: release o=Debian
 Pin-Priority: 1001
+
+Package: nginx*
+Pin: release o=Ubuntu
+Pin-Priority: 1001
