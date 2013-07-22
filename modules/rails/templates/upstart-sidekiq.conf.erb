@@ -8,4 +8,4 @@ setuid <%= @app_name %>
 setgid <%= @app_name %>
 chdir /u/apps/<%= @app_name %>/current
 
-exec <%= @bundle_exec %> sidekiq -c <%= @concurrency %> -L /u/apps/<%= @app_name %>/current/log/sidekiq.log -P /u/apps/<%= @app_name %>/shared/pids/sidekiq.pid
+exec <%= @bundle_exec %> sidekiq -c <%= @concurrency %> -L /u/apps/<%= @app_name %>/current/log/sidekiq.log -P /u/apps/<%= @app_name %>/shared/pids/sidekiq.pid <%= @queues.map { |queue| "-q #{queue}" }.join(' ') %>

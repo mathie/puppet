@@ -1,4 +1,9 @@
-define rails::sidekiq($ruby_version = '1.9', $rails_env = 'production', $concurrency = 25) {
+define rails::sidekiq(
+  $ruby_version = '1.9',
+  $rails_env    = 'production',
+  $concurrency  = 25,
+  $queues       = [ 'default' ]
+) {
   $app_name = $name
 
   $ruby_command = $ruby_version ? {
@@ -18,7 +23,8 @@ define rails::sidekiq($ruby_version = '1.9', $rails_env = 'production', $concurr
       ruby_version => $ruby_version,
       app_name     => $app_name,
       rails_env    => $rails_env,
-      concurrency  => $concurrency;
+      concurrency  => $concurrency,
+      queues       => $queues;
 
     'rails::sidekiq::service':
       app_name => $app_name;
