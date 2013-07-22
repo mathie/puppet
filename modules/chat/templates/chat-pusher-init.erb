@@ -1,0 +1,11 @@
+start on starting chat
+stop on stopping chat
+respawn
+
+chdir /u/apps/chat/current
+env RAILS_ENV="production"
+export RAILS_ENV
+setuid chat
+setgid chat
+
+exec /usr/bin/ruby1.9.1 -S bundle exec /usr/bin/ruby1.9.1 script/pusher
