@@ -8,9 +8,4 @@ class puppet::dashboard::service {
       ensure => running,
       enable => true;
   }
-
-  firewall::allow {
-    'puppet-dashboard-web':
-      port => 8084;
-  }
 }

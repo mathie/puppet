@@ -37,6 +37,11 @@ define nginx::vhost_to_upstream(
         authenticated => $remote_auth_required,
         port          => $additional_port;
     }
+
+    firewall::allow {
+      "firewall-${name}-${additional_port}":
+        port => $additional_port;
+    }
   }
 
   if $::vagrant == 'true' and $vagrant_additional_port {
@@ -45,6 +50,11 @@ define nginx::vhost_to_upstream(
         vhost         => $vhost_fqdn,
         authenticated => $remote_auth_required,
         port          => $vagrant_additional_port;
+    }
+
+    firewall::allow {
+      "firewall-${name}-${vagrant_additional_port}":
+        port => $vagrant_additional_port;
     }
   }
 
