@@ -13,6 +13,7 @@ $base_box_name   = "ubuntu-12.04.2-server-amd64"
 $ip_network      = "172.16.27.%d"
 $puppetmaster_ip = 10
 $node_base_ip    = 100
+$domain_name     = "rubaidh.vagrant.vm"
 
 # Common setup for every VM
 def bootstrap(config, hostname, ip_address, options = {})
@@ -29,8 +30,8 @@ def bootstrap(config, hostname, ip_address, options = {})
   config.vm.synced_folder graphs_folder, '/var/lib/puppet/state/graphs'
 
   config.vm.provision :shell do |shell|
-    shell.path = 'bootstrap/vagrant-puppet.sh'
-    shell.args = "#{hostname} rubaidh.vagrant.vm unused #{ip_address($puppetmaster_ip)}"
+    shell.path = 'build/vagrant-puppet.sh'
+    shell.args = "#{hostname} #{$domain_name} unused #{ip_address($puppetmaster_ip)}"
   end
 end
 

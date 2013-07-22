@@ -5,7 +5,7 @@
 apt_update: true
 apt_upgrade: true
 apt_sources:
-  - source: "ppa:brightbox/ruby-ng-experimental"
+  - source: "ppa:brightbox/ruby-ng"
   - filename: puppetlabs.list
     keyid: 4BD6EC30
     source: deb http://apt.puppetlabs.com/ precise main dependencies
@@ -19,6 +19,6 @@ timezone: Europe/London
 
 # Correctly set the hostname for the puppetmaster (one of the few places it
 # matters).
-hostname: puppet
-fqdn: puppet.rubaidh.net
+hostname: @@NODE_NAME@@
+fqdn: @@FQDN@@
 manage_etc_hosts: true

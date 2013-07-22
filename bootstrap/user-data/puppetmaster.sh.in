@@ -1,0 +1,21 @@
+#!/bin/bash
+
+mkdir -p ~/.ssh
+cat > ~/.ssh/id_rsa <<EOF
+@@SSH_KEY@@
+EOF
+
+chmod -R go-rwx ~/.ssh
+
+eval $(ssh-agent)
+trap "kill ${SSH_AGENT_PID}" EXIT
+
+mkdir -p /tmp/puppet-bootstrap
+cd /tmp/puppet-bootstrap
+
+ssh-keyscan github.com >> ~/.ssh/known_hosts
+
+git clone @@GIT_REPO@@ puppet
+
+cd puppet
+puppet apply --modulepath=`pwd`/modules --manifestdir=`pwd`/manifests `pwd`/manifests/bootstrap/puppetmaster.pp
