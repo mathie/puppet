@@ -1,10 +1,9 @@
 class ruby::ruby18::install {
   include ruby::repo
-
   include ruby::install
 
   package {
-    [ 'ruby1.8', 'ruby1.8-dev', 'rubygems' ]:
+    [ 'ruby1.8', 'rubygems' ]:
       ensure => present;
   }
 
