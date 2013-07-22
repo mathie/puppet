@@ -1,0 +1,4 @@
+// Don't install recommended or suggested packages by default. In our puppet
+// managed environment, we like to make these choices explicitly.
+APT::Install-Recommends "0";
+APT::Install-Suggests "0";
