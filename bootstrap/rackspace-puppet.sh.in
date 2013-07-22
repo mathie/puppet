@@ -1,0 +1,6 @@
+set_hostname
+set_puppetmaster_ip
+setup_base_packages
+setup_root_ssh_key
+bootstrap_puppet
+restart

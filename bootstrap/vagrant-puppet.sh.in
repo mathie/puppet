@@ -1,0 +1,6 @@
+set_hostname
+set_puppetmaster_ip
+setup_base_packages
+
+# At this point, we should have a bleeding edge stable puppet and Ruby, ready
+# for Vagrant to kick off Puppet to start doing its thing.

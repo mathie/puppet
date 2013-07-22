@@ -18,7 +18,7 @@ set_hostname() {
   domainname ${DOMAINNAME}
 
   echo '127.0.0.1 localhost' > /etc/hosts
-  echo "127.0.1.1 ${FQDN} ${HOSTNAME}" >> /etc/hosts
+  echo "127.0.1.1 ${HOSTNAME} ${FQDN}" >> /etc/hosts
 
   # This is one of the places Facter will use to get its domain name, so let's
   # have a little defense in depth.
@@ -46,7 +46,7 @@ setup_base_packages() {
   fi
 
   apt-get update -qq
-  apt-get autoremove -qq -y puppet-common puppet
+  apt-get autoremove --purge -qq -y puppet-common puppet
   apt-get dist-upgrade -qq -y
 
   # Easiest way to add PPA repos, along with their PGP keys
@@ -55,8 +55,8 @@ setup_base_packages() {
   fi
 
   # Recent build of Ruby 1.8.7 (REE), 1.9 and a way for them to happily coexist.
-  if [ ! -f /etc/apt/sources.list.d/brightbox-ruby-ng-experimental-precise.list ]; then
-    add-apt-repository -y ppa:brightbox/ruby-ng-experimental
+  if [ ! -f /etc/apt/sources.list.d/brightbox-ruby-ng-precise.list ]; then
+    add-apt-repository -y ppa:brightbox/ruby-ng
   fi
 
   # Of course, we have to do the puppet labs one manually...
@@ -69,9 +69,33 @@ EOF
   fi
 
   apt-get update -qq
-  apt-get install -qq -y ruby1.9.3 puppet
+  apt-get install -qq -y ruby1.9.3 puppet git
 }
 
-set_hostname
-set_puppetmaster_ip
-setup_base_packages
+setup_root_ssh_key() {
+  mkdir -p ~/.ssh
+  cat > ~/.ssh/id_rsa <<EOF
+@@SSH_PRIVATE_KEY@@
+EOF
+
+  chmod -R go-rwx ~/.ssh
+}
+
+bootstrap_puppet() {
+  eval $(ssh-agent)
+  trap "kill ${SSH_AGENT_PID}" EXIT
+
+  mkdir -p /tmp/puppet-bootstrap
+  cd /tmp/puppet-bootstrap
+
+  ssh-keyscan github.com >> ~/.ssh/known_hosts
+
+  git clone -q @@GIT_REPO@@ puppet
+
+  cd puppet
+  puppet apply --modulepath=`pwd`/modules --manifestdir=`pwd`/manifests `pwd`/manifests/bootstrap/${PUPPET_MANIFEST}.pp
+}
+
+restart() {
+  shutdown -r now
+}
