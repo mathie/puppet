@@ -1,0 +1,5 @@
+server {
+  listen 80 default;
+  server_name live-auction.bidforwine.co.uk live.bidforwine.com;
+  rewrite ^/(.*)$ https://live-auction.bidforwine.co.uk/$1 permanent;
+}
