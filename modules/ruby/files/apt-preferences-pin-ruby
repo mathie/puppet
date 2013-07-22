@@ -1,13 +1,13 @@
 Package: ruby*
-Pin: release o=LP-PPA-brightbox-ruby-ng-experimental
+Pin: release o=LP-PPA-brightbox-ruby-ng
 Pin-Priority: 999
 
 Package: libruby*
-Pin: release o=LP-PPA-brightbox-ruby-ng-experimental
+Pin: release o=LP-PPA-brightbox-ruby-ng
 Pin-Priority: 999
 
 Package: *
-Pin: release o=LP-PPA-brightbox-ruby-ng-experimental
+Pin: release o=LP-PPA-brightbox-ruby-ng
 Pin-Priority: -10
 
 # Temporary workaround to remove Brightbox nginx package

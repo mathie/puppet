@@ -1,7 +1,7 @@
 class ruby::repo($stage = first) {
   apt::repository {
-    'brightbox-ruby-ng-experimental-precise':
-      url   => 'http://ppa.launchpad.net/brightbox/ruby-ng-experimental/ubuntu',
+    'brightbox-ruby-ng-precise':
+      url   => 'http://ppa.launchpad.net/brightbox/ruby-ng/ubuntu',
       keyid => 'C3173AA6';
   }
 
@@ -12,5 +12,8 @@ class ruby::repo($stage = first) {
       group  => root,
       mode   => '0644',
       source => 'puppet:///modules/ruby/apt-preferences-pin-ruby';
+
+    '/etc/apt/sources.list.d/brightbox-ruby-ng-experimental-precise.list':
+      ensure => absent;
   }
 }
