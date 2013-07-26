@@ -18,7 +18,7 @@ Facter.add(:ipaddress_internal) do
       case Facter.value('virtual')
       when 'xenu' # xenu is Rackspace Cloud
         Facter.value('ipaddress_eth1')
-      when 'physical' # An LXC container, I think?
+      when 'physical', 'xen' # An LXC container, I think?
         Facter.value('ipaddress_eth0')
       else
         raise "Don't know the internal IP for #{Facter.value('virtual')}"
