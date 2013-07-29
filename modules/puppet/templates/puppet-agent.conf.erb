@@ -4,7 +4,7 @@
   pluginsync = true
 
 [agent]
-<% if @vagrant == 'true' %>
+<% if str2bool(@vagrant) == true %>
   runinterval = 60
   graph       = true
 <% else %>

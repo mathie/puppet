@@ -1,6 +1,6 @@
 server {
   listen 80;
-  <% if @vagrant == 'true' -%>
+  <% if str2bool(@vagrant) == true -%>
   listen 8085;
   <% end -%>
   server_name nagios nagios.<%= @domain %>;

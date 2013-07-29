@@ -14,7 +14,7 @@ class puppet::master::repo {
       source => $puppet::master::ssh_key;
   }
 
-  if $::vagrant == 'true' {
+  if str2bool($::vagrant) == true {
     file {
       '/etc/puppet/modules':
         ensure => link,

@@ -1,5 +1,5 @@
 class itison::hosts {
-  if $::vagrant != 'true' {
+  if str2bool($::vagrant) == false {
     host {
       'einstein.itison.com':
         ensure       => present,

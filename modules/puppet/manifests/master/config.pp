@@ -16,8 +16,8 @@ class puppet::master::config {
       content => template('puppet/puppet-master.conf.erb');
   }
 
-  $autosign_ensure = $::vagrant ? {
-    'true'  => present,
+  $autosign_ensure = str2bool($::vagrant) ? {
+    true    => present,
     default => absent,
   }
 

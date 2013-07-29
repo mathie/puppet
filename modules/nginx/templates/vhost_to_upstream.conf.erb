@@ -1,6 +1,6 @@
 server {
   listen 80;
-  <% if @vagrant == 'true' && @vagrant_additional_port -%>
+  <% if str2bool(@vagrant) == true && @vagrant_additional_port -%>
     listen <%= @vagrant_additional_port %>;
   <% end -%>
   <% if @additional_port -%>

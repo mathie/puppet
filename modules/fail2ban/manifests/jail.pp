@@ -15,8 +15,8 @@ define fail2ban::jail(
   $jail_name = $name
 
   $enabled = $ensure ? {
-    present => 'true',
-    default => 'false',
+    present => true,
+    default => false,
   }
 
   concat::fragment {

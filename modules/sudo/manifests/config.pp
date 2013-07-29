@@ -13,7 +13,7 @@ class sudo::config {
       user => root;
   }
 
-  if $::vagrant == 'true' {
+  if str2bool($::vagrant) == true {
     sudo::user {
       'vagrant-is-also-all-powerful':
         user        => vagrant,

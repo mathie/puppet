@@ -35,7 +35,7 @@ class standard {
         require => Class['network::hosts'];
     }
 
-    if $::vagrant == 'true' {
+    if str2bool($::vagrant) == true {
       class {
         'apt::cache::client':
           stage   => first,
