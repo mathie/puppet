@@ -21,7 +21,7 @@ class PuppetTest
   end
 
   def validate
-    puppet "parser validate", all_manifests
+    puppet "parser validate", [ 'storeconfigs' ], all_manifests
   end
 
   protected
@@ -39,8 +39,15 @@ class PuppetTest
     ruby "-S bundle exec #{command}", { :verbose => false }.merge(options), &block
   end
 
-  def puppet(command, manifests)
-    bundle_exec "puppet #{command} #{manifests}"
+  def puppet(command, arguments, manifests)
+    arg_string = arguments.map { |arg| "--#{arg}" }.join(' ')
+    command_line = [
+      'puppet',
+      command,
+      arg_string,
+      manifests
+    ].compact.join(' ')
+    bundle_exec command_line
   end
 
   def puppet_lint(manifest, ignored_checks)
