@@ -1,4 +1,4 @@
-define apache::site($apache_vhost_name = "${name}.com", $default = false, $ensure = present, $username = $name, $source = undef, $content = undef, $require = undef) {
+define apache::site($apache_vhost_name = "${name}.com", $default = false, $ensure = present, $username = $name, $source = undef, $content = undef) {
   include apache
 
   $site_filename = $default ? {
@@ -20,7 +20,6 @@ define apache::site($apache_vhost_name = "${name}.com", $default = false, $ensur
         mode    => '0644',
         source  => $source,
         content => $content,
-        require => $require,
         notify  => Class['apache::service'];
     }
   } else {
@@ -31,14 +30,8 @@ define apache::site($apache_vhost_name = "${name}.com", $default = false, $ensur
         group   => root,
         mode    => '0644',
         content => template('apache/site.erb'),
-        require => $require,
         notify  => Class['apache::service'];
     }
-  }
-
-  $a2ensite_require = $require ? {
-    undef   => File["/etc/apache2/sites-available/${site_filename}"],
-    default => [ $require, File["/etc/apache2/sites-available/${site_filename}"] ],
   }
 
   case $ensure {
@@ -47,7 +40,7 @@ define apache::site($apache_vhost_name = "${name}.com", $default = false, $ensur
         "a2ensite-${name}":
           command => "/usr/sbin/a2ensite ${site_filename}",
           creates => "/etc/apache2/sites-enabled/${enabled_site_filename}",
-          require => $a2ensite_require,
+          require => File["/etc/apache2/sites-available/${site_filename}"],
           notify  => Class['apache::service'];
       }
     }
@@ -61,5 +54,4 @@ define apache::site($apache_vhost_name = "${name}.com", $default = false, $ensur
       }
     }
   }
-
 }

@@ -1,4 +1,4 @@
-define apache::module($source = undef, $content = undef, $require = undef) {
+define apache::module($source = undef, $content = undef) {
   include apache
 
   if $source or $content {
@@ -10,7 +10,6 @@ define apache::module($source = undef, $content = undef, $require = undef) {
         mode    => '0644',
         source  => $source,
         content => $content,
-        require => $require,
         notify  => Class['apache::service'];
     }
   }
@@ -19,7 +18,6 @@ define apache::module($source = undef, $content = undef, $require = undef) {
     "a2enmod-${name}":
       command => "/usr/sbin/a2enmod ${name}",
       creates => "/etc/apache2/mods-enabled/${name}.load",
-      require => $require,
       notify  => Class['apache::service'];
   }
 }
