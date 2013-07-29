@@ -28,7 +28,7 @@ class rails::unicorn::config($app_name, $ruby_version = '1.9', $rails_env = 'pro
   }
 
   nginx::vhost_to_upstream {
-    "${app_name}-${hostname}-${rails_env}":
+    "${app_name}-${::hostname}-${rails_env}":
       root                    => "/u/apps/${app_name}/current/public",
       vagrant_additional_port => 8090,
       extra_ssl_vhost         => true,
