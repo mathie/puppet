@@ -13,7 +13,7 @@ class ssh::server::config {
   fail2ban::jail {
     'ssh':
       port     => $port,
-      bantime => 604800,
+      bantime  => 604800,
       maxretry => 3;
   }
 }

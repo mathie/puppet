@@ -31,7 +31,7 @@ class itison::code($rails_env = 'production') {
       ruby_version        => '1.8',
       rails_env           => $rails_env,
       asset_compiler      => 'java',
-	  precompile_assets   => false,
+      precompile_assets   => false,
       db_type             => 'mysql';
   }
 
