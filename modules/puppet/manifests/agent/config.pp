@@ -11,9 +11,21 @@ class puppet::agent::config {
     mode    => '0644',
   }
 
+  concat::file {
+    'agent.conf':
+      ensure  => present,
+      path    => '/etc/puppet/conf.d/agent.conf',
+      head    => "[agent]\n",
+      owner   => root,
+      group   => root,
+      mode    => '0644',
+      require => File['/etc/puppet/conf.d'],
+      before  => Exec['generate-puppet-conf'];
+  }
+
   concat::fragment {
     'puppet-conf-agent':
-      file    => 'puppet.conf',
+      file    => 'agent.conf',
       content => template('puppet/puppet-agent.conf.erb');
   }
 

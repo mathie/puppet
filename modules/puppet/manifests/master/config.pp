@@ -10,15 +10,27 @@ class puppet::master::config {
     mode   => '0644',
   }
 
+  concat::file {
+    'master.conf':
+      ensure  => present,
+      path    => '/etc/puppet/conf.d/master.conf',
+      head    => "[master]\n",
+      owner   => root,
+      group   => root,
+      mode    => '0644',
+      require => File['/etc/puppet/conf.d'],
+      before  => Exec['generate-puppet-conf'];
+  }
+
   concat::fragment {
     'puppet-conf-master':
-      file    => 'puppet.conf',
+      file    => 'master.conf',
       content => template('puppet/puppet-master.conf.erb');
   }
 
   $autosign_ensure = str2bool($::vagrant) ? {
-    true    => present,
-    default => absent,
+    true  => present,
+    false => absent,
   }
 
   file {

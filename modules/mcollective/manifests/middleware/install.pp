@@ -1,5 +1,8 @@
 class mcollective::middleware::install {
-  include rabbitmq::stomp
+  class {
+    'rabbitmq::stomp':
+      clients => $mcollective::middleware::clients;
+  }
 
   exec {
     'mcollective-rabbitmq-user':

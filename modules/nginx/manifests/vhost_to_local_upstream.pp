@@ -5,6 +5,7 @@ define nginx::vhost_to_local_upstream(
   $additional_port         = undef,
   $vagrant_additional_port = undef,
   $remote_auth_required    = false,
+  $permitted_clients       = undef,
   $content                 = undef
 ) {
 
@@ -15,6 +16,7 @@ define nginx::vhost_to_local_upstream(
       additional_port         => $additional_port,
       vagrant_additional_port => $vagrant_additional_port,
       remote_auth_required    => $remote_auth_required,
+      permitted_clients       => $permitted_clients,
       content                 => $content;
   }
 

@@ -4,9 +4,4 @@ class rabbitmq::server::service {
       ensure     => running,
       enable     => true;
   }
-
-  firewall::allow {
-    'amqp':
-      port => '5672';
-  }
 }

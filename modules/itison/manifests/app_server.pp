@@ -1,4 +1,9 @@
-class itison::app_server($rails_env = 'production', $static_asset_server = false, $email_app_server = false) {
+class itison::app_server(
+  $rails_env           = 'production',
+  $static_asset_server = false,
+  $email_app_server    = false,
+  $clients             = undef
+) {
   class {
     'itison::code':
       rails_env => $rails_env;
@@ -7,7 +12,8 @@ class itison::app_server($rails_env = 'production', $static_asset_server = false
   rails::unicorn {
     'itison':
       rails_env    => $rails_env,
-      ruby_version => '1.8';
+      ruby_version => '1.8',
+      clients      => $clients;
   }
 
   Class['itison::code'] -> Rails::Unicorn['itison']

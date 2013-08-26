@@ -21,7 +21,7 @@ class PuppetTest
   end
 
   def validate
-    puppet "parser validate", [ 'storeconfigs' ], all_manifests
+    puppet "parser validate", [ 'parser=future', 'storeconfigs' ], all_manifests
   end
 
   protected

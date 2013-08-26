@@ -24,10 +24,4 @@ class collectd::plugins::master {
       plugin => 'network',
       config => template('collectd/plugins/network-agent.conf.erb');
   }
-
-  firewall::allow {
-    'collectd-udp':
-      port  => 25826,
-      proto => 'udp';
-  }
 }

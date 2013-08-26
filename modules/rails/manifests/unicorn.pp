@@ -1,4 +1,8 @@
-define rails::unicorn($ruby_version = '1.9', $rails_env = 'production') {
+define rails::unicorn(
+  $ruby_version = '1.9',
+  $rails_env    = 'production',
+  $clients      = undef
+) {
   $app_name = $name
 
   class {
@@ -8,7 +12,8 @@ define rails::unicorn($ruby_version = '1.9', $rails_env = 'production') {
     'rails::unicorn::config':
       ruby_version => $ruby_version,
       app_name     => $app_name,
-      rails_env    => $rails_env;
+      rails_env    => $rails_env,
+      clients      => $clients;
 
     'rails::unicorn::service':
       app_name => $app_name;

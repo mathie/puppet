@@ -1,4 +1,7 @@
-class mysql::server($root_password = undef) {
+class mysql::server(
+  $root_password = undef,
+  $clients       = undef
+) {
   $root_password_flag = $root_password ? {
     undef   => '',
     default => " -p${mysql::server::root_password}",
@@ -6,7 +9,8 @@ class mysql::server($root_password = undef) {
 
   include mysql::client
 
-  include mysql::server::install,
+  include mysql::server::firewall,
+    mysql::server::install,
     mysql::server::config,
     mysql::server::service,
     mysql::server::timezones,
@@ -23,6 +27,7 @@ class mysql::server($root_password = undef) {
   # installed. This is fine with my.cnf because it's not supplied by the
   # package. Might cause problems with other configuration files in future,
   # though.
+  Class['mysql::server::firewall'] -> Class['mysql::server::install']
   Class['mysql::server::config'] -> Class['mysql::server::install']
   Class['mysql::server::install'] -> Class['mysql::server::service']
   Class['mysql::server::config'] ~> Class['mysql::server::service']

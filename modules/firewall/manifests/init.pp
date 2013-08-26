@@ -1,8 +1,9 @@
 class firewall($enabled = true) {
   include firewall::install, firewall::config, firewall::service
 
+  anchor { 'firewall::begin': } ->
   Class['firewall::install'] ->
     Class['firewall::config'] ~>
     Class['firewall::service'] ->
-    Class['firewall']
+    anchor { 'firewall::end': }
 }

@@ -5,8 +5,13 @@ define nginx::vhost_to_upstream(
   $vagrant_additional_port = undef,
   $remote_auth_required    = false,
   $extra_ssl_vhost         = false,
+  $main_port               = 80,
+  $ssl_port                = 443,
   $static_asset_path       = undef,
-  $content                 = undef
+  $permitted_clients       = undef,
+  $content                 = undef,
+  $ssl_certificate         = "/var/lib/puppet/ssl/certs/${::fqdn}.pem",
+  $ssl_certificate_key     = "/var/lib/puppet/ssl/private_keys/${::fqdn}.pem"
 ) {
   nginx::upstream {
     $name:
@@ -17,44 +22,25 @@ define nginx::vhost_to_upstream(
       content => template('nginx/vhost_to_upstream.conf.erb');
   }
 
-  $vhost_fqdn = "${name}.${::domain}"
-
-  nginx::nrpe_check {
-    $vhost_fqdn:
-      authenticated => $remote_auth_required;
+  @firewall::allow {
+    "firewall-${name}-${main_port}":
+      sources => $permitted_clients,
+      port    => $main_port;
   }
-
-  $nagios_auth_args = $remote_auth_required ? {
-    true    => " -a ${nagios::agent::htpasswd_user}:${nagios::agent::htpasswd_password}",
-    default => '',
-  }
-  $shared_args = "-H ${vhost_fqdn} -I 127.0.0.1${nagios_auth_args}"
 
   if $additional_port {
-    nginx::nrpe_check {
-      "${vhost_fqdn}-${additional_port}":
-        vhost         => $vhost_fqdn,
-        authenticated => $remote_auth_required,
-        port          => $additional_port;
-    }
-
-    firewall::allow {
+    @firewall::allow {
       "firewall-${name}-${additional_port}":
-        port => $additional_port;
+        sources => $permitted_clients,
+        port    => $additional_port;
     }
   }
 
   if str2bool($::vagrant) == true and $vagrant_additional_port {
-    nginx::nrpe_check {
-      "${vhost_fqdn}-${vagrant_additional_port}":
-        vhost         => $vhost_fqdn,
-        authenticated => $remote_auth_required,
-        port          => $vagrant_additional_port;
-    }
-
-    firewall::allow {
+    @firewall::allow {
       "firewall-${name}-${vagrant_additional_port}":
-        port => $vagrant_additional_port;
+        sources => $permitted_clients,
+        port    => $vagrant_additional_port;
     }
   }
 
@@ -64,11 +50,10 @@ define nginx::vhost_to_upstream(
         content => template('nginx/ssl_vhost_to_upstream.conf.erb');
     }
 
-    nginx::nrpe_check {
-      "${vhost_fqdn}-ssl":
-        vhost         => $vhost_fqdn,
-        authenticated => $remote_auth_required,
-        ssl           => true;
+    @firewall::allow {
+      "firewall-${name}-${ssl_port}":
+        sources => $permitted_clients,
+        port    => $ssl_port;
     }
   }
 

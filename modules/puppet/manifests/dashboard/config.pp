@@ -11,7 +11,7 @@ class puppet::dashboard::config {
 
   concat::fragment {
     'puppet-conf-dashboard':
-      file    => 'puppet.conf',
+      file    => 'master.conf',
       content => template('puppet/puppet-dashboard.conf.erb');
   }
 
@@ -58,11 +58,11 @@ class puppet::dashboard::config {
 
   nginx::vhost_to_local_upstream {
     'puppet-dashboard':
-      upstream_port        => 3000,
-      aliases              => [ 'puppet' ],
-      root                 => '/usr/share/puppet-dashboard',
-      additional_port      => 8084,
-      remote_auth_required => true;
+      upstream_port           => 3000,
+      aliases                 => [ 'puppet' ],
+      root                    => '/usr/share/puppet-dashboard',
+      vagrant_additional_port => 8084,
+      permitted_clients       => [ '127.0.0.1' ];
   }
 
   cron {

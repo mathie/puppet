@@ -31,18 +31,34 @@ class itison::load_balancer($rails_env = 'production', $mobile = false) {
   }
 
   include fail2ban::filter::nginx
-
-  fail2ban::jail::nginx {
+  fail2ban::jail {
     'nginx':
-      ensure => present;
-
+      ensure   => present,
+      port     => 'http,https',
+      filter   => 'nginx',
+      logpath  => '/var/log/nginx/access.log',
+      maxretry => 50,
+      bantime  => 604800,
+      findtime => 60;
+  }
+  fail2ban::jail {
     'nginx_scripts':
       ensure   => present,
+      port     => 'http,https',
+      filter   => 'nginx_scripts',
+      logpath  => '/var/log/nginx/access.log',
       maxretry => 2,
+      bantime  => 604800,
       findtime => 120;
-
+  }
+  fail2ban::jail {
     'rails_attacks':
       ensure   => present,
-      maxretry => 1;
+      port     => 'http,https',
+      filter   => 'rails_attacks',
+      logpath  => '/var/log/nginx/access.log',
+      maxretry => 1,
+      bantime  => 604800,
+      findtime => 60;
   }
 }

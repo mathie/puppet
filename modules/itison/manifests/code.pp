@@ -32,7 +32,7 @@ class itison::code($rails_env = 'production') {
       rails_env           => $rails_env,
       asset_compiler      => 'java',
       precompile_assets   => false,
-      db_type             => 'mysql';
+      db_type             => 'mysql2';
   }
 
   Class['geoip']        -> Rails::Deployment['itison']

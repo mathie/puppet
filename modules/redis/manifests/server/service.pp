@@ -5,7 +5,7 @@ class redis::server::service {
       enable => true;
   }
 
-  firewall::allow {
+  @firewall::allow {
     'redis':
       port => 6379;
   }

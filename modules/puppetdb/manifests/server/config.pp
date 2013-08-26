@@ -4,7 +4,7 @@ class puppetdb::server::config {
       upstream_port           => 8080,
       root                    => '/var/lib/puppetdb/www',
       vagrant_additional_port => 8087,
-      remote_auth_required    => true,
+      permitted_clients       => [ '127.0.0.1' ],
       content                 => template('puppetdb/nginx.conf.erb');
   }
 }

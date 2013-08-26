@@ -1,4 +1,13 @@
 class firewall::config {
+  file {
+    '/etc/default/ufw':
+      ensure => present,
+      owner  => root,
+      group  => root,
+      mode   => '0644',
+      source => 'puppet:///modules/firewall/etc-default-ufw';
+  }
+
   if($firewall::enabled) {
     exec {
       'firewall-default-deny':
@@ -11,6 +20,8 @@ class firewall::config {
     }
 
     Exec['firewall-default-deny'] -> Exec['firewall-enable']
+
+    Firewall::Allow <| |>
   } else {
     exec {
       'firewall-disable':

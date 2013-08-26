@@ -4,8 +4,11 @@ class rabbitmq::server::management {
       ensure => present;
   }
 
-  firewall::allow {
-    'rabbitmq-management-plugin':
+  @firewall::allow {
+    'rabbitmq-management-plugin-old-port':
       port => 55672;
+
+    'rabbitmq-management-plugin':
+      port => 15672;
   }
 }

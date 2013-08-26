@@ -1,5 +1,11 @@
-class rabbitmq::stomp {
-  include rabbitmq::server
+class rabbitmq::stomp(
+  $clients = undef
+) {
+
+  class {
+    'rabbitmq::server':
+      clients => $clients;
+  }
 
   exec {
     'install-rabbitmq-stomp':
@@ -8,9 +14,10 @@ class rabbitmq::stomp {
       environment => 'HOME=/root';
   }
 
-  firewall::allow {
+  @firewall::allow {
     'rabbitmq-stomp':
-      port => '61613';
+      port    => '61613',
+      sources => $clients;
   }
 
   Class['rabbitmq::stomp'] ~> Class['rabbitmq::server::service']

@@ -1,10 +1,4 @@
-
-[main]
-  server     = <%= @puppetmaster_hostname %>
-  pluginsync = true
-
-[agent]
-<% if str2bool(@vagrant) == true %>
+<% if scope.function_str2bool([@vagrant]) %>
   runinterval = 60
   graph       = true
 <% else %>

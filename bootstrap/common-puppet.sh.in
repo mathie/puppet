@@ -93,7 +93,7 @@ bootstrap_puppet() {
   git clone -q @@GIT_REPO@@ puppet
 
   cd puppet
-  puppet apply --modulepath=`pwd`/modules --manifestdir=`pwd`/manifests `pwd`/manifests/bootstrap/${PUPPET_MANIFEST}.pp
+  puppet apply --parser future --modulepath=`pwd`/modules --manifestdir=`pwd`/manifests `pwd`/manifests/bootstrap/${PUPPET_MANIFEST}.pp
 }
 
 restart() {

@@ -4,9 +4,4 @@ class rsyslog::service {
       ensure => running,
       enable => true;
   }
-
-  firewall::allow {
-    'rsyslog-ssl':
-      port => '10514';
-  }
 }

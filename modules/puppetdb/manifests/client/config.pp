@@ -19,7 +19,7 @@ class puppetdb::client::config {
 
   concat::fragment {
     'puppet-conf-puppetdb':
-      file    => 'puppet.conf',
+      file    => 'master.conf',
       content => template('puppetdb/puppet-puppetdb.conf.erb');
   }
 }

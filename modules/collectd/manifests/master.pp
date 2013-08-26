@@ -1,5 +1,12 @@
-class collectd::master {
-  include collectd::install, collectd::master::config, collectd::service
+class collectd::master(
+  $clients = undef
+) {
+  include collectd::master::firewall, collectd::install, collectd::master::config, collectd::service
 
-  Class['collectd::install'] -> Class['collectd::master::config'] ~> Class['collectd::service']
+  anchor { 'collectd::master::begin': } ->
+    Class['collectd::master::firewall'] ->
+    Class['collectd::install'] ->
+    Class['collectd::master::config'] ~>
+    Class['collectd::service'] ->
+    anchor { 'collectd::master::end': }
 }

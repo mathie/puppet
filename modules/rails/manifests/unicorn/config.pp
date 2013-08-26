@@ -1,4 +1,9 @@
-class rails::unicorn::config($app_name, $ruby_version = '1.9', $rails_env = 'production') {
+class rails::unicorn::config(
+  $app_name,
+  $ruby_version = '1.9',
+  $rails_env    = 'production',
+  $clients      = undef
+) {
   $ruby_command = $ruby_version ? {
     '1.8' => '/usr/bin/ruby1.8',
     '1.9' => '/usr/bin/ruby1.9.1',
@@ -33,6 +38,7 @@ class rails::unicorn::config($app_name, $ruby_version = '1.9', $rails_env = 'pro
       vagrant_additional_port => 8090,
       extra_ssl_vhost         => true,
       static_asset_path       => '/assets',
+      permitted_clients       => $clients,
       content                 => template('rails/nginx-vhost.conf.erb');
   }
 

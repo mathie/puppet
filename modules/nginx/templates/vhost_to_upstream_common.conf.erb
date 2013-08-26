@@ -11,10 +11,26 @@ root <%= @root %>;
 
   allow 127.0.0.1;
   allow <%= @ipaddress_preferred %>;
+
+  <% if @permitted_clients -%>
+    <% @permitted_clients.each do |client| -%>
+      allow <%= client %>;
+    <% end -%>
+  <% end -%>
   deny all;
 
   auth_basic 'Rubaidh Ops';
   auth_basic_user_file /etc/nginx/htpasswd;
+<% elsif @permitted_clients -%>
+  allow 127.0.0.1;
+  allow <%= @ipaddress_preferred %>;
+
+  <% if @permitted_clients -%>
+    <% @permitted_clients.each do |client| -%>
+      allow <%= client %>;
+    <% end -%>
+  <% end -%>
+  deny all;
 <% end -%>
 
 <%= @content if @content %>
